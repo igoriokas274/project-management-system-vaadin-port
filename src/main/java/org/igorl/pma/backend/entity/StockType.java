@@ -25,17 +25,8 @@ public class StockType extends Auditable {
     @Column(name = "stockName", nullable = false)
     private String stockName;
 
-    @Column(name = "addressLine1")
-    private String addressLine1;
-
-    @Column(name = "addressLine2")
-    private String addressLine2;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "zipCode")
-    private String zipCode;
+    @Embedded
+    private Address address;
 
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;

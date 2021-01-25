@@ -15,23 +15,14 @@ import javax.persistence.*;
 @Table(name = "contact")
 @EntityListeners(AuditingEntityListener.class)
 public class Contact extends Auditable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contactId", nullable = false, unique = true)
     private Long contactId;
 
-
-    @Column(name = "firstName", nullable = false)
-    private String firstName;
-
-    @Column(name = "middleName")
-    private String middleName;
-
-    @Column(name = "lastName", nullable = false)
-    private String lastName;
-
-    @Column(name = "title")
-    private String title;
+    @Embedded
+    private Name name;
 
     @Column(name = "contactPhone")
     private String contactPhone;

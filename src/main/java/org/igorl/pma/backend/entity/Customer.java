@@ -31,35 +31,15 @@ public class Customer extends Auditable {
     @Column(name = "customerVATNumber")
     private String customerVATNumber;
 
-    @Column(name = "addressLine1")
-    private String addressLine1;
+    @Embedded
+    @AttributeOverrides(value = {
+            @AttributeOverride(name = "contactPhone", column = @Column(name = "customerPhone")),
+            @AttributeOverride(name = "contactEmail", column = @Column(name = "customerEmail"))
+    })
+    private Address address;
 
-    @Column(name = "addressLine2")
-    private String addressLine2;
-
-    @Column(name = "city")
-    private String city;
-
-    @Column(name = "zipCode")
-    private String zipCode;
-
-    @Column(name = "customerPhone")
-    private String contactPhone;
-
-    @Column(name = "customerEmail")
-    private String contactEmail;
-
-    @Column(name = "SWIFT")
-    private String swift;
-
-    @Column(name = "bankCode")
-    private String bankCode;
-
-    @Column(name = "bankName")
-    private String bankName;
-
-    @Column(name = "bankAccount")
-    private String bankAccount;
+    @Embedded
+    private Bank bank;
 
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
