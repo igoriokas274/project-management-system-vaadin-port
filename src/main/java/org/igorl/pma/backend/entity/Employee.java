@@ -26,18 +26,29 @@ public class Employee extends Auditable {
     @Column(name = "employeeId", nullable = false, unique = true)
     private Long employeeId;
 
-    @Embedded
-    private Name name;
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
 
-    @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "contactPhone", column = @Column(name = "homePhone")),
-            @AttributeOverride(name = "contactEmail", column = @Column(name = "personalEmail"))
-    })
-    private Address address;
+    @Column(name = "middleName")
+    private String middleName;
 
-    @Embedded
-    private Bank bank;
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "addressLine1")
+    private String addressLine1;
+
+    @Column(name = "addressLine2")
+    private String addressLine2;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "zipCode")
+    private String zipCode;
 
     @Column(name = "officePhone")
     private String officePhone;
@@ -45,8 +56,14 @@ public class Employee extends Auditable {
     @Column(name = "mobilePhone")
     private String mobilePhone;
 
+    @Column(name = "homePhone")
+    private String homePhone;
+
     @Column(name = "workEmail")
     private String workEmail;
+
+    @Column(name = "personalEmail")
+    private String personalEmail;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", length = 1)
@@ -61,6 +78,15 @@ public class Employee extends Auditable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dateOfEmployment", nullable = false)
     private Date dateOfEmployment;
+
+    @Column(name = "bankCode")
+    private String bankCode;
+
+    @Column(name = "bankName")
+    private String bankName;
+
+    @Column(name = "bankAccount")
+    private String bankAccount;
 
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
@@ -78,7 +104,7 @@ public class Employee extends Auditable {
     private Department department;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "employee")
     private UserAccount userAccount;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

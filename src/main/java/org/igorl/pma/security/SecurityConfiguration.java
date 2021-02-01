@@ -40,8 +40,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .requestCache().requestCache(new CustomerRequestCash())
                 .and().authorizeRequests()
                 .requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
-/*                .antMatchers("/adminpanel", "/adminpanel/**", "/actuator/**").hasAuthority("ADMIN")
-                .antMatchers("/", "/**").authenticated() // Dashboard must by accessible for ALL users*/
+                .antMatchers("/adminpanel", "/adminpanel/**", "/actuator/**").hasAuthority("ADMIN")
+                .antMatchers("/", "/**").permitAll() // .authenticated() // Dashboard must by accessible for ALL users
                 .anyRequest().authenticated()
                 .and().formLogin()
                 .loginPage(LOGIN_URL).permitAll()

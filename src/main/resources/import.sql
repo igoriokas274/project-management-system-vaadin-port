@@ -25,6 +25,6 @@ INSERT INTO `quotation_status` VALUES (1,'user','2021-01-10 15:55:30','user','20
 
 INSERT INTO `stock_type` VALUES (1,'user','2021-01-10 15:59:28','user','2021-01-10 15:59:28','Some Street str. 1','','Vilnius',0,'Main','',NULL),(2,'user','2021-01-10 16:00:09','user','2021-01-10 16:00:09','','','',0,'Temporary','',NULL);
 
-INSERT INTO `user_accounts` VALUES (1,'admin','2021-01-11 15:29:39','admin','2021-01-22 14:31:33',1,'$2a$10$Cur2LMJFiFEVCoujKAE25uT4IbEVgG42wf3bGO6XLAysjQ9mcp5Ci','ADMIN','admin',NULL),(2,'admin','2021-01-11 15:29:55','admin','2021-01-11 15:29:55',1,'$2a$10$pkX6ahfN8ezMCDTtTPP94uzRjHX7g5qiZQQNucwGmNuEBPDcud.dG','MANAGER','user',NULL);
+INSERT INTO `user_accounts` VALUES (1,'admin','2021-01-11 15:29:39','admin','2021-01-22 14:31:33',1,'$2a$10$Cur2LMJFiFEVCoujKAE25uT4IbEVgG42wf3bGO6XLAysjQ9mcp5Ci','ADMIN','admin',1),(2,'admin','2021-01-11 15:29:55','admin','2021-01-11 15:29:55',1,'$2a$10$pkX6ahfN8ezMCDTtTPP94uzRjHX7g5qiZQQNucwGmNuEBPDcud.dG','MANAGER','user',2);
 
 INSERT INTO `vat_value` VALUES (1,'user','2021-01-10 16:01:04','user','2021-01-10 16:01:04','21%',21.00),(2,'user','2021-01-10 16:01:12','user','2021-01-10 16:01:12','9%',9.00),(3,'user','2021-01-10 16:01:48','user','2021-01-10 16:01:48','5%',5.00);
