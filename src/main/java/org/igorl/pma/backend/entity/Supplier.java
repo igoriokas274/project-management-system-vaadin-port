@@ -31,15 +31,35 @@ public class Supplier extends Auditable {
     @Column(name = "supplierVATNumber")
     private String supplierVATNumber;
 
-    @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "contactPhone", column = @Column(name = "supplierPhone")),
-            @AttributeOverride(name = "contactEmail", column = @Column(name = "supplierEmail"))
-    })
-    private Address address;
+    @Column(name = "addressLine1")
+    private String addressLine1;
 
-    @Embedded
-    private Bank bank;
+    @Column(name = "addressLine2")
+    private String addressLine2;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "zipCode")
+    private String zipCode;
+
+    @Column(name = "supplierPhone")
+    private String contactPhone;
+
+    @Column(name = "supplierEmail")
+    private String contactEmail;
+
+    @Column(name = "SWIFT")
+    private String swift;
+
+    @Column(name = "bankCode")
+    private String bankCode;
+
+    @Column(name = "bankName")
+    private String bankName;
+
+    @Column(name = "bankAccount")
+    private String bankAccount;
 
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;

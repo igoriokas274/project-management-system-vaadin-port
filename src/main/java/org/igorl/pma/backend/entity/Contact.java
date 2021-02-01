@@ -20,9 +20,17 @@ public class Contact extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contactId", nullable = false, unique = true)
     private Long contactId;
+    @Column(name = "firstName", nullable = false)
+    private String firstName;
 
-    @Embedded
-    private Name name;
+    @Column(name = "middleName")
+    private String middleName;
+
+    @Column(name = "lastName", nullable = false)
+    private String lastName;
+
+    @Column(name = "title")
+    private String title;
 
     @Column(name = "contactPhone")
     private String contactPhone;
