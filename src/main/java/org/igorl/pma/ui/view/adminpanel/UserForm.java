@@ -26,7 +26,7 @@ public class UserForm extends FormLayout {
     private UserAccount userAccount;
 
     TextField userName = new TextField("Username");
-    // TODO: Password on edit should not be populated
+    // TODO: Password should not be populated on edit
     PasswordField password = new PasswordField("Password");
     Checkbox enabled = new Checkbox("Enabled");
     ComboBox<UserRoles> role = new ComboBox<>("Role");
@@ -38,7 +38,7 @@ public class UserForm extends FormLayout {
 
     Binder<UserAccount> binder = new BeanValidationBinder<>(UserAccount.class);
 
-    public UserForm(List<Employee> employees) { // List<Employee> employees
+    public UserForm(List<Employee> employees) {
 
         addClassName("user-form");
         binder.bindInstanceFields(this);
@@ -46,11 +46,11 @@ public class UserForm extends FormLayout {
         userName.setClearButtonVisible(true);
         password.setPlaceholder("Password");
         password.setClearButtonVisible(true);
-        role.setPlaceholder("Set Role...");
         employee.setPlaceholder("Set Employee...");
         employee.setItems(employees);
         // TODO: Employee ComboBox must show First + Last Names
         employee.setItemLabelGenerator(Employee::getFirstName);
+        role.setPlaceholder("Set Role...");
         role.setItems(UserRoles.values());
 
         add(userName, password, role, employee, enabled, createButtonsLayout());

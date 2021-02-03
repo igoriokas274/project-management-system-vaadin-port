@@ -5,6 +5,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
@@ -27,9 +28,14 @@ public class MainLayout extends AppLayout {
 
         RouterLink dashboard = new RouterLink("Dashboard", DashboardView.class);
         RouterLink userList = new RouterLink("User List", UserListView.class);
+        dashboard.setHighlightCondition(HighlightConditions.sameLocation());
         Anchor logout = new Anchor("logout", "Log Out");
-        userList.setHighlightCondition(HighlightConditions.sameLocation());
 
-        addToDrawer(new VerticalLayout(logo, dashboard, userList, logout));
+        VerticalLayout layout = new VerticalLayout(logo, dashboard, userList, logout);
+        layout.expand(userList);
+        layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.BASELINE);
+        layout.setHeight("100%");
+
+        addToDrawer(layout);
     }
 }
