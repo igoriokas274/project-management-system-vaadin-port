@@ -10,7 +10,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import org.igorl.pma.ui.view.dashboard.DashboardView;
-import org.igorl.pma.ui.view.adminpanel.UserListView;
+import org.igorl.pma.ui.views.adminpanel.UserListView;
 
 @CssImport("./styles/shared-styles.css")
 public class MainLayout extends AppLayout {

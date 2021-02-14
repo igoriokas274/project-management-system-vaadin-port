@@ -1,4 +1,4 @@
-package org.igorl.pma.ui.view.adminpanel;
+package org.igorl.pma.ui.views.adminpanel;
 
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -25,7 +25,7 @@ public class UserForm extends FormLayout {
 
     private UserAccount userAccount;
 
-    TextField userName = new TextField("Username");
+    public TextField userName = new TextField("Username");
     // TODO: Password should not be populated on edit
     PasswordField password = new PasswordField("Password");
     Checkbox enabled = new Checkbox("Enabled");
@@ -48,8 +48,7 @@ public class UserForm extends FormLayout {
         password.setClearButtonVisible(true);
         employee.setPlaceholder("Set Employee...");
         employee.setItems(employees);
-        // TODO: Employee ComboBox must show First + Last Names
-        employee.setItemLabelGenerator(Employee::getFirstName);
+        employee.setItemLabelGenerator(Employee::getFullName);
         role.setPlaceholder("Set Role...");
         role.setItems(UserRoles.values());
 
@@ -77,7 +76,7 @@ public class UserForm extends FormLayout {
             binder.writeBean(userAccount);
             fireEvent(new SaveEvent(this, userAccount));
         } catch (ValidationException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
