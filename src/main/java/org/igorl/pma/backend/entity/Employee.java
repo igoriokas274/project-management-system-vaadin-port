@@ -14,8 +14,8 @@ import java.util.Set;
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+/*@AllArgsConstructor
+@NoArgsConstructor*/
 @Entity
 @Table(name = "employee")
 @EntityListeners(AuditingEntityListener.class)
@@ -111,4 +111,7 @@ public class Employee extends Auditable {
     @JoinColumn(name = "countryId")
     private Country country;
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

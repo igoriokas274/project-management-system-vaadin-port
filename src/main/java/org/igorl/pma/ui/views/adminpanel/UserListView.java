@@ -1,4 +1,4 @@
-package org.igorl.pma.ui.view.adminpanel;
+package org.igorl.pma.ui.views.adminpanel;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -16,16 +16,21 @@ import org.igorl.pma.backend.entity.UserAccount;
 import org.igorl.pma.backend.service.EmployeeServiceImpl;
 import org.igorl.pma.backend.service.UserAccountServiceImpl;
 import org.igorl.pma.ui.MainLayout;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 @Route(value = "adminpanel/users", layout = MainLayout.class)
 @PageTitle("Users | PMA")
 @CssImport("./styles/shared-styles.css")
 public class UserListView extends VerticalLayout {
 
-    private UserAccountServiceImpl userAccountService;
-    private Grid<UserAccount> grid = new Grid<>(UserAccount.class);
-    private TextField filterText = new TextField();
-    private UserForm form;
+    public UserForm form;
+    public Grid<UserAccount> grid = new Grid<>(UserAccount.class);
+    public TextField filterText = new TextField();
+
+    public UserAccountServiceImpl userAccountService;
 
     public UserListView(UserAccountServiceImpl theUserAccountService, EmployeeServiceImpl theEmployeeService) {
 
@@ -84,7 +89,7 @@ public class UserListView extends VerticalLayout {
         grid.setColumns("userId", "userName", "password", "role", "enabled");
         grid.addColumn(userAccount -> {
             Employee employee = userAccount.getEmployee();
-            return employee == null ? "-" : employee.getFirstName() + " " + employee.getLastName();
+            return employee == null ? "-" : employee.getFullName();
         }).setHeader("Assigned to...");
         grid.getColumns().forEach(userAccountColumn -> userAccountColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editUser(event.getValue()));
