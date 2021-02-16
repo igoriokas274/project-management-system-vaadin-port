@@ -117,4 +117,7 @@ public class Employee extends Auditable {
     @JoinColumn(name = "countryId")
     private Country country;
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }

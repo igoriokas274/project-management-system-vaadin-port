@@ -19,6 +19,8 @@ import java.util.List;
 
 public class DepartmentForm  extends FormLayout {
 
+    private Department department;
+
     TextField departmentName = new TextField("Department name");
     Checkbox closed = new Checkbox("Closed");
 
@@ -27,16 +29,15 @@ public class DepartmentForm  extends FormLayout {
     Button close = new Button("Cancel");
 
     Binder<Department> binder = new BeanValidationBinder<>( Department.class);
-    private Object DepartmentForm;
 
-    public DepartmentForm(List<Department> all){
+    public DepartmentForm(List<Department> departments){
         
         addClassName( "department-form" );
         binder.bindInstanceFields( this );
         departmentName.setLabel( "Department name" );
         departmentName.setPlaceholder( "Enter department name.." );
         
-        add( departmentName,closed );
+        add(departmentName, closed, createButtonsLayout());
     }
 
     private HorizontalLayout createButtonsLayout() {
@@ -44,11 +45,11 @@ public class DepartmentForm  extends FormLayout {
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        save.addClickShortcut( Key.ENTER);
+        save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent( new DeleteEvent(this, departmentName) ));
+        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, department)));
         close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
         binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
@@ -57,43 +58,46 @@ public class DepartmentForm  extends FormLayout {
 
     private void validateAndSave() {
         try {
-            binder.writeBean( (Department) DepartmentForm );
-            fireEvent(new DepartmentForm.SaveEvent(this, (TextField) DepartmentForm ));
+            binder.writeBean(department);
+            fireEvent(new SaveEvent(this, department));
         } catch (ValidationException e) {
             e.printStackTrace();
         }
     }
 
-    public void setDepartmentName(Department department) {
-        binder.readBean( (Department) DepartmentForm );
+    public void setDepartment(Department department) {
+        this.department = department;
+        binder.readBean(department);
     }
     
 
     public static abstract class DepartmentFormEvent extends ComponentEvent<DepartmentForm> {
-        public Department getDepartment;
-        private TextField department;
+        private Department department;
 
-        protected DepartmentFormEvent(DepartmentForm source, TextField department) {
-            super( source, false );
+        protected DepartmentFormEvent(DepartmentForm source, Department department) {
+            super(source, false);
             this.department = department;
         }
 
+        public Department getDepartment() {
+            return department;
+        }
 
     }
 
-    public class SaveEvent extends DepartmentForm.DepartmentFormEvent {
-        SaveEvent(DepartmentForm source, TextField department) {
+    public static class SaveEvent extends DepartmentFormEvent {
+        SaveEvent(DepartmentForm source, Department department) {
             super(source, department);
         }
     }
 
-    public class DeleteEvent extends DepartmentForm.DepartmentFormEvent {
-        DeleteEvent(DepartmentForm source, TextField department) {
+    public static class DeleteEvent extends DepartmentFormEvent {
+        DeleteEvent(DepartmentForm source, Department department) {
             super(source, department);
         }
     }
 
-    public class CloseEvent extends DepartmentForm.DepartmentFormEvent {
+    public static class CloseEvent extends DepartmentFormEvent {
         CloseEvent(DepartmentForm source) {
             super(source, null);
         }

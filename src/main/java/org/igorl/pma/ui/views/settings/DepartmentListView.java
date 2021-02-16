@@ -31,6 +31,8 @@ public class DepartmentListView extends VerticalLayout {
         addClassName( "list-view" );
         setSizeFull( );
 
+        configureGrid();
+
         form = new DepartmentForm( theDepartmentService.findAll( ) );
         form.addListener( DepartmentForm.SaveEvent.class, this::saveDepartment );
         form.addListener( DepartmentForm.DeleteEvent.class, this::deleteDepartment );
@@ -47,13 +49,13 @@ public class DepartmentListView extends VerticalLayout {
     }
 
         private void saveDepartment(DepartmentForm.SaveEvent event) {
-            departmentService.save( event.getDepartment);
+            departmentService.save(event.getDepartment());
             updateList( );
             closeEditor( );
         }
 
         private void deleteDepartment(DepartmentForm.DeleteEvent event) {
-            departmentService.deleteById( event.getDepartment );
+            departmentService.delete(event.getDepartment());
             updateList( );
             closeEditor( );
         }
@@ -91,20 +93,20 @@ public class DepartmentListView extends VerticalLayout {
         if (department == null) {
             closeEditor();
         } else {
-            form.setDepartmentName(department);
+            form.setDepartment(department);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setDepartmentName(null);
+        form.setDepartment(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(departmentService.findAll( ));
+        grid.setItems(departmentService.findAll(filterText.getValue()));
     }
 }
 
