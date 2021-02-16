@@ -7,6 +7,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,8 +16,6 @@ import java.util.Set;
 @ToString
 @Setter
 @Getter
-/*@AllArgsConstructor
-@NoArgsConstructor*/
 @Entity
 @Table(name = "employee")
 @EntityListeners(AuditingEntityListener.class)
@@ -26,13 +26,17 @@ public class Employee extends Auditable {
     @Column(name = "employeeId", nullable = false, unique = true)
     private Long employeeId;
 
-    @Column(name = "firstName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "firstName")
     private String firstName;
 
     @Column(name = "middleName")
     private String middleName;
 
-    @Column(name = "lastName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "lastName")
     private String lastName;
 
     @Column(name = "title")
@@ -74,9 +78,11 @@ public class Employee extends Auditable {
     @Column(name = "dateOfBirth")
     private Date dateOfBirth;
 
+    @NotNull
+    @NotEmpty
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "dateOfEmployment", nullable = false)
+    @Column(name = "dateOfEmployment")
     private Date dateOfEmployment;
 
     @Column(name = "bankCode")
@@ -111,7 +117,4 @@ public class Employee extends Auditable {
     @JoinColumn(name = "countryId")
     private Country country;
 
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
 }

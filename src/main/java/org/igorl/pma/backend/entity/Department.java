@@ -5,13 +5,13 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "department")
 @EntityListeners(AuditingEntityListener.class)
@@ -22,7 +22,9 @@ public class Department extends Auditable {
     @Column(name = "departmentId", nullable = false, unique = true)
     private Long departmentId;
 
-    @Column(name = "departmentName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "departmentName")
     private String departmentName;
 
     @Column(name = "closed", columnDefinition = "int default 0")
