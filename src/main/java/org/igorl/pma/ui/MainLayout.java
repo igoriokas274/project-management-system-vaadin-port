@@ -9,7 +9,10 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
-import org.igorl.pma.ui.view.dashboard.DashboardView;
+import org.igorl.pma.ui.views.dashboard.DashboardView;
+import org.igorl.pma.ui.views.settings.CountryListView;
+import org.igorl.pma.ui.views.settings.DepartmentListView;
+import org.igorl.pma.ui.views.team.EmployeeListView;
 import org.igorl.pma.ui.views.adminpanel.UserListView;
 
 @CssImport("./styles/shared-styles.css")
@@ -28,11 +31,17 @@ public class MainLayout extends AppLayout {
 
         RouterLink dashboard = new RouterLink("Dashboard", DashboardView.class);
         RouterLink userList = new RouterLink("User List", UserListView.class);
+        RouterLink employee = new RouterLink("Employees", EmployeeListView.class);
+        RouterLink department = new RouterLink("Departments", DepartmentListView.class);
+        RouterLink country = new RouterLink("Countries", CountryListView.class);
         dashboard.setHighlightCondition(HighlightConditions.sameLocation());
         Anchor logout = new Anchor("logout", "Log Out");
 
-        VerticalLayout layout = new VerticalLayout(logo, dashboard, userList, logout);
+        VerticalLayout layout = new VerticalLayout(logo, dashboard, userList, employee, department, country, logout);
         layout.expand(userList);
+        layout.expand(employee);
+        layout.expand(department);
+        layout.expand(country);
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.BASELINE);
         layout.setHeight("100%");
 
