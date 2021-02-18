@@ -105,8 +105,8 @@ public class EmployeeForm extends FormLayout {
                 workEmail,
                 personalEmail,
                 //gender,
-                //dateOfBirth,//something wrong
-                //dateOfEmployment,//something wrong
+                //dateOfBirth,
+                //dateOfEmployment,
                 bankCode,
                 bankAccount,
                 bankName,

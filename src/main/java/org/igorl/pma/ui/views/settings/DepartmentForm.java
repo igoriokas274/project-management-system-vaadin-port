@@ -36,7 +36,7 @@ public class DepartmentForm  extends FormLayout {
         departmentName.setLabel ( "Department name" );
         departmentName.setPlaceholder ( "Enter department name.." );
 
-        add ( departmentName, closed );
+        add ( departmentName, closed, createButtonsLayout () );
     }
 
     private HorizontalLayout createButtonsLayout() {

@@ -29,7 +29,6 @@ public class CountryForm extends FormLayout {
     Button close = new Button("Cancel");
 
     Binder<Country> binder = new BeanValidationBinder<>( Country.class );
-    private Object CountryForm;
     private Country country;
 
 
@@ -97,7 +96,7 @@ public class CountryForm extends FormLayout {
         }
 
         public class DeleteEvent extends CountryFormEvent {
-            DeleteEvent(CountryForm source, Country countryCode) {
+            DeleteEvent(CountryForm source, Country country) {
                 super( source, country );
             }
         }
