@@ -30,17 +30,22 @@ public class CountryForm extends FormLayout {
 
     Binder<Country> binder = new BeanValidationBinder<>( Country.class );
     private Object CountryForm;
+    private Country country;
 
-    public CountryForm(List<Country> all){
+
+    public CountryForm(List<Country> countries){
 
         addClassName( "country-form" );
         binder.bindInstanceFields( this );
         countryCode.setLabel( "Country code" );
         countryCode.setPlaceholder( "Enter country code.." );
+        countryCode.setClearButtonVisible ( true );
         countryName.setLabel( "Country name" );
         countryName.setPlaceholder( "Enter country name.." );
+        countryName.setClearButtonVisible ( true );
 
-        add(countryCode, countryName, closed);
+
+        add(countryCode, countryName, closed, createButtonsLayout());
     }
 
     private HorizontalLayout createButtonsLayout() {
@@ -52,8 +57,8 @@ public class CountryForm extends FormLayout {
         close.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent( new CountryForm.DeleteEvent(this, countryCode, countryName) ));
-        close.addClickListener(event -> fireEvent(new CountryForm.CloseEvent(this)));
+        delete.addClickListener(event -> fireEvent( new DeleteEvent(this, country)));
+        close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
         binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
         return new HorizontalLayout(save, delete, close);
@@ -61,44 +66,43 @@ public class CountryForm extends FormLayout {
 
     private void validateAndSave() {
         try {
-            binder.writeBean( (Country) CountryForm );
-            fireEvent(new CountryForm.SaveEvent(this, (TextField) CountryForm ));
+            binder.writeBean( country);
+            fireEvent(new SaveEvent(this, country ));
         } catch (ValidationException e) {
             e.printStackTrace();
         }
     }
 
-    public void setCountryCode(Country country){
-        binder.readBean( (Country) CountryForm );
+    public void setCountry(Country country){
+        this.country = country;
+        binder.readBean(country);
     }
-
-    public void setCountryName(Country country){
-        binder.readBean( (Country) CountryForm );
-    }
+    
 
     public static abstract class CountryFormEvent extends ComponentEvent<CountryForm> {
+        private final Country country;
         public Country getCountry;
-        private TextField country;
 
-        protected CountryFormEvent(CountryForm source, TextField country) {
+
+        protected CountryFormEvent(CountryForm source, Country country) {
             super( source, false );
             this.country = country;
         }
     }
 
-        public class SaveEvent extends CountryForm.CountryFormEvent {
-            SaveEvent(CountryForm source, TextField country) {
+        public class SaveEvent extends CountryFormEvent {
+            SaveEvent(CountryForm source, Country country) {
                 super( source, country );
             }
         }
 
-        public class DeleteEvent extends CountryForm.CountryFormEvent {
-            DeleteEvent(CountryForm source, TextField countryCode, TextField country) {
+        public class DeleteEvent extends CountryFormEvent {
+            DeleteEvent(CountryForm source, Country countryCode) {
                 super( source, country );
             }
         }
 
-        public class CloseEvent extends CountryForm.CountryFormEvent {
+        public class CloseEvent extends CountryFormEvent {
             CloseEvent(CountryForm source) {
                 super( source, null );
             }

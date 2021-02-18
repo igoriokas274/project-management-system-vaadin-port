@@ -23,11 +23,19 @@ public class CountryServiceImpl implements ICountryService {
     @Override
     public List<Country> findAll() { return countryRepository.findAll(); }
 
+    public List<Country> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return countryRepository.findAll();
+        } else {
+            return countryRepository.search(stringFilter);
+        }
+    }
+
     @Override
     public Country findById(long theId) {
 
         Optional<Country> result = countryRepository.findById(theId);
-        Country theCountry = null;
+        Country theCountry;
         if (result.isPresent()){
             theCountry = result.get();
         } else {

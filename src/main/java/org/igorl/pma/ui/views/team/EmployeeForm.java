@@ -6,7 +6,6 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
@@ -37,9 +36,9 @@ public class EmployeeForm extends FormLayout {
     public NumberField homePhone = new NumberField( "Home phone" );
     public EmailField workEmail = new EmailField( "Work email" );
     public EmailField personalEmail = new EmailField( "Personal email" );
-    public ComboBox gender = new ComboBox( "Gender" );
-    //public DatePicker dateOfBirth = new DatePicker( "Date of birth" );//something wrong
-    //public DatePicker dateOfEmployment = new DatePicker( "Date of employment" );//something wrong
+    //public ComboBox gender = new ComboBox( "Gender" );////TODO: fix this
+    //public DatePicker dateOfBirth = new DatePicker( "Date of birth" );//TODO: fix this
+    //public DatePicker dateOfEmployment = new DatePicker( "Date of employment" );//TODO: fix this
     public TextField bankCode = new TextField( "Bank code" );
     public TextField bankName = new TextField( "Bank name" );
     public TextField bankAccount = new TextField( "Bank account" );
@@ -51,10 +50,10 @@ public class EmployeeForm extends FormLayout {
 
     Binder<Employee> binder = new BeanValidationBinder<>(Employee.class);
 
-    public EmployeeForm(List<Employee> all){
+    public EmployeeForm(List<Employee> employees){
 
         addClassName("employee-form");
-        //binder.bindInstanceFields(this); //Not working..
+        //binder.bindInstanceFields(this);//TODO: why error?
         firstName.setPlaceholder( "First name" );
         firstName.setClearButtonVisible( true );
         middleName.setPlaceholder( "Middle name" );
@@ -79,12 +78,12 @@ public class EmployeeForm extends FormLayout {
         personalEmail.setPlaceholder( "Personal email" );
         personalEmail.setClearButtonVisible( true );
         personalEmail.setErrorMessage("Please enter a valid email address");
-        gender.setPlaceholder( "Set gender.." );
-        gender.setItems( gender );
-        //dateOfBirth.setPlaceholder( "Choose a date.." );//something wrong
-        //dateOfBirth.setClearButtonVisible( true );//something wrong
-        //dateOfEmployment.setPlaceholder( "Choose a date" );//something wrong
-        //dateOfEmployment.setClearButtonVisible( true );//something wrong
+        //gender.setPlaceholder( "Set gender.." );//TODO: fix this
+        //gender.setItems( gender );//TODO: fix this
+        //dateOfBirth.setPlaceholder( "Choose a date.." );TODO: fix this
+        //dateOfBirth.setClearButtonVisible( true );TODO: fix this
+        //dateOfEmployment.setPlaceholder( "Choose a date" );//TODO: fix this
+        //dateOfEmployment.setClearButtonVisible( true );//TODO: fix this
         bankCode.setPlaceholder( "Bank code" );
         bankCode.setClearButtonVisible( true );
         bankAccount.setPlaceholder( "Bank account" );
@@ -105,7 +104,7 @@ public class EmployeeForm extends FormLayout {
                 homePhone,
                 workEmail,
                 personalEmail,
-                gender,
+                //gender,
                 //dateOfBirth,//something wrong
                 //dateOfEmployment,//something wrong
                 bankCode,
@@ -124,8 +123,8 @@ public class EmployeeForm extends FormLayout {
         close.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent(new EmployeeForm.DeleteEvent(this, employee)));
-        close.addClickListener(event -> fireEvent(new EmployeeForm.CloseEvent(this)));
+        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, employee)));
+        close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
         binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
         return new HorizontalLayout(save, delete, close);
@@ -134,7 +133,7 @@ public class EmployeeForm extends FormLayout {
     private void validateAndSave() {
         try {
             binder.writeBean(employee);
-            fireEvent(new EmployeeForm.SaveEvent(this, employee));
+            fireEvent(new SaveEvent(this, employee));
         } catch (ValidationException e) {
             System.out.println(e.getMessage());
         }
@@ -144,6 +143,7 @@ public class EmployeeForm extends FormLayout {
         this.employee = employee;
         binder.readBean(employee);
     }
+
     public static abstract class EmployeeFormEvent extends ComponentEvent<EmployeeForm> {
         private final Employee employee;
 
@@ -157,19 +157,19 @@ public class EmployeeForm extends FormLayout {
         }
     }
 
-    public static class SaveEvent extends EmployeeForm.EmployeeFormEvent {
+    public static class SaveEvent extends EmployeeFormEvent {
         SaveEvent(EmployeeForm source, Employee employee) {
             super(source, employee);
         }
     }
 
-    public static class DeleteEvent extends EmployeeForm.EmployeeFormEvent {
+    public static class DeleteEvent extends EmployeeFormEvent {
         DeleteEvent(EmployeeForm source, Employee employee) {
             super(source, employee);
         }
     }
 
-    public static class CloseEvent extends EmployeeForm.EmployeeFormEvent {
+    public static class CloseEvent extends EmployeeFormEvent {
         CloseEvent(EmployeeForm source) {
             super(source, null);
         }
@@ -178,6 +178,4 @@ public class EmployeeForm extends FormLayout {
     public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType, ComponentEventListener<T> listener) {
         return getEventBus().addListener(eventType, listener);
     }
-
-
 }

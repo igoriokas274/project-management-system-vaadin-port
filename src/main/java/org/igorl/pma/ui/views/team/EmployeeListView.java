@@ -11,6 +11,8 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.igorl.pma.backend.entity.Country;
+import org.igorl.pma.backend.entity.Department;
 import org.igorl.pma.backend.entity.Employee;
 import org.igorl.pma.backend.service.EmployeeServiceImpl;
 import org.igorl.pma.ui.MainLayout;
@@ -21,20 +23,19 @@ import org.springframework.stereotype.Component;
 @PageTitle("Employees | PMA")
 @CssImport("./styles/shared-styles.css")
 public class EmployeeListView extends VerticalLayout {
+    private EmployeeServiceImpl employeeService;
 
-    public EmployeeForm form;
     public Grid<Employee> grid = new Grid<>( Employee.class );
     public TextField filterText = new TextField( );
-
-    public EmployeeServiceImpl employeeService;
+    private EmployeeForm form;
 
     public EmployeeListView(EmployeeServiceImpl theEmployeeService){
         this.employeeService = theEmployeeService;
         addClassName( "list-view" );
         setSizeFull();
+        configureGrid ();
 
-
-        form = new EmployeeForm (theEmployeeService.findAll( ));
+        form = new EmployeeForm (employeeService.findAll ());
         form.addListener( EmployeeForm.SaveEvent.class, this::saveEmployee );
         form.addListener( EmployeeForm.DeleteEvent.class, this::deleteEmployee );
         form.addListener( EmployeeForm.CloseEvent.class, e -> closeEditor() );
@@ -78,8 +79,18 @@ public class EmployeeListView extends VerticalLayout {
     public void configureGrid() {
         grid.addClassName("employee-grid");
         grid.setSizeFull();
+        grid.removeColumnByKey("country");
+        grid.removeColumnByKey("department");
         grid.addThemeVariants( GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.setColumns("employeeId", "firstName", "lastName","title", "dateOfEmployment", "closed");
+        grid.addColumn(employee -> {
+            Department department = employee.getDepartment ();
+            return department == null ? "-" : department.getDepartmentName ();
+        }).setHeader("Department");
+        grid.addColumn(employee -> {
+            Country country = employee.getCountry();
+            return country == null ? "-" : country.getCountryName ();
+        }).setHeader("Country");
         grid.getColumns().forEach(employeeColumn -> employeeColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editEmployee(event.getValue()));
     }
@@ -106,7 +117,7 @@ public class EmployeeListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(employeeService.findAll( ));
+        grid.setItems(employeeService.findAll( filterText.getValue()));
     }
 }
 

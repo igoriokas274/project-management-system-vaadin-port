@@ -1,5 +1,6 @@
 package org.igorl.pma.backend.service;
 
+import org.igorl.pma.backend.entity.Contact;
 import org.igorl.pma.backend.entity.Employee;
 import org.igorl.pma.backend.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,14 @@ public class EmployeeServiceImpl implements IEmployeeService {
     @Override
     public List<Employee> findAll() {
         return employeeRepository.findAll();
+    }
+
+    public List<Employee> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return employeeRepository.findAll();
+        } else {
+            return employeeRepository.search(stringFilter);
+        }
     }
 
     @Override

@@ -36,6 +36,14 @@ public class DepartmentServiceImpl implements IDepartmentService{
         departmentRepository.delete(department);
     }
 
+    public List<Department> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return departmentRepository.findAll();
+        } else {
+            return departmentRepository.search(stringFilter);
+        }
+    }
+
     @Override
     public Department findById(long theId) {
 

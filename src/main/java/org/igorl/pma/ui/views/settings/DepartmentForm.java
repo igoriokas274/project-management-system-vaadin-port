@@ -19,94 +19,93 @@ import java.util.List;
 
 public class DepartmentForm  extends FormLayout {
 
+    TextField departmentName = new TextField ( "Department name" );
+    Checkbox closed = new Checkbox ( "Closed" );
+
+    Button save = new Button ( "Save" );
+    Button delete = new Button ( "Delete" );
+    Button close = new Button ( "Cancel" );
+
+    Binder<Department> binder = new BeanValidationBinder<> ( Department.class );
     private Department department;
 
-    TextField departmentName = new TextField("Department name");
-    Checkbox closed = new Checkbox("Closed");
+    public DepartmentForm(List<Department> departments) {
 
-    Button save = new Button("Save");
-    Button delete = new Button("Delete");
-    Button close = new Button("Cancel");
+        addClassName ( "department-form" );
+        binder.bindInstanceFields ( this );
+        departmentName.setLabel ( "Department name" );
+        departmentName.setPlaceholder ( "Enter department name.." );
 
-    Binder<Department> binder = new BeanValidationBinder<>( Department.class);
-
-    public DepartmentForm(List<Department> departments){
-        
-        addClassName( "department-form" );
-        binder.bindInstanceFields( this );
-        departmentName.setLabel( "Department name" );
-        departmentName.setPlaceholder( "Enter department name.." );
-        
-        add(departmentName, closed, createButtonsLayout());
+        add ( departmentName, closed );
     }
 
     private HorizontalLayout createButtonsLayout() {
-        save.addThemeVariants( ButtonVariant.LUMO_PRIMARY);
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
-        close.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        save.addThemeVariants ( ButtonVariant.LUMO_PRIMARY );
+        delete.addThemeVariants ( ButtonVariant.LUMO_ERROR );
+        close.addThemeVariants ( ButtonVariant.LUMO_TERTIARY );
 
-        save.addClickShortcut(Key.ENTER);
-        close.addClickShortcut(Key.ESCAPE);
+        save.addClickShortcut ( Key.ENTER );
+        close.addClickShortcut ( Key.ESCAPE );
 
-        save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, department)));
-        close.addClickListener(event -> fireEvent(new CloseEvent(this)));
+        save.addClickListener ( event -> validateAndSave ( ) );
+        delete.addClickListener ( event -> fireEvent ( new DeleteEvent ( this, department ) ) );
+        close.addClickListener ( event -> fireEvent ( new CloseEvent ( this ) ) );
 
-        binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
-        return new HorizontalLayout(save, delete, close);
+        binder.addStatusChangeListener ( e -> save.setEnabled ( binder.isValid ( ) ) );
+        return new HorizontalLayout ( save, delete, close );
     }
 
     private void validateAndSave() {
         try {
-            binder.writeBean(department);
+            binder.writeBean (department);
             fireEvent(new SaveEvent(this, department));
         } catch (ValidationException e) {
-            e.printStackTrace();
+            e.printStackTrace ( );
         }
     }
 
     public void setDepartment(Department department) {
         this.department = department;
-        binder.readBean(department);
+        binder.readBean ( department );
     }
-    
+
 
     public static abstract class DepartmentFormEvent extends ComponentEvent<DepartmentForm> {
-        private Department department;
-
-        protected DepartmentFormEvent(DepartmentForm source, Department department) {
-            super(source, false);
-            this.department = department;
-        }
+        public Department department;
 
         public Department getDepartment() {
             return department;
         }
 
-    }
-
-    public static class SaveEvent extends DepartmentFormEvent {
-        SaveEvent(DepartmentForm source, Department department) {
-            super(source, department);
+        protected DepartmentFormEvent(DepartmentForm source, Department department) {
+            super ( source, false );
+            this.department = department;
         }
     }
 
-    public static class DeleteEvent extends DepartmentFormEvent {
-        DeleteEvent(DepartmentForm source, Department department) {
-            super(source, department);
+        public class SaveEvent extends DepartmentFormEvent {
+            SaveEvent(DepartmentForm source, Department department) {
+                super ( source, department );
+            }
+        }
+
+        public class DeleteEvent extends DepartmentFormEvent {
+            DeleteEvent(DepartmentForm source, Department department) {
+                super ( source, department );
+            }
+        }
+
+        public class CloseEvent extends DepartmentFormEvent {
+            CloseEvent(DepartmentForm source) {
+                super ( source, null );
+            }
+        }
+
+        public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType, ComponentEventListener<T> listener) {
+            return getEventBus ( ).addListener ( eventType, listener );
         }
     }
 
-    public static class CloseEvent extends DepartmentFormEvent {
-        CloseEvent(DepartmentForm source) {
-            super(source, null);
-        }
-    }
-
-    public <T extends ComponentEvent<?>> Registration addListener(Class<T> eventType, ComponentEventListener<T> listener) {
-        return getEventBus().addListener(eventType, listener);
-    }
-}
 
 
 

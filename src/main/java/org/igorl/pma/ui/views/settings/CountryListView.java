@@ -31,6 +31,7 @@ public class CountryListView extends VerticalLayout {
         this.countryService = theCountryService;
         addClassName( "list-view" );
         setSizeFull( );
+        configureGrid();
 
         form = new CountryForm( theCountryService.findAll( ) );
         form.addListener( CountryForm.SaveEvent.class, this::saveCountry );
@@ -92,22 +93,20 @@ public class CountryListView extends VerticalLayout {
         if (country == null) {
             closeEditor();
         } else {
-            form.setCountryCode(country);
-            form.setCountryName(country);
+            form.setCountry(country);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setCountryCode(null);
-        form.setCountryName(null);
+        form.setCountry(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(countryService.findAll( ));
+        grid.setItems(countryService.findAll( filterText.getValue()));
     }
 }
 
