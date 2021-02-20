@@ -9,13 +9,14 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @ToString
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "employee")
 @EntityListeners(AuditingEntityListener.class)
@@ -73,17 +74,14 @@ public class Employee extends Auditable {
     @Column(name = "gender", length = 1)
     private Gender gender;
 
-    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dateOfBirth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @NotNull
-    @NotEmpty
-    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dateOfEmployment")
-    private Date dateOfEmployment;
+    private LocalDate dateOfEmployment;
 
     @Column(name = "bankCode")
     private String bankCode;
@@ -105,7 +103,7 @@ public class Employee extends Auditable {
     )
     private Set<Project> projects = new HashSet<>();
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "departmentId")
     private Department department;
 
@@ -113,11 +111,11 @@ public class Employee extends Auditable {
     @OneToOne(mappedBy = "employee")
     private UserAccount userAccount;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
 
     public String getFullName() {
-        return firstName + " " + lastName;
+            return firstName + " " + lastName;
     }
 }

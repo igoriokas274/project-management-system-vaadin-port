@@ -15,8 +15,6 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import org.igorl.pma.backend.entity.Department;
 
-import java.util.List;
-
 public class DepartmentForm  extends FormLayout {
 
     TextField departmentName = new TextField ( "Department name" );
@@ -29,7 +27,7 @@ public class DepartmentForm  extends FormLayout {
     Binder<Department> binder = new BeanValidationBinder<> ( Department.class );
     private Department department;
 
-    public DepartmentForm(List<Department> departments) {
+    public DepartmentForm() {
 
         addClassName ( "department-form" );
         binder.bindInstanceFields ( this );
@@ -48,8 +46,8 @@ public class DepartmentForm  extends FormLayout {
         close.addClickShortcut ( Key.ESCAPE );
 
         save.addClickListener ( event -> validateAndSave ( ) );
-        delete.addClickListener ( event -> fireEvent ( new DeleteEvent ( this, department ) ) );
-        close.addClickListener ( event -> fireEvent ( new CloseEvent ( this ) ) );
+        delete.addClickListener ( event -> fireEvent (new DeleteEvent(this, department)) );
+        close.addClickListener ( event -> fireEvent (new CloseEvent(this)) );
 
         binder.addStatusChangeListener ( e -> save.setEnabled ( binder.isValid ( ) ) );
         return new HorizontalLayout ( save, delete, close );
@@ -83,19 +81,19 @@ public class DepartmentForm  extends FormLayout {
         }
     }
 
-        public class SaveEvent extends DepartmentFormEvent {
+        public static class SaveEvent extends DepartmentFormEvent {
             SaveEvent(DepartmentForm source, Department department) {
                 super ( source, department );
             }
         }
 
-        public class DeleteEvent extends DepartmentFormEvent {
+        public static class DeleteEvent extends DepartmentFormEvent {
             DeleteEvent(DepartmentForm source, Department department) {
                 super ( source, department );
             }
         }
 
-        public class CloseEvent extends DepartmentFormEvent {
+        public static class CloseEvent extends DepartmentFormEvent {
             CloseEvent(DepartmentForm source) {
                 super ( source, null );
             }

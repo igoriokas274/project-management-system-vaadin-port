@@ -6,16 +6,20 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
+import org.igorl.pma.backend.entity.Country;
+import org.igorl.pma.backend.entity.Department;
 import org.igorl.pma.backend.entity.Employee;
+import org.igorl.pma.backend.enums.Gender;
 
 import java.util.List;
 
@@ -23,26 +27,28 @@ public class EmployeeForm extends FormLayout {
 
     private Employee employee;
 
-    public TextField firstName = new TextField( "First name" );
-    public TextField middleName = new TextField( "Middle name" );
-    public TextField lastName = new TextField( "Last name" );
-    public TextField title = new TextField( "Title" );
-    public TextField addressLine1 = new TextField( "Address Line 1" );
-    public TextField addressLine2 = new TextField( "Address Line 2" );
-    public TextField city = new TextField( "City" );
-    public TextField zipCode = new TextField( "Zip Code" );
-    public NumberField officePhone = new NumberField( "Office phone" );
-    public NumberField mobilePhone = new NumberField( "Mobile phone" );
-    public NumberField homePhone = new NumberField( "Home phone" );
-    public EmailField workEmail = new EmailField( "Work email" );
-    public EmailField personalEmail = new EmailField( "Personal email" );
-    //public ComboBox gender = new ComboBox( "Gender" );////TODO: fix this
-    //public DatePicker dateOfBirth = new DatePicker( "Date of birth" );//TODO: fix this
-    //public DatePicker dateOfEmployment = new DatePicker( "Date of employment" );//TODO: fix this
-    public TextField bankCode = new TextField( "Bank code" );
-    public TextField bankName = new TextField( "Bank name" );
-    public TextField bankAccount = new TextField( "Bank account" );
-    public Checkbox closed = new Checkbox( "Closed" );
+    TextField firstName = new TextField( "First name" );
+    TextField middleName = new TextField( "Middle name" );
+    TextField lastName = new TextField( "Last name" );
+    TextField title = new TextField( "Title" );
+    ComboBox<Department> department = new ComboBox<>("Department");
+    TextField addressLine1 = new TextField( "Address Line 1" );
+    TextField addressLine2 = new TextField( "Address Line 2" );
+    TextField city = new TextField( "City" );
+    TextField zipCode = new TextField( "Zip Code" );
+    ComboBox<Country> country = new ComboBox<>("Countries");
+    TextField officePhone = new TextField( "Office phone" );
+    TextField mobilePhone = new TextField( "Mobile phone" );
+    TextField homePhone = new TextField( "Home phone" );
+    EmailField workEmail = new EmailField( "Work email" );
+    EmailField personalEmail = new EmailField( "Personal email" );
+    ComboBox<Gender> gender = new ComboBox<>( "Gender" );
+    DatePicker dateOfBirth = new DatePicker("Date of Birth");
+    DatePicker dateOfEmployment = new DatePicker("Date of Employment");
+    TextField bankCode = new TextField( "Bank code" );
+    TextField bankName = new TextField( "Bank name" );
+    TextField bankAccount = new TextField( "Bank account" );
+    Checkbox closed = new Checkbox( "Closed" );
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -50,10 +56,10 @@ public class EmployeeForm extends FormLayout {
 
     Binder<Employee> binder = new BeanValidationBinder<>(Employee.class);
 
-    public EmployeeForm(List<Employee> employees){
+    public EmployeeForm(List<Country> countries, List<Department> departments){
 
         addClassName("employee-form");
-        //binder.bindInstanceFields(this);//TODO: why error?
+        binder.bindInstanceFields(this);
         firstName.setPlaceholder( "First name" );
         firstName.setClearButtonVisible( true );
         middleName.setPlaceholder( "Middle name" );
@@ -62,9 +68,13 @@ public class EmployeeForm extends FormLayout {
         lastName.setClearButtonVisible( true );
         title.setPlaceholder( "Title" );
         title.setClearButtonVisible( true );
+        department.setItems(departments);
+        department.setItemLabelGenerator(Department::getDepartmentName);
         addressLine1.setPlaceholder( "Address Line 1" );
         addressLine2.setPlaceholder( "Address Line 2" );
         city.setPlaceholder( "City" );
+        country.setItems(countries);
+        country.setItemLabelGenerator(Country::getCountryName);
         zipCode.setPlaceholder( "Zip code" );
         officePhone.setPlaceholder( "Office phone" );
         officePhone.setClearButtonVisible( true );
@@ -78,12 +88,12 @@ public class EmployeeForm extends FormLayout {
         personalEmail.setPlaceholder( "Personal email" );
         personalEmail.setClearButtonVisible( true );
         personalEmail.setErrorMessage("Please enter a valid email address");
-        //gender.setPlaceholder( "Set gender.." );//TODO: fix this
-        //gender.setItems( gender );//TODO: fix this
-        //dateOfBirth.setPlaceholder( "Choose a date.." );TODO: fix this
-        //dateOfBirth.setClearButtonVisible( true );TODO: fix this
-        //dateOfEmployment.setPlaceholder( "Choose a date" );//TODO: fix this
-        //dateOfEmployment.setClearButtonVisible( true );//TODO: fix this
+        gender.setPlaceholder( "Set gender.." );
+        gender.setItems(Gender.values());
+        dateOfBirth.setPlaceholder( "Choose a date.." );
+        dateOfBirth.setClearButtonVisible( true );
+        dateOfEmployment.setPlaceholder( "Choose a date" );
+        dateOfEmployment.setClearButtonVisible( true );
         bankCode.setPlaceholder( "Bank code" );
         bankCode.setClearButtonVisible( true );
         bankAccount.setPlaceholder( "Bank account" );
@@ -95,21 +105,23 @@ public class EmployeeForm extends FormLayout {
                 middleName,
                 lastName,
                 title,
+                department,
                 addressLine1,
                 addressLine2,
                 city,
                 zipCode,
+                country,
                 officePhone,
                 mobilePhone,
                 homePhone,
                 workEmail,
                 personalEmail,
-                //gender,
-                //dateOfBirth,
-                //dateOfEmployment,
+                gender,
+                dateOfBirth,
+                dateOfEmployment,
                 bankCode,
-                bankAccount,
                 bankName,
+                bankAccount,
                 closed,
                 createButtonsLayout());
     }

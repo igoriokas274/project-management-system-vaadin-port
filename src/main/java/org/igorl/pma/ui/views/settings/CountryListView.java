@@ -33,7 +33,7 @@ public class CountryListView extends VerticalLayout {
         setSizeFull( );
         configureGrid();
 
-        form = new CountryForm( theCountryService.findAll( ) );
+        form = new CountryForm();
         form.addListener( CountryForm.SaveEvent.class, this::saveCountry );
         form.addListener( CountryForm.DeleteEvent.class, this::deleteCountry );
         form.addListener( CountryForm.CloseEvent.class, e -> closeEditor( ) );
@@ -49,13 +49,13 @@ public class CountryListView extends VerticalLayout {
     }
 
     private void saveCountry(CountryForm.SaveEvent event) {
-        countryService.save( event.getCountry);
+        countryService.save( event.getCountry());
         updateList( );
         closeEditor( );
     }
 
     private void deleteCountry(CountryForm.DeleteEvent event) {
-        countryService.deleteById( event.getCountry.getCountryId( ) );
+        countryService.deleteById( event.getCountry().getCountryId( ) );
         updateList( );
         closeEditor( );
     }

@@ -29,6 +29,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
     public List<UserAccount> findAll () { return userAccountRepository.findAll();
     }
 
+    @Override
     public List<UserAccount> findAll (String stringFilter) {
         if (stringFilter == null || stringFilter.isEmpty()) {
             return userAccountRepository.findAll();
@@ -37,6 +38,7 @@ public class UserAccountServiceImpl implements IUserAccountService {
         }
     }
 
+    @Override
     public void delete(UserAccount userAccount) {
         userAccountRepository.delete(userAccount);
     }
@@ -51,11 +53,5 @@ public class UserAccountServiceImpl implements IUserAccountService {
     public void save(UserAccount theUserAccount) {
         theUserAccount.setPassword(bCryptPasswordEncoder.encode(theUserAccount.getPassword()));
         userAccountRepository.save(theUserAccount);
-    }
-
-    @Override
-    @Transactional
-    public void deleteById(long theId) {
-        userAccountRepository.deleteById(theId);
     }
 }

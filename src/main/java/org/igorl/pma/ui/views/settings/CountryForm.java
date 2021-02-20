@@ -16,9 +16,9 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import org.igorl.pma.backend.entity.Country;
 
-import java.util.List;
-
 public class CountryForm extends FormLayout {
+
+    private Country country;
 
     TextField countryCode = new TextField("Country code" );
     TextField countryName = new TextField("Country name" );
@@ -29,10 +29,10 @@ public class CountryForm extends FormLayout {
     Button close = new Button("Cancel");
 
     Binder<Country> binder = new BeanValidationBinder<>( Country.class );
-    private Country country;
 
 
-    public CountryForm(List<Country> countries){
+
+    public CountryForm(){
 
         addClassName( "country-form" );
         binder.bindInstanceFields( this );
@@ -56,7 +56,7 @@ public class CountryForm extends FormLayout {
         close.addClickShortcut(Key.ESCAPE);
 
         save.addClickListener(event -> validateAndSave());
-        delete.addClickListener(event -> fireEvent( new DeleteEvent(this, country)));
+        delete.addClickListener(event -> fireEvent(new DeleteEvent(this, country)));
         close.addClickListener(event -> fireEvent(new CloseEvent(this)));
 
         binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid()));
@@ -66,7 +66,7 @@ public class CountryForm extends FormLayout {
     private void validateAndSave() {
         try {
             binder.writeBean( country);
-            fireEvent(new SaveEvent(this, country ));
+            fireEvent(new SaveEvent(this, country));
         } catch (ValidationException e) {
             e.printStackTrace();
         }
@@ -79,8 +79,10 @@ public class CountryForm extends FormLayout {
     
 
     public static abstract class CountryFormEvent extends ComponentEvent<CountryForm> {
-        private final Country country;
-        public Country getCountry;
+        private Country country;
+        public Country getCountry() {
+            return country;
+        };
 
 
         protected CountryFormEvent(CountryForm source, Country country) {
@@ -89,19 +91,19 @@ public class CountryForm extends FormLayout {
         }
     }
 
-        public class SaveEvent extends CountryFormEvent {
+        public static class SaveEvent extends CountryFormEvent {
             SaveEvent(CountryForm source, Country country) {
                 super( source, country );
             }
         }
 
-        public class DeleteEvent extends CountryFormEvent {
+        public static class DeleteEvent extends CountryFormEvent {
             DeleteEvent(CountryForm source, Country country) {
                 super( source, country );
             }
         }
 
-        public class CloseEvent extends CountryFormEvent {
+        public static class CloseEvent extends CountryFormEvent {
             CloseEvent(CountryForm source) {
                 super( source, null );
             }

@@ -33,7 +33,7 @@ public class DepartmentListView extends VerticalLayout {
         configureGrid ();
 
 
-        form = new DepartmentForm( theDepartmentService.findAll( ) );
+        form = new DepartmentForm();
         form.addListener( DepartmentForm.SaveEvent.class, this::saveDepartment );
         form.addListener( DepartmentForm.DeleteEvent.class, this::deleteDepartment );
         form.addListener( DepartmentForm.CloseEvent.class, e -> closeEditor( ) );

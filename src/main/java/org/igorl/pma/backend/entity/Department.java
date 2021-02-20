@@ -7,11 +7,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "department")
 @EntityListeners(AuditingEntityListener.class)
@@ -31,7 +33,7 @@ public class Department extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Employee> employees;
+    @OneToMany(mappedBy = "department")
+    private List<Employee> employees = new LinkedList<>();
 
 }
