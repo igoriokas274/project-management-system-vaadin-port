@@ -5,12 +5,14 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.LinkedList;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "country")
@@ -22,10 +24,14 @@ public class Country extends Auditable {
     @Column(name = "countryId", nullable = false)
     private Long countryId;
 
-    @Column(name = "countryCode", nullable = false, unique = true, length = 2) // ISO 3166 ALPHA-2 code format
+    @NotNull
+    @NotEmpty
+    @Column(name = "countryCode", unique = true, length = 2) // ISO 3166 ALPHA-2 code format
     private String countryCode;
 
-    @Column(name = "countryName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "countryName")
     private String countryName;
 
     @Column(name = "closed", columnDefinition = "int default 0")
@@ -44,6 +50,6 @@ public class Country extends Auditable {
     private List<StockType> stockTypes;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Employee> employees;
+    @OneToMany(mappedBy = "country")
+    private List<Employee> employees = new LinkedList<>();
 }

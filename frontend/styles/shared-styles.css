@@ -7,14 +7,44 @@
     flex: 2;
 }
 
+.list-view .employee-grid {
+    flex: 2;
+}
+
+.list-view .department-grid {
+    flex: 2;
+}
+
+.list-view .country-grid {
+    flex: 2;
+}
+
 .list-view .user-form {
+    flex: 1;
+    padding: var(--lumo-space-m);
+}
+
+.list-view .employee-form {
+    flex: 1;
+    padding: var(--lumo-space-m);
+}
+
+.list-view .department-form {
+    flex: 1;
+    padding: var(--lumo-space-m);
+}
+
+.list-view .country-form {
     flex: 1;
     padding: var(--lumo-space-m);
 }
 
 @media all and (max-width: 1100px) {
     .list-view.editing .toolbar,
-    .list-view.editing .user-grid {
+    .list-view.editing .user-grid,
+    .list-view.editing .employee-grid,
+    .list-view.editing .department-grid
+    .list-view.editing .country-grid {
         display: none;
     }
 }
