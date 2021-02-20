@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -24,17 +23,13 @@ public class CountryServiceImpl implements ICountryService {
     public List<Country> findAll() { return countryRepository.findAll(); }
 
     @Override
-    public Country findById(long theId) {
-
-        Optional<Country> result = countryRepository.findById(theId);
-        Country theCountry = null;
-        if (result.isPresent()){
-            theCountry = result.get();
+    public List<Country> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return countryRepository.findAll();
         } else {
-            throw new RuntimeException("Did not find country id" + theId);
+            return countryRepository.search(stringFilter);
         }
-        return theCountry;
-        }
+    }
 
     @Override
     @Transactional

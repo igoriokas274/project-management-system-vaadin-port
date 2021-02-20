@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ICountryService {
     List<Country> findAll();
-    Country findById(long theId);
+    List<Country> findAll(String stringFilter);
     void save(Country theCountry);
     void deleteById(long theId);
 }

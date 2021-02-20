@@ -1,4 +1,4 @@
-package org.igorl.pma.ui.view.dashboard;
+package org.igorl.pma.ui.views.dashboard;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;

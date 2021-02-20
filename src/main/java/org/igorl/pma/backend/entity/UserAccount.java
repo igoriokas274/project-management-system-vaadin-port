@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @ToString
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "user_accounts")
 @EntityListeners(AuditingEntityListener.class)
@@ -19,7 +20,7 @@ public class UserAccount extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId", nullable = false)
-    private long userId;
+    private Long userId;
 
     @NotNull
     @NotEmpty
