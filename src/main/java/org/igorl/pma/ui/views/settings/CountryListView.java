@@ -24,46 +24,46 @@ public class CountryListView extends VerticalLayout {
 
     private CountryServiceImpl countryService;
     private Grid<Country> grid = new Grid<>(Country.class);
-    private TextField filterText = new TextField(  );
+    private TextField filterText = new TextField();
     private CountryForm form;
 
     public CountryListView(CountryServiceImpl theCountryService) {
         this.countryService = theCountryService;
-        addClassName( "list-view" );
-        setSizeFull( );
+        addClassName("list-view");
+        setSizeFull();
         configureGrid();
 
         form = new CountryForm();
-        form.addListener( CountryForm.SaveEvent.class, this::saveCountry );
-        form.addListener( CountryForm.DeleteEvent.class, this::deleteCountry );
-        form.addListener( CountryForm.CloseEvent.class, e -> closeEditor( ) );
+        form.addListener(CountryForm.SaveEvent.class, this::saveCountry);
+        form.addListener(CountryForm.DeleteEvent.class, this::deleteCountry);
+        form.addListener(CountryForm.CloseEvent.class, e -> closeEditor());
 
-        closeEditor( );
+        closeEditor();
 
-        Div content = new Div( grid, form );
-        content.addClassName( "content" );
-        content.setSizeFull( );
+        Div content = new Div(grid, form);
+        content.addClassName("content");
+        content.setSizeFull();
 
-        add( getToolbar( ), content );
-        updateList( );
+        add(getToolbar(), content);
+        updateList();
     }
 
     private void saveCountry(CountryForm.SaveEvent event) {
-        countryService.save( event.getCountry());
-        updateList( );
-        closeEditor( );
+        countryService.save(event.getCountry());
+        updateList();
+        closeEditor();
     }
 
     private void deleteCountry(CountryForm.DeleteEvent event) {
-        countryService.deleteById( event.getCountry().getCountryId( ) );
-        updateList( );
-        closeEditor( );
+        countryService.deleteById(event.getCountry().getCountryId());
+        updateList();
+        closeEditor();
     }
 
     public HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter by Country...");
         filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode( ValueChangeMode.LAZY);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
         Button addCountryButton = new Button("Add country");
@@ -78,7 +78,7 @@ public class CountryListView extends VerticalLayout {
     public void configureGrid() {
         grid.addClassName("country-grid");
         grid.setSizeFull();
-        grid.addThemeVariants( GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.setColumns("countryId", "countryCode", "countryName", "closed");
         grid.getColumns().forEach(CountryColumn -> CountryColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editCountry(event.getValue()));
@@ -101,12 +101,12 @@ public class CountryListView extends VerticalLayout {
 
     private void closeEditor() {
         form.setCountry(null);
-        form.setVisible(false);
+        form.setVisible(true); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(countryService.findAll( filterText.getValue()));
+        grid.setItems(countryService.findAll(filterText.getValue()));
     }
 }
 

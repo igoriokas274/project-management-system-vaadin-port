@@ -11,7 +11,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.igorl.pma.backend.entity.Country;
 import org.igorl.pma.backend.entity.Department;
 import org.igorl.pma.backend.entity.Employee;
 import org.igorl.pma.backend.service.CountryServiceImpl;
@@ -26,24 +25,24 @@ public class EmployeeListView extends VerticalLayout {
 
     public EmployeeServiceImpl employeeService;
 
-    public Grid<Employee> grid = new Grid<>( Employee.class );
+    public Grid<Employee> grid = new Grid<>(Employee.class);
     public TextField filterText = new TextField();
     public EmployeeForm form;
 
     public EmployeeListView(EmployeeServiceImpl theEmployeeService,
                             CountryServiceImpl theCountryService,
-                            DepartmentServiceImpl theDepartmentService){
+                            DepartmentServiceImpl theDepartmentService) {
 
         employeeService = theEmployeeService;
-        addClassName( "list-view" );
+        addClassName("list-view");
         setSizeFull();
 
         configureGrid();
 
         form = new EmployeeForm(theCountryService.findAll(), theDepartmentService.findAll());
-        form.addListener( EmployeeForm.SaveEvent.class, this::saveEmployee );
-        form.addListener( EmployeeForm.DeleteEvent.class, this::deleteEmployee );
-        form.addListener( EmployeeForm.CloseEvent.class, e -> closeEditor() );
+        form.addListener(EmployeeForm.SaveEvent.class, this::saveEmployee);
+        form.addListener(EmployeeForm.DeleteEvent.class, this::deleteEmployee);
+        form.addListener(EmployeeForm.CloseEvent.class, e -> closeEditor());
         closeEditor();
 
         Div content = new Div(grid, form);
@@ -52,6 +51,47 @@ public class EmployeeListView extends VerticalLayout {
 
         add(getToolbar(), content);
         updateList();
+    }
+
+    public void configureGrid() {
+        grid.addClassName("employee-grid");
+        grid.setSizeFull();
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        grid.removeColumnByKey("department");
+        grid.removeColumnByKey("firstName");
+        grid.removeColumnByKey("lastName");
+        grid.removeColumnByKey("title");
+        grid.removeColumnByKey("mobilePhone");
+        grid.removeColumnByKey("workEmail");
+        grid.removeColumnByKey("closed");
+        grid.setColumns("employeeId");
+        // grid.setColumns("employeeId", "title", "mobilePhone", "workEmail", "closed");
+        grid.addColumn(Employee::getFullName, "fullName").setHeader("Full name");
+        grid.addColumn(Employee::getTitle, "title").setHeader("Title");
+        grid.addColumn(employee -> {
+            Department department = employee.getDepartment();
+            return department == null ? "-" : department.getDepartmentName();
+        }).setHeader("Department");
+        grid.addColumn(Employee::getMobilePhone, "mobilePhone").setHeader("Mobile phone");
+        grid.addColumn(Employee::getWorkEmail, "workEmail").setHeader("Work email");
+        grid.addColumn(Employee::isClosed, "closed").setHeader("Closed");
+        grid.getColumns().forEach(employeeColumn -> employeeColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editEmployee(event.getValue()));
+    }
+
+    public HorizontalLayout getToolbar() {
+        filterText.setPlaceholder("Filter by Employee...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+
+        Button addEmployeeButton = new Button("Add Employee");
+        addEmployeeButton.addClickListener(click -> addEmployee());
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addEmployeeButton);
+        toolbar.addClassName("toolbar");
+
+        return toolbar;
     }
 
     private void saveEmployee(EmployeeForm.SaveEvent event) {
@@ -64,40 +104,6 @@ public class EmployeeListView extends VerticalLayout {
         employeeService.delete(event.getEmployee());
         updateList();
         closeEditor();
-    }
-
-    public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Employee...");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode( ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
-
-        Button addEmployeeButton = new Button("Add Employee");
-        addEmployeeButton.addClickListener(click -> addEmployee());
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addEmployeeButton);
-        toolbar.addClassName("toolbar");
-
-        return toolbar;
-    }
-
-    public void configureGrid() {
-        grid.addClassName("employee-grid");
-        grid.setSizeFull();
-        grid.addThemeVariants( GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.removeColumnByKey("country");
-        grid.removeColumnByKey("department");
-        grid.setColumns("employeeId", "firstName", "lastName", "title", "dateOfEmployment", "closed");
-        grid.addColumn(employee -> {
-            Department department = employee.getDepartment();
-            return department == null ? "-" : department.getDepartmentName();
-        }).setHeader("Department");
-        grid.addColumn(employee -> {
-            Country country = employee.getCountry();
-            return country == null ? "-" : country.getCountryName();
-        }).setHeader("Country");
-        grid.getColumns().forEach(employeeColumn -> employeeColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editEmployee(event.getValue()));
     }
 
     void addEmployee() {
@@ -122,7 +128,7 @@ public class EmployeeListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(employeeService.findAll( filterText.getValue()));
+        grid.setItems(employeeService.findAll(filterText.getValue()));
     }
 }
 

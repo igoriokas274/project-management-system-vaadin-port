@@ -22,48 +22,48 @@ import org.igorl.pma.ui.MainLayout;
 public class DepartmentListView extends VerticalLayout {
 
     private DepartmentServiceImpl departmentService;
-    private Grid<Department> grid = new Grid<>( Department.class );
-    private TextField filterText = new TextField(  );
+    private Grid<Department> grid = new Grid<>(Department.class);
+    private TextField filterText = new TextField();
     private DepartmentForm form;
 
-    public DepartmentListView (DepartmentServiceImpl theDepartmentService) {
+    public DepartmentListView(DepartmentServiceImpl theDepartmentService) {
         this.departmentService = theDepartmentService;
-        addClassName( "list-view" );
-        setSizeFull( );
-        configureGrid ();
+        addClassName("list-view");
+        setSizeFull();
+        configureGrid();
 
 
         form = new DepartmentForm();
-        form.addListener( DepartmentForm.SaveEvent.class, this::saveDepartment );
-        form.addListener( DepartmentForm.DeleteEvent.class, this::deleteDepartment );
-        form.addListener( DepartmentForm.CloseEvent.class, e -> closeEditor( ) );
+        form.addListener(DepartmentForm.SaveEvent.class, this::saveDepartment);
+        form.addListener(DepartmentForm.DeleteEvent.class, this::deleteDepartment);
+        form.addListener(DepartmentForm.CloseEvent.class, e -> closeEditor());
 
-        closeEditor( );
+        closeEditor();
 
-        Div content = new Div( grid, form );
-        content.addClassName( "content" );
-        content.setSizeFull( );
+        Div content = new Div(grid, form);
+        content.addClassName("content");
+        content.setSizeFull();
 
-        add( getToolbar( ), content );
-        updateList( );
+        add(getToolbar(), content);
+        updateList();
     }
 
-        private void saveDepartment(DepartmentForm.SaveEvent event) {
-            departmentService.save( event.getDepartment ());
-            updateList( );
-            closeEditor( );
-        }
+    private void saveDepartment(DepartmentForm.SaveEvent event) {
+        departmentService.save(event.getDepartment());
+        updateList();
+        closeEditor();
+    }
 
-        private void deleteDepartment(DepartmentForm.DeleteEvent event) {
-            departmentService.deleteById( event.department.getDepartmentId ( ) );
-            updateList( );
-            closeEditor( );
-        }
+    private void deleteDepartment(DepartmentForm.DeleteEvent event) {
+        departmentService.deleteById(event.getDepartment().getDepartmentId());
+        updateList();
+        closeEditor();
+    }
 
     public HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter by Department...");
         filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode( ValueChangeMode.LAZY);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
         Button addDepartmentButton = new Button("Add department");
@@ -78,7 +78,7 @@ public class DepartmentListView extends VerticalLayout {
     public void configureGrid() {
         grid.addClassName("department-grid");
         grid.setSizeFull();
-        grid.addThemeVariants( GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.setColumns("departmentId", "departmentName", "closed");
         grid.getColumns().forEach(departmentColumn -> departmentColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
@@ -101,12 +101,12 @@ public class DepartmentListView extends VerticalLayout {
 
     private void closeEditor() {
         form.setDepartment(null);
-        form.setVisible(false);
+        form.setVisible(true); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(departmentService.findAll(filterText.getValue() ));
+        grid.setItems(departmentService.findAll(filterText.getValue()));
     }
 }
 

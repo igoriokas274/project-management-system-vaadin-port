@@ -37,7 +37,7 @@ public class MainLayout extends AppLayout {
         dashboard.setHighlightCondition(HighlightConditions.sameLocation());
         Anchor logout = new Anchor("logout", "Log Out");
 
-        VerticalLayout layout = new VerticalLayout(logo, dashboard, userList, employee, department, country, logout);
+        VerticalLayout layout = new VerticalLayout(logo, dashboard, employee, department, country, userList, logout);
         layout.expand(country);
         layout.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.BASELINE);
         layout.setHeight("100%");
