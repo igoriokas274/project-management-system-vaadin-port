@@ -37,7 +37,7 @@ public class CountryForm extends FormLayout {
 
         FormLayout fieldLayout = new FormLayout();
 
-        addClassName("country-form");
+        addClassName("form");
         binder.bindInstanceFields(this);
         countryCode.setLabel("Country code");
         countryCode.setPlaceholder("Enter country code..");

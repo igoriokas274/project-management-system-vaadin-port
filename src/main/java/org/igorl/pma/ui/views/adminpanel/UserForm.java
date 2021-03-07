@@ -40,7 +40,7 @@ public class UserForm extends FormLayout {
 
     public UserForm(List<Employee> employees) {
 
-        addClassName("user-form");
+        addClassName("form");
         binder.bindInstanceFields(this);
         userName.setPlaceholder("Username");
         userName.setClearButtonVisible(true);

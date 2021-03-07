@@ -1,4 +1,4 @@
-package org.igorl.pma.ui.views.team;
+package org.igorl.pma.ui.views.teams;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -66,7 +66,7 @@ public class EmployeeForm extends FormLayout {
 
     public EmployeeForm(List<Country> countries, List<Department> departments) {
 
-        addClassName("employee-form");
+        addClassName("form");
         binder.bindInstanceFields(this);
 
         Tab main = new Tab("Main");

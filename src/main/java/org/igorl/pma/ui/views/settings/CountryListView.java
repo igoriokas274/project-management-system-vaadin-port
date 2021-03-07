@@ -6,12 +6,15 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.igorl.pma.backend.entity.Country;
 import org.igorl.pma.backend.service.CountryServiceImpl;
 import org.igorl.pma.ui.MainLayout;
@@ -40,11 +43,21 @@ public class CountryListView extends VerticalLayout {
 
         closeEditor();
 
-        Div content = new Div(grid, form);
-        content.addClassName("content");
-        content.setSizeFull();
+        Div div = new Div(grid, form);
+        div.addClassName("content");
+        div.setSizeFull();
 
-        add(getToolbar(), content);
+        VerticalLayout content = new VerticalLayout(getToolbar(), div);
+
+        Icon icon = VaadinIcon.COG_O.create();
+        String pageName = "Settings Panel";
+        VerticalLayout routerLinks = new VerticalLayout();
+        RouterLink countryList = new RouterLink("Countries", CountryListView.class);
+        RouterLink departmentList = new RouterLink("Departments", DepartmentListView.class);
+        routerLinks.add(countryList, departmentList); // Here you can add RouterLinks
+
+        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+
         updateList();
     }
 
@@ -76,7 +89,7 @@ public class CountryListView extends VerticalLayout {
     }
 
     public void configureGrid() {
-        grid.addClassName("country-grid");
+        grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.setColumns("countryId", "countryCode", "countryName", "closed");
@@ -101,7 +114,7 @@ public class CountryListView extends VerticalLayout {
 
     private void closeEditor() {
         form.setCountry(null);
-        form.setVisible(true); // Change to false if edit panel closing needed
+        form.setVisible(false); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 

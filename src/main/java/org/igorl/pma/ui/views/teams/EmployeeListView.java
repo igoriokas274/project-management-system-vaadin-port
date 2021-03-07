@@ -1,16 +1,19 @@
-package org.igorl.pma.ui.views.team;
+package org.igorl.pma.ui.views.teams;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.igorl.pma.backend.entity.Department;
 import org.igorl.pma.backend.entity.Employee;
 import org.igorl.pma.backend.service.CountryServiceImpl;
@@ -18,7 +21,7 @@ import org.igorl.pma.backend.service.DepartmentServiceImpl;
 import org.igorl.pma.backend.service.EmployeeServiceImpl;
 import org.igorl.pma.ui.MainLayout;
 
-@Route(value = "team/employee", layout = MainLayout.class)
+@Route(value = "teams/employee", layout = MainLayout.class)
 @PageTitle("Employees | PMA")
 @CssImport("./styles/shared-styles.css")
 public class EmployeeListView extends VerticalLayout {
@@ -45,16 +48,26 @@ public class EmployeeListView extends VerticalLayout {
         form.addListener(EmployeeForm.CloseEvent.class, e -> closeEditor());
         closeEditor();
 
-        Div content = new Div(grid, form);
-        content.addClassName("content");
-        content.setSizeFull();
+        Div div = new Div(grid, form);
+        div.addClassName("content");
+        div.setSizeFull();
 
-        add(getToolbar(), content);
+        VerticalLayout content = new VerticalLayout();
+        content.add(getToolbar(), div);
+
+        Icon icon = VaadinIcon.CLUSTER.create();
+        String pageName = "Team Panel";
+        VerticalLayout routerLinks = new VerticalLayout();
+        RouterLink employeeList = new RouterLink("Employees", EmployeeListView.class);
+        routerLinks.add(employeeList); // Here you can add RouterLinks
+
+        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+
         updateList();
     }
 
     public void configureGrid() {
-        grid.addClassName("employee-grid");
+        grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.removeColumnByKey("department");

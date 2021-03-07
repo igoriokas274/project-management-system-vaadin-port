@@ -30,7 +30,7 @@ public class DepartmentForm extends FormLayout {
 
     public DepartmentForm() {
 
-        addClassName("department-form");
+        addClassName("form");
         binder.bindInstanceFields(this);
         departmentName.setLabel("Department name");
         departmentName.setPlaceholder("Enter department name..");

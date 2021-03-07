@@ -5,12 +5,15 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.igorl.pma.backend.entity.Employee;
 import org.igorl.pma.backend.entity.UserAccount;
 import org.igorl.pma.backend.service.EmployeeServiceImpl;
@@ -21,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope("prototype")
-@Route(value = "adminpanel/users", layout = MainLayout.class)
+@Route(value = "admin/users", layout = MainLayout.class)
 @PageTitle("Users | PMA")
 @CssImport("./styles/shared-styles.css")
 public class UserListView extends VerticalLayout {
@@ -46,11 +49,20 @@ public class UserListView extends VerticalLayout {
         form.addListener(UserForm.CloseEvent.class, e -> closeEditor());
         closeEditor();
 
-        Div content = new Div(grid, form);
-        content.addClassName("content");
-        content.setSizeFull();
+        Div div = new Div(grid, form);
+        div.addClassName("content");
+        div.setSizeFull();
 
-        add(getToolbar(), content);
+        VerticalLayout content = new VerticalLayout(getToolbar(), div);
+
+        Icon icon = VaadinIcon.SHIELD.create();
+        String pageName = "Admin Panel";
+        VerticalLayout routerLinks = new VerticalLayout();
+        RouterLink userList = new RouterLink("Users", UserListView.class);
+        routerLinks.add(userList); // Here you can add RouterLinks
+
+        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+
         updateList();
     }
 
@@ -82,7 +94,7 @@ public class UserListView extends VerticalLayout {
     }
 
     public void configureGrid() {
-        grid.addClassName("user-grid");
+        grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.removeColumnByKey("employee");
