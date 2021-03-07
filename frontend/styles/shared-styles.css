@@ -3,48 +3,27 @@
     display: flex;
 }
 
-.list-view .user-grid {
+.list-view .grid {
     flex: 2;
 }
 
-.list-view .employee-grid {
-    flex: 2;
-}
-
-.list-view .department-grid {
-    flex: 2;
-}
-
-.list-view .country-grid {
-    flex: 2;
-}
-
-.list-view .user-form {
+.list-view .form {
     flex: 1;
     padding: var(--lumo-space-m);
 }
 
-.list-view .employee-form {
-    flex: 1;
-    padding: var(--lumo-space-m);
+:host {
+  --vaadin-app-layout-drawer-offset-size: 4.5rem;
 }
 
-.list-view .department-form {
-    flex: 1;
-    padding: var(--lumo-space-m);
-}
-
-.list-view .country-form {
-    flex: 1;
-    padding: var(--lumo-space-m);
+[part="drawer"] {
+  width: var(--vaadin-app-layout-drawer-offset-size);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
 }
 
 @media all and (max-width: 1100px) {
     .list-view.editing .toolbar,
-    .list-view.editing .user-grid,
-    .list-view.editing .employee-grid,
-    .list-view.editing .department-grid
-    .list-view.editing .country-grid {
+    .list-view.editing .grid {
         display: none;
     }
 }

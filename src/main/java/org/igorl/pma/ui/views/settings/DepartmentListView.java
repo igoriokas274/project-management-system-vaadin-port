@@ -5,12 +5,15 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.igorl.pma.backend.entity.Department;
 import org.igorl.pma.backend.service.DepartmentServiceImpl;
 import org.igorl.pma.ui.MainLayout;
@@ -22,48 +25,58 @@ import org.igorl.pma.ui.MainLayout;
 public class DepartmentListView extends VerticalLayout {
 
     private DepartmentServiceImpl departmentService;
-    private Grid<Department> grid = new Grid<>( Department.class );
-    private TextField filterText = new TextField(  );
+    private Grid<Department> grid = new Grid<>(Department.class);
+    private TextField filterText = new TextField();
     private DepartmentForm form;
 
-    public DepartmentListView (DepartmentServiceImpl theDepartmentService) {
+    public DepartmentListView(DepartmentServiceImpl theDepartmentService) {
         this.departmentService = theDepartmentService;
-        addClassName( "list-view" );
-        setSizeFull( );
-        configureGrid ();
+        addClassName("list-view");
+        setSizeFull();
+        configureGrid();
 
 
         form = new DepartmentForm();
-        form.addListener( DepartmentForm.SaveEvent.class, this::saveDepartment );
-        form.addListener( DepartmentForm.DeleteEvent.class, this::deleteDepartment );
-        form.addListener( DepartmentForm.CloseEvent.class, e -> closeEditor( ) );
+        form.addListener(DepartmentForm.SaveEvent.class, this::saveDepartment);
+        form.addListener(DepartmentForm.DeleteEvent.class, this::deleteDepartment);
+        form.addListener(DepartmentForm.CloseEvent.class, e -> closeEditor());
 
-        closeEditor( );
+        closeEditor();
 
-        Div content = new Div( grid, form );
-        content.addClassName( "content" );
-        content.setSizeFull( );
+        Div div = new Div(grid, form);
+        div.addClassName("content");
+        div.setSizeFull();
 
-        add( getToolbar( ), content );
-        updateList( );
+        VerticalLayout content = new VerticalLayout(getToolbar(), div);
+
+        Icon icon = VaadinIcon.COG_O.create();
+        String pageName = "Settings Panel";
+        VerticalLayout routerLinks = new VerticalLayout();
+        RouterLink countryList = new RouterLink("Countries", CountryListView.class);
+        RouterLink departmentList = new RouterLink("Departments", DepartmentListView.class);
+        routerLinks.add(countryList, departmentList); // Here you can add RouterLinks
+
+        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+
+        updateList();
     }
 
-        private void saveDepartment(DepartmentForm.SaveEvent event) {
-            departmentService.save( event.getDepartment ());
-            updateList( );
-            closeEditor( );
-        }
+    private void saveDepartment(DepartmentForm.SaveEvent event) {
+        departmentService.save(event.getDepartment());
+        updateList();
+        closeEditor();
+    }
 
-        private void deleteDepartment(DepartmentForm.DeleteEvent event) {
-            departmentService.deleteById( event.department.getDepartmentId ( ) );
-            updateList( );
-            closeEditor( );
-        }
+    private void deleteDepartment(DepartmentForm.DeleteEvent event) {
+        departmentService.deleteById(event.getDepartment().getDepartmentId());
+        updateList();
+        closeEditor();
+    }
 
     public HorizontalLayout getToolbar() {
         filterText.setPlaceholder("Filter by Department...");
         filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode( ValueChangeMode.LAZY);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
         Button addDepartmentButton = new Button("Add department");
@@ -76,9 +89,9 @@ public class DepartmentListView extends VerticalLayout {
     }
 
     public void configureGrid() {
-        grid.addClassName("department-grid");
+        grid.addClassName("grid");
         grid.setSizeFull();
-        grid.addThemeVariants( GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.setColumns("departmentId", "departmentName", "closed");
         grid.getColumns().forEach(departmentColumn -> departmentColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
@@ -101,12 +114,12 @@ public class DepartmentListView extends VerticalLayout {
 
     private void closeEditor() {
         form.setDepartment(null);
-        form.setVisible(false);
+        form.setVisible(false); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(departmentService.findAll(filterText.getValue() ));
+        grid.setItems(departmentService.findAll(filterText.getValue()));
     }
 }
 
