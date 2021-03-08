@@ -42,24 +42,31 @@ public class MainLayout extends AppLayout {
 
         RouterLink dashboard = new RouterLink(null, DashboardView.class);
         dashboard.add(new Icon(VaadinIcon.GRID_BIG_O));
+        dashboard.setClassName("drawer-icons");
 
         RouterLink projects = new RouterLink(null, ProjectPanelView.class);
         projects.add(new Icon(VaadinIcon.COMPILE));
+        projects.setClassName("drawer-icons");
 
         RouterLink teams = new RouterLink(null, TeamsPanelView.class);
         teams.add(new Icon(VaadinIcon.CLUSTER));
+        teams.setClassName("drawer-icons");
 
         RouterLink stock = new RouterLink(null, StockPanelView.class);
         stock.add(new Icon(VaadinIcon.STOCK));
+        stock.setClassName("drawer-icons");
 
         RouterLink help = new RouterLink(null, HelpPanelView.class);
         help.add(new Icon(VaadinIcon.QUESTION_CIRCLE_O));
+        help.setClassName("drawer-icons");
 
         RouterLink admin = new RouterLink(null, AdminPanelView.class);
         admin.add(new Icon(VaadinIcon.SHIELD));
+        admin.setClassName("drawer-icons");
 
         RouterLink settings = new RouterLink(null, SettingsPanelView.class);
         settings.add(new Icon(VaadinIcon.COG_O));
+        settings.setClassName("drawer-icons");
 
         dashboard.setHighlightCondition(HighlightConditions.sameLocation());
 
@@ -67,9 +74,13 @@ public class MainLayout extends AppLayout {
         menuBar.addThemeVariants(MenuBarVariant.LUMO_TERTIARY_INLINE);
         MenuItem profile = menuBar.addItem(new Icon(VaadinIcon.USER));
 
-        profile.getSubMenu().addItem(new RouterLink("View Profile", CountryListView.class));
-        profile.getSubMenu().addItem(new RouterLink("Change Password", DepartmentListView.class));
-        profile.getSubMenu().addItem(new Hr());
+        menuBar.getItems().forEach(
+                item -> item.getChildren().findFirst().ifPresent(icon -> icon
+                        .getElement().getStyle().set("color", "black").set("opacity", "0.54")));
+
+        profile.getSubMenu().addItem(new RouterLink("View Profile", CountryListView.class)).setEnabled(false); // TODO: for future use. Edit RouterLink and remove .setEnabled(false) block
+        profile.getSubMenu().addItem(new RouterLink("Change Password", DepartmentListView.class)).setEnabled(false); // TODO: for future use. Edit RouterLink and remove .setEnabled(false) block
+        profile.getSubMenu().add(new Hr());
         profile.getSubMenu().addItem(new Anchor("logout", "Logout"));
 
         VerticalLayout layout = new VerticalLayout(logo, dashboard, projects, teams, stock, help, admin, settings, menuBar);
