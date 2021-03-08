@@ -78,7 +78,6 @@ public class EmployeeListView extends VerticalLayout {
         grid.removeColumnByKey("workEmail");
         grid.removeColumnByKey("closed");
         grid.setColumns("employeeId");
-        // grid.setColumns("employeeId", "title", "mobilePhone", "workEmail", "closed");
         grid.addColumn(Employee::getFullName, "fullName").setHeader("Full name");
         grid.addColumn(Employee::getTitle, "title").setHeader("Title");
         grid.addColumn(employee -> {
