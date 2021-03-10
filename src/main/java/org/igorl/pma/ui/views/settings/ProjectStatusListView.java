@@ -14,32 +14,32 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import org.igorl.pma.backend.entity.Department;
-import org.igorl.pma.backend.service.DepartmentServiceImpl;
+import org.igorl.pma.backend.entity.ProjectStatus;
+import org.igorl.pma.backend.service.ProjectStatusImpl;
 import org.igorl.pma.ui.MainLayout;
 
 
-@Route(value = "settings/departments", layout = MainLayout.class)
-@PageTitle("Departments | PMA")
+@Route(value = "settings/projectstatus", layout = MainLayout.class)
+@PageTitle("Project Status | PMA")
 @CssImport("./styles/shared-styles.css")
-public class DepartmentListView extends VerticalLayout {
+public class ProjectStatusListView extends VerticalLayout {
 
-    private DepartmentServiceImpl departmentService;
-    private Grid<Department> grid = new Grid<>(Department.class);
+    private ProjectStatusImpl projectStatus;
+    private Grid<ProjectStatus> grid = new Grid<>(ProjectStatus.class);
     private TextField filterText = new TextField();
-    private DepartmentForm form;
+    private ProjectStatusForm form;
 
-    public DepartmentListView(DepartmentServiceImpl theDepartmentService) {
-        this.departmentService = theDepartmentService;
+    public ProjectStatusListView(ProjectStatusImpl projectStatus) {
+        this.projectStatus = projectStatus;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
 
 
-        form = new DepartmentForm();
-        form.addListener(DepartmentForm.SaveEvent.class, this::saveDepartment);
-        form.addListener(DepartmentForm.DeleteEvent.class, this::deleteDepartment);
-        form.addListener(DepartmentForm.CloseEvent.class, e -> closeEditor());
+        form = new ProjectStatusForm();
+        form.addListener(ProjectStatusForm.SaveEvent.class, this::saveProjectStatus);
+        form.addListener(ProjectStatusForm.DeleteEvent.class, this::deleteProjectStatus);
+        form.addListener(ProjectStatusForm.CloseEvent.class, e -> closeEditor());
 
         closeEditor();
 
@@ -67,28 +67,28 @@ public class DepartmentListView extends VerticalLayout {
         updateList();
     }
 
-    private void saveDepartment(DepartmentForm.SaveEvent event) {
-        departmentService.save(event.getDepartment());
+    private void saveProjectStatus(ProjectStatusForm.SaveEvent event) {
+        projectStatus.save(event.getProjectStatus());
         updateList();
         closeEditor();
     }
 
-    private void deleteDepartment(DepartmentForm.DeleteEvent event) {
-        departmentService.deleteById(event.getDepartment().getDepartmentId());
+    private void deleteProjectStatus(ProjectStatusForm.DeleteEvent event) {
+        projectStatus.deleteById(event.getProjectStatus().getProjectStatusId());
         updateList();
         closeEditor();
     }
 
     public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Department...");
+        filterText.setPlaceholder("Filter by Project Status...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addDepartmentButton = new Button("Add department");
-        addDepartmentButton.addClickListener(click -> addDepartment());
+        Button addProjectStatusButton = new Button("Add project status");
+        addProjectStatusButton.addClickListener(click -> addProjectStatus());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addDepartmentButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addProjectStatusButton);
         toolbar.addClassName("toolbar");
 
         return toolbar;
@@ -98,34 +98,34 @@ public class DepartmentListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("departmentId", "departmentName", "closed");
-        grid.getColumns().forEach(departmentColumn -> departmentColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
+        grid.setColumns("projectStatusId", "projectStatusName");
+        grid.getColumns().forEach(projectStatusColumn -> projectStatusColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editProjectStatus(event.getValue()));
     }
 
-    void addDepartment() {
+    void addProjectStatus() {
         grid.asSingleSelect().clear();
-        editDepartment(new Department());
+        editProjectStatus(new ProjectStatus());
     }
 
-    private void editDepartment(Department department) {
-        if (department == null) {
+    private void editProjectStatus(ProjectStatus projectStatus) {
+        if (projectStatus == null) {
             closeEditor();
         } else {
-            form.setDepartment(department);
+            form.setProjectStatus(projectStatus);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setDepartment(null);
+        form.setProjectStatus(null);
         form.setVisible(false); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(departmentService.findAll(filterText.getValue()));
+        grid.setItems(projectStatus.findAll(filterText.getValue()));
     }
 }
 

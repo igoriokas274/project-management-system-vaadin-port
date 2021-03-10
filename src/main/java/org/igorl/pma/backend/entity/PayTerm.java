@@ -18,8 +18,13 @@ import java.util.List;
 public class PayTerm extends Auditable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "termId", nullable = false, unique = true)
+    private Long termId;
+
+    // TODO: Check compatibility with BigDecimalFiled math actions [check PayTermForm.class]
     @Column(name = "term", nullable = false, unique = true)
-    private Long term;
+    private Integer term;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "payTerm", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})

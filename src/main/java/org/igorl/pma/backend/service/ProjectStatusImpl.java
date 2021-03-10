@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProjectStatusImpl implements IProjectStatusService {
@@ -21,16 +20,12 @@ public class ProjectStatusImpl implements IProjectStatusService {
     public List<ProjectStatus> findAll() {return projectStatusRepository.findAll();}
 
     @Override
-    public ProjectStatus findById(long theId) {
-
-        Optional<ProjectStatus> result = projectStatusRepository.findById(theId);
-        ProjectStatus theProjectStatus;
-        if (result.isPresent()){
-            theProjectStatus = result.get();
+    public List<ProjectStatus> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return projectStatusRepository.findAll();
         } else {
-            throw new RuntimeException("Did not find project status id" + theId);
+            return projectStatusRepository.search(searchTerm);
         }
-        return theProjectStatus;
     }
 
     @Override

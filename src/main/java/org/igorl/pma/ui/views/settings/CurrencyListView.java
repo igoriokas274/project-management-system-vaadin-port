@@ -1,5 +1,6 @@
 package org.igorl.pma.ui.views.settings;
 
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
@@ -14,32 +15,31 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import org.igorl.pma.backend.entity.Department;
-import org.igorl.pma.backend.service.DepartmentServiceImpl;
+import org.igorl.pma.backend.entity.Currency;
+import org.igorl.pma.backend.service.CurrencyServiceImpl;
 import org.igorl.pma.ui.MainLayout;
 
 
-@Route(value = "settings/departments", layout = MainLayout.class)
-@PageTitle("Departments | PMA")
+@Route(value = "settings/currencies", layout = MainLayout.class)
+@PageTitle("Currencies | PMA")
 @CssImport("./styles/shared-styles.css")
-public class DepartmentListView extends VerticalLayout {
+public class CurrencyListView extends VerticalLayout {
 
-    private DepartmentServiceImpl departmentService;
-    private Grid<Department> grid = new Grid<>(Department.class);
+    private CurrencyServiceImpl currencyService;
+    private Grid<Currency> grid = new Grid<>(Currency.class);
     private TextField filterText = new TextField();
-    private DepartmentForm form;
+    private CurrencyForm form;
 
-    public DepartmentListView(DepartmentServiceImpl theDepartmentService) {
-        this.departmentService = theDepartmentService;
+    public CurrencyListView(CurrencyServiceImpl theCurrencyService) {
+        this.currencyService = theCurrencyService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
 
-
-        form = new DepartmentForm();
-        form.addListener(DepartmentForm.SaveEvent.class, this::saveDepartment);
-        form.addListener(DepartmentForm.DeleteEvent.class, this::deleteDepartment);
-        form.addListener(DepartmentForm.CloseEvent.class, e -> closeEditor());
+        form = new CurrencyForm();
+        form.addListener(CurrencyForm.SaveEvent.class, this::saveCurrency);
+        form.addListener(CurrencyForm.DeleteEvent.class, this::deleteCurrency);
+        form.addListener(CurrencyForm.CloseEvent.class, e -> closeEditor());
 
         closeEditor();
 
@@ -67,28 +67,28 @@ public class DepartmentListView extends VerticalLayout {
         updateList();
     }
 
-    private void saveDepartment(DepartmentForm.SaveEvent event) {
-        departmentService.save(event.getDepartment());
+    private void saveCurrency(CurrencyForm.SaveEvent event) {
+        currencyService.save(event.getCurrency());
         updateList();
         closeEditor();
     }
 
-    private void deleteDepartment(DepartmentForm.DeleteEvent event) {
-        departmentService.deleteById(event.getDepartment().getDepartmentId());
+    private void deleteCurrency(CurrencyForm.DeleteEvent event) {
+        currencyService.deleteById(event.getCurrency().getCurrencyId());
         updateList();
         closeEditor();
     }
 
     public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Department...");
+        filterText.setPlaceholder("Filter by Currency...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addDepartmentButton = new Button("Add department");
-        addDepartmentButton.addClickListener(click -> addDepartment());
+        Button addCurrencyButton = new Button("Add currency");
+        addCurrencyButton.addClickListener(click -> addCurrency());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addDepartmentButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addCurrencyButton);
         toolbar.addClassName("toolbar");
 
         return toolbar;
@@ -98,34 +98,35 @@ public class DepartmentListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("departmentId", "departmentName", "closed");
-        grid.getColumns().forEach(departmentColumn -> departmentColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
+        grid.setColumns("currencyId", "currencyCode", "currencyName", "closed");
+        grid.getColumns().forEach(CurrencyColumn -> CurrencyColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editCurrency(event.getValue()));
     }
 
-    void addDepartment() {
+    void addCurrency() {
         grid.asSingleSelect().clear();
-        editDepartment(new Department());
+        editCurrency(new Currency());
     }
 
-    private void editDepartment(Department department) {
-        if (department == null) {
+    private void editCurrency(Currency currency) {
+        if (currency == null) {
             closeEditor();
         } else {
-            form.setDepartment(department);
+            form.setCurrency(currency);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setDepartment(null);
+        form.setCurrency(null);
         form.setVisible(false); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(departmentService.findAll(filterText.getValue()));
+        grid.setItems(currencyService.findAll(filterText.getValue()));
     }
 }
+
 

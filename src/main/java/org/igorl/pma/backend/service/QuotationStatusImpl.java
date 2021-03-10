@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class QuotationStatusImpl implements IQuotationStatusService {
@@ -21,16 +20,12 @@ public class QuotationStatusImpl implements IQuotationStatusService {
     public List<QuotationStatus> findAll() {return quotationStatusRepository.findAll();}
 
     @Override
-    public QuotationStatus findById(long theId) {
-
-        Optional<QuotationStatus> result = quotationStatusRepository.findById(theId);
-        QuotationStatus theQuotationStatus;
-        if (result.isPresent()){
-            theQuotationStatus = result.get();
+    public List<QuotationStatus> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return quotationStatusRepository.findAll();
         } else {
-            throw new RuntimeException("Did not find Quotation status id" + theId);
+            return quotationStatusRepository.search(searchTerm);
         }
-        return theQuotationStatus;
     }
 
     @Override

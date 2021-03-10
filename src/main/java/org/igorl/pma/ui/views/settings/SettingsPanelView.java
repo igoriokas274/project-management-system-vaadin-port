@@ -24,8 +24,14 @@ public class SettingsPanelView extends VerticalLayout {
         String pageName = "Settings Panel";
         VerticalLayout routerLinks = new VerticalLayout();
         RouterLink countryList = new RouterLink("Countries", CountryListView.class);
+        RouterLink currencyList = new RouterLink("Currencies", CurrencyListView.class);
         RouterLink departmentList = new RouterLink("Departments", DepartmentListView.class);
-        routerLinks.add(countryList, departmentList); // Here you can add RouterLinks
+        RouterLink payTermList = new RouterLink("Pay Terms", PayTermListView.class);
+        RouterLink projectStatusList = new RouterLink("Project status", ProjectStatusListView.class);
+        RouterLink projectTypeList = new RouterLink("Project type", ProjectTypeListView.class);
+        RouterLink quotationStatusList = new RouterLink("Quotation status", QuotationStatusListView.class);
+        routerLinks.add(countryList, currencyList, departmentList, payTermList, projectStatusList, projectTypeList,
+                quotationStatusList); // Here you can add RouterLinks
         Label content = new Label("This section is under construction");
 
         add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
