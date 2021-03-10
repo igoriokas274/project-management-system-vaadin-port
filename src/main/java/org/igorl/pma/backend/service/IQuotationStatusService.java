@@ -5,9 +5,8 @@ import org.igorl.pma.backend.entity.QuotationStatus;
 import java.util.List;
 
 public interface IQuotationStatusService {
-
     List<QuotationStatus> findAll();
-    QuotationStatus findById(long theId);
+    List<QuotationStatus> findAll(String searchTerm);
     void save (QuotationStatus theQuotationStatus);
     void deleteById(long theId);
 }

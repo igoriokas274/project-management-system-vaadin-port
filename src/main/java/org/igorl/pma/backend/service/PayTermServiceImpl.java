@@ -23,6 +23,14 @@ public class PayTermServiceImpl implements IPayTermService {
         return payTermRepository.findAll();
     }
 
+    @Override
+    public List<PayTerm> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return payTermRepository.findAll();
+        } else {
+            return payTermRepository.search(stringFilter);
+        }
+    }
 
     @Override
     @Transactional

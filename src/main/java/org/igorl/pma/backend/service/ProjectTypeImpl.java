@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProjectTypeImpl implements IProjectTypeService {
@@ -21,16 +20,12 @@ public class ProjectTypeImpl implements IProjectTypeService {
     public List<ProjectType> findAll() {return projectTypeRepository.findAll();}
 
     @Override
-    public ProjectType findById(long theId) {
-
-        Optional<ProjectType> result = projectTypeRepository.findById(theId);
-        ProjectType theProjectType;
-        if (result.isPresent()){
-            theProjectType = result.get();
+    public List<ProjectType> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return projectTypeRepository.findAll();
         } else {
-            throw new RuntimeException("Did not find project type id" + theId);
+            return projectTypeRepository.search(searchTerm);
         }
-        return theProjectType;
     }
 
     @Override

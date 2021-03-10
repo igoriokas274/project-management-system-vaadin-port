@@ -14,32 +14,32 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import org.igorl.pma.backend.entity.Department;
-import org.igorl.pma.backend.service.DepartmentServiceImpl;
+import org.igorl.pma.backend.entity.PayTerm;
+import org.igorl.pma.backend.service.PayTermServiceImpl;
 import org.igorl.pma.ui.MainLayout;
 
 
-@Route(value = "settings/departments", layout = MainLayout.class)
-@PageTitle("Departments | PMA")
+@Route(value = "settings/payterms", layout = MainLayout.class)
+@PageTitle("Pay Terms | PMA")
 @CssImport("./styles/shared-styles.css")
-public class DepartmentListView extends VerticalLayout {
+public class PayTermListView extends VerticalLayout {
 
-    private DepartmentServiceImpl departmentService;
-    private Grid<Department> grid = new Grid<>(Department.class);
+    private PayTermServiceImpl payTermService;
+    private Grid<PayTerm> grid = new Grid<>(PayTerm.class);
     private TextField filterText = new TextField();
-    private DepartmentForm form;
+    private PayTermForm form;
 
-    public DepartmentListView(DepartmentServiceImpl theDepartmentService) {
-        this.departmentService = theDepartmentService;
+    public PayTermListView(PayTermServiceImpl thePayTermService) {
+        this.payTermService = thePayTermService;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
 
 
-        form = new DepartmentForm();
-        form.addListener(DepartmentForm.SaveEvent.class, this::saveDepartment);
-        form.addListener(DepartmentForm.DeleteEvent.class, this::deleteDepartment);
-        form.addListener(DepartmentForm.CloseEvent.class, e -> closeEditor());
+        form = new PayTermForm();
+        form.addListener(PayTermForm.SaveEvent.class, this::savePayForm);
+        form.addListener(PayTermForm.DeleteEvent.class, this::deletePayForm);
+        form.addListener(PayTermForm.CloseEvent.class, e -> closeEditor());
 
         closeEditor();
 
@@ -67,28 +67,28 @@ public class DepartmentListView extends VerticalLayout {
         updateList();
     }
 
-    private void saveDepartment(DepartmentForm.SaveEvent event) {
-        departmentService.save(event.getDepartment());
+    private void savePayForm(PayTermForm.SaveEvent event) {
+        payTermService.save(event.getPayTerm());
         updateList();
         closeEditor();
     }
 
-    private void deleteDepartment(DepartmentForm.DeleteEvent event) {
-        departmentService.deleteById(event.getDepartment().getDepartmentId());
+    private void deletePayForm(PayTermForm.DeleteEvent event) {
+        payTermService.deleteById(event.getPayTerm().getTermId());
         updateList();
         closeEditor();
     }
 
     public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Department...");
+        filterText.setPlaceholder("Filter by Pay Term...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addDepartmentButton = new Button("Add department");
-        addDepartmentButton.addClickListener(click -> addDepartment());
+        Button addPayTermButton = new Button("Add pay term");
+        addPayTermButton.addClickListener(click -> addPayTerm());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addDepartmentButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPayTermButton);
         toolbar.addClassName("toolbar");
 
         return toolbar;
@@ -98,34 +98,34 @@ public class DepartmentListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("departmentId", "departmentName", "closed");
-        grid.getColumns().forEach(departmentColumn -> departmentColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
+        grid.setColumns("termId", "term");
+        grid.getColumns().forEach(payTermColumn -> payTermColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editPayTerm(event.getValue()));
     }
 
-    void addDepartment() {
+    void addPayTerm() {
         grid.asSingleSelect().clear();
-        editDepartment(new Department());
+        editPayTerm(new PayTerm());
     }
 
-    private void editDepartment(Department department) {
-        if (department == null) {
+    private void editPayTerm(PayTerm payTerm) {
+        if (payTerm == null) {
             closeEditor();
         } else {
-            form.setDepartment(department);
+            form.setPayTerm(payTerm);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setDepartment(null);
+        form.setPayTerm(null);
         form.setVisible(false); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(departmentService.findAll(filterText.getValue()));
+        grid.setItems(payTermService.findAll(filterText.getValue()));
     }
 }
 

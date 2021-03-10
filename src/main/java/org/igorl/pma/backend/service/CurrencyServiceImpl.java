@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CurrencyServiceImpl implements ICurrencyService{
@@ -25,15 +24,12 @@ public class CurrencyServiceImpl implements ICurrencyService{
     }
 
     @Override
-    public Currency findById(long theId) {
-
-        Optional<Currency> result = currencyRepository.findById(theId);
-        Currency theCurrency;
-        if (result.isPresent()) theCurrency = result.get();
-        else {
-            throw new RuntimeException("Did not find currency id" + theId);
+    public List<Currency> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return currencyRepository.findAll();
+        } else {
+            return currencyRepository.search(stringFilter);
         }
-        return theCurrency;
     }
 
     @Override
