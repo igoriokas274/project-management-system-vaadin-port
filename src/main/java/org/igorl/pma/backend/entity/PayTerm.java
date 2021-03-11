@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
@@ -23,7 +24,8 @@ public class PayTerm extends Auditable {
     private Long termId;
 
     // TODO: Check compatibility with BigDecimalFiled math actions [check PayTermForm.class]
-    @Column(name = "term", nullable = false, unique = true)
+    @NotNull
+    @Column(name = "term", unique = true)
     private Integer term;
 
     @JsonIgnore

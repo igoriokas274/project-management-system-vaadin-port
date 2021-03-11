@@ -6,13 +6,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "vat_value")
@@ -24,10 +25,13 @@ public class VATValue extends Auditable {
     @Column(name = "vatId", nullable = false, unique = true)
     private Long vatId;
 
-    @Column(name = "description", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "description")
     private String description;
 
-    @Column(name = "vatValue", nullable = false)
+    @NotNull
+    @Column(name = "vatValue")
     @Digits(integer=3, fraction=2)
     private BigDecimal vatValue;
 

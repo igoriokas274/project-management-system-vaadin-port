@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
@@ -22,10 +24,14 @@ public class Currency extends Auditable {
     @Column(name = "currencyId", nullable = false)
     private Long currencyId;
 
-    @Column(name = "currencyCode", nullable = false, unique = true, length =3) // ISO 4217 code format
+    @NotNull
+    @NotEmpty
+    @Column(name = "currencyCode", unique = true, length =3) // ISO 4217 code format
     private String currencyCode;
 
-    @Column(name = "currencyName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "currencyName")
     private String currencyName;
 
     @Column(name = "closed", columnDefinition = "int default 0")

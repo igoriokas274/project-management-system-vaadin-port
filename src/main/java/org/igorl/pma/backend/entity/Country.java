@@ -38,16 +38,16 @@ public class Country extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "country")
     private List<Customer> customers;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "country")
     private List<Supplier> suppliers;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "country", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<StockType> stockTypes;
+    @OneToMany(mappedBy = "country")
+    private List<StockType> stockTypes = new LinkedList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "country")
