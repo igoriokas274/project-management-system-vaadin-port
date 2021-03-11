@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class VATValueImpl implements IVATValueService {
@@ -21,16 +20,12 @@ public class VATValueImpl implements IVATValueService {
     public List<VATValue> findAll(){return vatValueRepository.findAll();}
 
     @Override
-    public VATValue findById(long theId) {
-
-        Optional<VATValue> result = vatValueRepository.findById(theId);
-        VATValue theVATValue;
-        if (result.isPresent()){
-            theVATValue = result.get();
+    public List<VATValue> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return vatValueRepository.findAll();
         } else {
-            throw new RuntimeException("Did not find VAT value id" + theId);
+            return vatValueRepository.search(searchTerm);
         }
-        return theVATValue;
     }
 
     @Override

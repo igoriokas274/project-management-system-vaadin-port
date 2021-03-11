@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
@@ -22,7 +24,9 @@ public class ProjectStatus extends Auditable {
     @Column(name = "projectStatusId", nullable = false, unique = true)
     private Long projectStatusId;
 
-    @Column(name = "projectStatusName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "projectStatusName")
     private String projectStatusName;
 
     @JsonIgnore

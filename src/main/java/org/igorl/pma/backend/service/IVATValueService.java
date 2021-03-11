@@ -7,7 +7,7 @@ import java.util.List;
 public interface IVATValueService {
 
     List<VATValue> findAll();
-    VATValue findById(long theId);
+    List<VATValue> findAll(String searchTerm);
     void save (VATValue theVATValue);
     void deleteById(long theId);
 }

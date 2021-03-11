@@ -14,32 +14,33 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import org.igorl.pma.backend.entity.PayTerm;
-import org.igorl.pma.backend.service.PayTermServiceImpl;
+import org.igorl.pma.backend.entity.StockType;
+import org.igorl.pma.backend.service.CountryServiceImpl;
+import org.igorl.pma.backend.service.StockTypeImpl;
 import org.igorl.pma.ui.MainLayout;
 
 
-@Route(value = "settings/payterms", layout = MainLayout.class)
-@PageTitle("Payment Terms | PMA")
+@Route(value = "settings/stocktype", layout = MainLayout.class)
+@PageTitle("Stock Types | PMA")
 @CssImport("./styles/shared-styles.css")
-public class PayTermListView extends VerticalLayout {
+public class StockTypeListView extends VerticalLayout {
 
-    private PayTermServiceImpl payTermService;
-    private Grid<PayTerm> grid = new Grid<>(PayTerm.class);
+    private StockTypeImpl stockType;
+    private Grid<StockType> grid = new Grid<>(StockType.class);
     private TextField filterText = new TextField();
-    private PayTermForm form;
+    private StockTypeForm form;
 
-    public PayTermListView(PayTermServiceImpl thePayTermService) {
-        this.payTermService = thePayTermService;
+
+    public StockTypeListView(StockTypeImpl stockType, CountryServiceImpl countryService) {
+        this.stockType = stockType;
         addClassName("list-view");
         setSizeFull();
         configureGrid();
 
-
-        form = new PayTermForm();
-        form.addListener(PayTermForm.SaveEvent.class, this::savePayForm);
-        form.addListener(PayTermForm.DeleteEvent.class, this::deletePayForm);
-        form.addListener(PayTermForm.CloseEvent.class, e -> closeEditor());
+        form = new StockTypeForm(countryService.findAll());
+        form.addListener(StockTypeForm.SaveEvent.class, this::saveStockType);
+        form.addListener(StockTypeForm.DeleteEvent.class, this::deleteStockType);
+        form.addListener(StockTypeForm.CloseEvent.class, e -> closeEditor());
 
         closeEditor();
 
@@ -64,70 +65,77 @@ public class PayTermListView extends VerticalLayout {
         routerLinks.add(countryList, currencyList, departmentList, payTermList, projectStatusList, projectTypeList,
                 quotationStatusList, stockTypeList, vatValueList); // Here you can add RouterLinks
 
-        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+        add(new MainLayout().createSplitLayout(icon, pageName, routerLinks, content));
 
         updateList();
-    }
-
-    private void savePayForm(PayTermForm.SaveEvent event) {
-        payTermService.save(event.getPayTerm());
-        updateList();
-        closeEditor();
-    }
-
-    private void deletePayForm(PayTermForm.DeleteEvent event) {
-        payTermService.deleteById(event.getPayTerm().getTermId());
-        updateList();
-        closeEditor();
-    }
-
-    public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Term...");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
-
-        Button addPayTermButton = new Button("Add payment term");
-        addPayTermButton.addClickListener(click -> addPayTerm());
-
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addPayTermButton);
-        toolbar.addClassName("toolbar");
-
-        return toolbar;
     }
 
     public void configureGrid() {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("termId", "term");
-        grid.getColumns().forEach(payTermColumn -> payTermColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editPayTerm(event.getValue()));
+        grid.removeColumnByKey("closed");
+        grid.removeColumnByKey("addressLine1");
+        grid.removeColumnByKey("addressLine2");
+        grid.removeColumnByKey("city");
+        grid.removeColumnByKey("zipCode");
+        grid.setColumns("stockId", "stockName");
+        grid.addColumn(StockType::getFullAddress, "fullAddress").setHeader("Full address");
+        grid.addColumn(StockType::isClosed, "closed").setHeader("Closed");
+        grid.getColumns().forEach(stockTypeColumn -> stockTypeColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editStockType(event.getValue()));
     }
 
-    void addPayTerm() {
+    public HorizontalLayout getToolbar() {
+        filterText.setPlaceholder("Filter by Stock Type...");
+        filterText.setClearButtonVisible(true);
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+        filterText.addValueChangeListener(e -> updateList());
+
+        Button addStockTypeButton = new Button("Add stock type");
+        addStockTypeButton.addClickListener(click -> addStockType());
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addStockTypeButton);
+        toolbar.addClassName("toolbar");
+
+        return toolbar;
+    }
+
+    private void saveStockType(StockTypeForm.SaveEvent event) {
+        stockType.save(event.getStockType());
+        updateList();
+        closeEditor();
+    }
+
+    private void deleteStockType(StockTypeForm.DeleteEvent event) {
+        stockType.deleteById(event.getStockType().getStockId());
+        updateList();
+        closeEditor();
+    }
+
+    void addStockType() {
         grid.asSingleSelect().clear();
-        editPayTerm(new PayTerm());
+        editStockType(new StockType());
     }
 
-    private void editPayTerm(PayTerm payTerm) {
-        if (payTerm == null) {
+    private void editStockType(StockType stockType) {
+        if (stockType == null) {
             closeEditor();
         } else {
-            form.setPayTerm(payTerm);
+            form.setStockType(stockType);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setPayTerm(null);
+        form.setStockType(null);
         form.setVisible(false); // Change to false if edit panel closing needed
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(payTermService.findAll(filterText.getValue()));
+        grid.setItems(stockType.findAll(filterText.getValue()));
     }
 }
 

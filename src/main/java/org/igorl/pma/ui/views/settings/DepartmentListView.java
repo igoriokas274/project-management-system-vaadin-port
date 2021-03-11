@@ -55,12 +55,14 @@ public class DepartmentListView extends VerticalLayout {
         RouterLink countryList = new RouterLink("Countries", CountryListView.class);
         RouterLink currencyList = new RouterLink("Currencies", CurrencyListView.class);
         RouterLink departmentList = new RouterLink("Departments", DepartmentListView.class);
-        RouterLink payTermList = new RouterLink("Pay Terms", PayTermListView.class);
-        RouterLink projectStatusList = new RouterLink("Project status", ProjectStatusListView.class);
-        RouterLink projectTypeList = new RouterLink("Project type", ProjectTypeListView.class);
-        RouterLink quotationStatusList = new RouterLink("Quotation status", QuotationStatusListView.class);
+        RouterLink payTermList = new RouterLink("Payment Terms", PayTermListView.class);
+        RouterLink projectStatusList = new RouterLink("Project Statuses", ProjectStatusListView.class);
+        RouterLink projectTypeList = new RouterLink("Project Types", ProjectTypeListView.class);
+        RouterLink quotationStatusList = new RouterLink("Quotation Statuses", QuotationStatusListView.class);
+        RouterLink stockTypeList = new RouterLink("Stock Types", StockTypeListView.class);
+        RouterLink vatValueList = new RouterLink("VAT values", VatValueListView.class);
         routerLinks.add(countryList, currencyList, departmentList, payTermList, projectStatusList, projectTypeList,
-                quotationStatusList); // Here you can add RouterLinks
+                quotationStatusList, stockTypeList, vatValueList); // Here you can add RouterLinks
 
         add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
 
