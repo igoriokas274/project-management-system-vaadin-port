@@ -13,17 +13,21 @@
 }
 
 .drawer-icons {
-    opacity: 0.54;
-    color: black;
+    color: var(--lumo-tertiary-text-color);
 }
 
 .drawer-icons:hover {
     opacity: 0.87;
-    color: green;
+    color: var(--lumo-primary-color);
+}
+
+.drawer-icons[highlight] {
+    opacity: 0.87;
+    color: var(--lumo-primary-color);
 }
 
 :host {
-  --vaadin-app-layout-drawer-offset-size: 4.5rem;
+  --vaadin-app-layout-drawer-offset-size: 3rem;
 }
 
 [part="drawer"] {
@@ -39,9 +43,16 @@
     }
 }
 
+a {
+    color: var(--lumo-tertiary-text-color);
+}
+
+a:hover {
+    color: var(--lumo-primary-text-color);
+}
+
 a[highlight] {
-    font-weight: bold;
-    text-decoration: underline;
+    color: var(--lumo-primary-text-color);
 }
 
 .header {

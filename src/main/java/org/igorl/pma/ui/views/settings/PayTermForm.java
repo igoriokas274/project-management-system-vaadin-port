@@ -8,6 +8,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
@@ -20,6 +21,7 @@ public class PayTermForm extends FormLayout {
 
     // TODO: Check compatibility with BigDecimalFiled math actions [check PayTerm entity]
     IntegerField term = new IntegerField("Pay term", "Pay term");
+    TextField description = new TextField("Description", "Description");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -29,12 +31,22 @@ public class PayTermForm extends FormLayout {
 
     public PayTermForm() {
 
+        FormLayout fieldLayout = new FormLayout();
+
         addClassName("form");
         binder.bindInstanceFields(this);
         term.setHasControls(true);
         term.setMin(0);
+        description.setClearButtonVisible(true);
 
-        add(term, createButtonsLayout());
+        fieldLayout.add(term, description);
+
+        fieldLayout.setResponsiveSteps(
+                new ResponsiveStep("25em", 1),
+                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("40em", 3));
+
+        add(fieldLayout, createButtonsLayout());
     }
 
     private HorizontalLayout createButtonsLayout() {

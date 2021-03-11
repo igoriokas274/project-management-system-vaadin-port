@@ -100,7 +100,7 @@ public class PayTermListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("termId", "term");
+        grid.setColumns("termId", "term", "description");
         grid.getColumns().forEach(payTermColumn -> payTermColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editPayTerm(event.getValue()));
     }

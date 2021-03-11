@@ -5,13 +5,13 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "pay_term")
@@ -28,12 +28,17 @@ public class PayTerm extends Auditable {
     @Column(name = "term", unique = true)
     private Integer term;
 
+    @NotNull
+    @NotEmpty
+    @Column(name = "description")
+    private String description;
+
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payTerm", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "payTerm")
     private List<Project> projects;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "payTerm", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "payTerm")
     private List<Supplier> suppliers;
 
 }

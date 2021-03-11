@@ -5,11 +5,12 @@ import org.igorl.pma.backend.enums.Gender;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "contact")
@@ -20,6 +21,9 @@ public class Contact extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contactId", nullable = false, unique = true)
     private Long contactId;
+
+    @NotNull
+    @NotEmpty
     @Column(name = "firstName", nullable = false)
     private String firstName;
 
@@ -45,12 +49,15 @@ public class Contact extends Auditable {
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "customerId")
     private Customer customer;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "supplierId")
     private Supplier supplier;
 
+    public String getFullName() {
+        return firstName  + " " + lastName;
+    }
 }

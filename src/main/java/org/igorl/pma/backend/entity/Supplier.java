@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
@@ -21,7 +23,9 @@ public class Supplier extends Auditable {
     @Column(name = "supplierId", nullable = false, unique = true)
     private Long supplierId;
 
-    @Column(name = "supplierName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "supplierName")
     private String supplierName;
 
     @Column(name = "supplierRegistrationNumber")
@@ -63,18 +67,18 @@ public class Supplier extends Auditable {
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
     private List<Contact> contacts;
 
     @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "term")
+    @ManyToOne
+    @JoinColumn(name = "termId")
     private PayTerm payTerm;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "currencyId")
     private Currency currency;
 

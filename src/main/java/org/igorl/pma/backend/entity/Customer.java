@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
@@ -21,6 +23,8 @@ public class Customer extends Auditable {
     @Column(name = "customerId", nullable = false, unique = true)
     private Long customerId;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "customerName", nullable = false)
     private String customerName;
 
@@ -64,18 +68,18 @@ public class Customer extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "customer")
     private List<Project> projects;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "customer")
     private List<Contact> contacts;
 
     @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "currencyId")
     private Currency currency;
 

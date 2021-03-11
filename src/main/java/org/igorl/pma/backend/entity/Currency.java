@@ -12,7 +12,6 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "currency")
@@ -38,11 +37,11 @@ public class Currency extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "currency", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "currency")
     private List<Customer> customers;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "currency", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "currency")
     private List<Supplier> suppliers;
 
 }

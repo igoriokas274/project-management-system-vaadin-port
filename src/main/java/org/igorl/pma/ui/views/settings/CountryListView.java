@@ -64,21 +64,18 @@ public class CountryListView extends VerticalLayout {
         routerLinks.add(countryList, currencyList, departmentList, payTermList, projectStatusList, projectTypeList,
                 quotationStatusList, stockTypeList, vatValueList); // Here you can add RouterLinks
 
-        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+        add(new MainLayout().createSplitLayout(icon, pageName, routerLinks, content));
 
         updateList();
     }
 
-    private void saveCountry(CountryForm.SaveEvent event) {
-        countryService.save(event.getCountry());
-        updateList();
-        closeEditor();
-    }
-
-    private void deleteCountry(CountryForm.DeleteEvent event) {
-        countryService.deleteById(event.getCountry().getCountryId());
-        updateList();
-        closeEditor();
+    public void configureGrid() {
+        grid.addClassName("grid");
+        grid.setSizeFull();
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
+        grid.setColumns("countryId", "countryCode", "countryName", "closed");
+        grid.getColumns().forEach(CountryColumn -> CountryColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editCountry(event.getValue()));
     }
 
     public HorizontalLayout getToolbar() {
@@ -96,13 +93,16 @@ public class CountryListView extends VerticalLayout {
         return toolbar;
     }
 
-    public void configureGrid() {
-        grid.addClassName("grid");
-        grid.setSizeFull();
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("countryId", "countryCode", "countryName", "closed");
-        grid.getColumns().forEach(CountryColumn -> CountryColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editCountry(event.getValue()));
+    private void saveCountry(CountryForm.SaveEvent event) {
+        countryService.save(event.getCountry());
+        updateList();
+        closeEditor();
+    }
+
+    private void deleteCountry(CountryForm.DeleteEvent event) {
+        countryService.deleteById(event.getCountry().getCountryId());
+        updateList();
+        closeEditor();
     }
 
     void addCountry() {
