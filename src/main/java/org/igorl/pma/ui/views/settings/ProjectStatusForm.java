@@ -18,7 +18,7 @@ public class ProjectStatusForm extends FormLayout {
 
     private ProjectStatus projectStatus;
 
-    TextField projectStatusName = new TextField("Project status");
+    TextField projectStatusName = new TextField("Project status", "Project status");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");

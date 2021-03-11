@@ -19,8 +19,8 @@ public class VatValueForm extends FormLayout {
 
     private VATValue value;
 
-    TextField description = new TextField("Description");
-    BigDecimalField vatValue = new BigDecimalField("VAT value");
+    TextField description = new TextField("Description", "Description");
+    BigDecimalField vatValue = new BigDecimalField("VAT value", "VAT value");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -35,9 +35,7 @@ public class VatValueForm extends FormLayout {
         addClassName("form");
         binder.bindInstanceFields(this);
 
-        description.setPlaceholder("Description");
         description.setClearButtonVisible(true);
-        vatValue.setPlaceholder("VAT value");
         vatValue.setClearButtonVisible(true);
 
         fieldLayout.add(description, vatValue);

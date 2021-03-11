@@ -25,9 +25,9 @@ public class UserForm extends FormLayout {
 
     private UserAccount userAccount;
 
-    public TextField userName = new TextField("Username");
+    public TextField userName = new TextField("Username","Username");
     // TODO: Password should not be populated on edit
-    PasswordField password = new PasswordField("Password");
+    PasswordField password = new PasswordField("Password","Password");
     Checkbox enabled = new Checkbox("Enabled");
     ComboBox<UserRoles> role = new ComboBox<>("Role");
     ComboBox<Employee> employee = new ComboBox<>("Employee");
@@ -42,14 +42,12 @@ public class UserForm extends FormLayout {
 
         addClassName("form");
         binder.bindInstanceFields(this);
-        userName.setPlaceholder("Username");
         userName.setClearButtonVisible(true);
-        password.setPlaceholder("Password");
         password.setClearButtonVisible(true);
-        employee.setPlaceholder("Set Employee...");
+        employee.setPlaceholder("Select an employee..");
         employee.setItems(employees);
         employee.setItemLabelGenerator(Employee::getFullName);
-        role.setPlaceholder("Set Role...");
+        role.setPlaceholder("Select a role..");
         role.setItems(UserRoles.values());
 
         add(userName, password, role, employee, enabled, createButtonsLayout());

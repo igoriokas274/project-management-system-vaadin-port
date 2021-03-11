@@ -18,7 +18,7 @@ public class ProjectTypeForm extends FormLayout {
 
     private ProjectType projectType;
 
-    TextField projectTypeName = new TextField("Project type");
+    TextField projectTypeName = new TextField("Project type", "Project type");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");

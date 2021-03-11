@@ -7,6 +7,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.igorl.pma.ui.MainLayout;
 
 @Route(value = "projects", layout = MainLayout.class)
@@ -22,7 +23,9 @@ public class ProjectPanelView extends VerticalLayout {
         Icon icon = VaadinIcon.COMPILE.create();
         String pageName = "Project Panel";
         VerticalLayout routerLinks = new VerticalLayout();
-        routerLinks.add(); // Here you can add RouterLinks
+        RouterLink customerList = new RouterLink("Customers", CustomerListView.class);
+        RouterLink contactList = new RouterLink("Contacts", ContactListView.class);
+        routerLinks.add(customerList, contactList); // Here you can add RouterLinks
         Label content = new Label("This section is under construction");
 
         add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));

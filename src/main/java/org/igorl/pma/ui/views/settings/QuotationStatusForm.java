@@ -18,7 +18,7 @@ public class QuotationStatusForm extends FormLayout {
 
     private QuotationStatus quotationStatus;
 
-    TextField quotationStatusName = new TextField("Quotation status");
+    TextField quotationStatusName = new TextField("Quotation status", "Quotation status");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");

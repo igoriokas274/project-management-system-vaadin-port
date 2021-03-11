@@ -23,8 +23,8 @@ public class CountryForm extends FormLayout {
 
     private Country country;
 
-    TextField countryCode = new TextField("Country code");
-    TextField countryName = new TextField("Country name");
+    TextField countryCode = new TextField("Country code", "Country code");
+    TextField countryName = new TextField("Country name", "Country name");
     Checkbox closed = new Checkbox("Closed");
 
     Button save = new Button("Save");
@@ -39,15 +39,11 @@ public class CountryForm extends FormLayout {
 
         addClassName("form");
         binder.bindInstanceFields(this);
-        countryCode.setLabel("Country code");
-        countryCode.setPlaceholder("Enter country code..");
         countryCode.setClearButtonVisible(true);
         countryCode.setMaxLength(2);
         binder.forField(countryCode)
                 .withValidator(new RegexpValidator("Not a valid country code", "[A-Z]{2}"))
                 .bind(Country::getCountryCode, Country::setCountryCode);
-        countryName.setLabel("Country name");
-        countryName.setPlaceholder("Enter country name..");
         countryName.setClearButtonVisible(true);
 
         fieldLayout.add(countryCode, closed);

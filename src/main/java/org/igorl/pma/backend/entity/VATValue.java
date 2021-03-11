@@ -32,7 +32,7 @@ public class VATValue extends Auditable {
 
     @NotNull
     @Column(name = "vatValue")
-    @Digits(integer=3, fraction=2)
+    @Digits(integer=2, fraction=2)
     private BigDecimal vatValue;
 
     @JsonIgnore
