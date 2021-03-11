@@ -19,7 +19,7 @@ public class DepartmentForm extends FormLayout {
 
     private Department department;
 
-    TextField departmentName = new TextField("Department name");
+    TextField departmentName = new TextField("Department name", "Department name");
     Checkbox closed = new Checkbox("Closed");
 
     Button save = new Button("Save");
@@ -32,8 +32,6 @@ public class DepartmentForm extends FormLayout {
 
         addClassName("form");
         binder.bindInstanceFields(this);
-        departmentName.setLabel("Department name");
-        departmentName.setPlaceholder("Enter department name..");
 
         add(departmentName, closed, createButtonsLayout());
     }

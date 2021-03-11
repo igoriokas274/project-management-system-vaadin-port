@@ -23,8 +23,8 @@ public class CurrencyForm extends FormLayout {
 
     private Currency currency;
 
-    TextField currencyCode = new TextField("Currency code");
-    TextField currencyName = new TextField("Currency name");
+    TextField currencyCode = new TextField("Currency code", "Currency code");
+    TextField currencyName = new TextField("Currency name", "Currency name");
     Checkbox closed = new Checkbox("Closed");
 
     Button save = new Button("Save");
@@ -39,15 +39,11 @@ public class CurrencyForm extends FormLayout {
 
         addClassName("form");
         binder.bindInstanceFields(this);
-        currencyCode.setLabel("Currency code");
-        currencyCode.setPlaceholder("Enter currency code..");
         currencyCode.setClearButtonVisible(true);
         currencyCode.setMaxLength(3);
         binder.forField(currencyCode)
                 .withValidator(new RegexpValidator("Not a valid currency code", "[A-Z]{3}"))
                 .bind(Currency::getCurrencyCode, Currency::setCurrencyCode);
-        currencyName.setLabel("Currency name");
-        currencyName.setPlaceholder("Enter currency name..");
         currencyName.setClearButtonVisible(true);
 
         fieldLayout.add(currencyCode, closed);

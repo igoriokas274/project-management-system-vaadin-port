@@ -23,11 +23,11 @@ public class StockTypeForm extends FormLayout {
 
     private StockType stockType;
 
-    TextField stockName = new TextField("Stock name");
-    TextField addressLine1 = new TextField("Address Line 1");
-    TextField addressLine2 = new TextField("Address Line 2");
-    TextField city = new TextField("City");
-    TextField zipCode = new TextField("Zip Code");
+    TextField stockName = new TextField("Stock name", "Stock name");
+    TextField addressLine1 = new TextField("Address Line 1", "Address Line 1");
+    TextField addressLine2 = new TextField("Address Line 2", "Address Line 2");
+    TextField city = new TextField("City", "City");
+    TextField zipCode = new TextField("Zip Code","Zip Code");
     ComboBox<Country> country = new ComboBox<>("Country");
     Checkbox closed = new Checkbox("Closed");
 
@@ -44,17 +44,13 @@ public class StockTypeForm extends FormLayout {
         addClassName("form");
         binder.bindInstanceFields(this);
 
-        stockName.setPlaceholder("Stock name");
         stockName.setClearButtonVisible(true);
-        addressLine1.setPlaceholder("Address Line 1");
         addressLine1.setClearButtonVisible(true);
-        addressLine2.setPlaceholder("Address Line 2");
         addressLine2.setClearButtonVisible(true);
-        city.setPlaceholder("City");
         city.setClearButtonVisible(true);
         country.setItems(countries);
         country.setItemLabelGenerator(Country::getCountryName);
-        zipCode.setPlaceholder("Zip code");
+        country.setPlaceholder("Select a country..");
         zipCode.setClearButtonVisible(true);
 
         fieldLayout.add(stockName, closed, addressLine1, addressLine2, city, zipCode, country);

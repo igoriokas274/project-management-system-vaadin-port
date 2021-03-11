@@ -19,7 +19,7 @@ public class PayTermForm extends FormLayout {
     private PayTerm payTerm;
 
     // TODO: Check compatibility with BigDecimalFiled math actions [check PayTerm entity]
-    IntegerField term = new IntegerField("Pay term");
+    IntegerField term = new IntegerField("Pay term", "Pay term");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
