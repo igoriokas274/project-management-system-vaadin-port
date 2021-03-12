@@ -38,14 +38,14 @@ public class VatValueForm extends FormLayout {
         description.setClearButtonVisible(true);
         vatValue.setClearButtonVisible(true);
 
-        fieldLayout.add(description, vatValue);
-        fieldLayout.setColspan(description, 1);
+        fieldLayout.add(vatValue, description);
         fieldLayout.setColspan(vatValue, 1);
+        fieldLayout.setColspan(description, 1);
 
         fieldLayout.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),
-                new ResponsiveStep("25em", 2),
-                new ResponsiveStep("30em", 3));
+                new ResponsiveStep("30em", 2),
+                new ResponsiveStep("40em", 3));
 
         add(fieldLayout, createButtonsLayout());
     }
@@ -57,7 +57,6 @@ public class VatValueForm extends FormLayout {
 
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
-        delete.addClickShortcut(Key.DELETE);
 
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, value)));

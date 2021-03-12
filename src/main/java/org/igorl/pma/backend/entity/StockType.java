@@ -52,6 +52,6 @@ public class StockType extends Auditable {
     private List<Item> items;
 
     public String getFullAddress() {
-        return addressLine1 + " " + addressLine2 + ", " + zipCode + ", " + city;
+        return addressLine1 + " " + addressLine2 + " " + zipCode + " " + city;
     }
 }

@@ -116,6 +116,6 @@ public class Employee extends Auditable {
     private Country country;
 
     public String getFullName() {
-            return firstName + " " + lastName;
+            return firstName + " " + middleName + " " + lastName;
     }
 }

@@ -72,7 +72,7 @@ public class VatValueListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("vatId", "description", "vatValue");
+        grid.setColumns("vatId", "vatValue", "description");
         grid.getColumns().forEach(stockTypeColumn -> stockTypeColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editVatValue(event.getValue()));
     }

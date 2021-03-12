@@ -40,10 +40,12 @@ public class PayTermForm extends FormLayout {
         description.setClearButtonVisible(true);
 
         fieldLayout.add(term, description);
+        fieldLayout.setColspan(term, 1);
+        fieldLayout.setColspan(description, 1);
 
         fieldLayout.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
         add(fieldLayout, createButtonsLayout());
@@ -56,7 +58,6 @@ public class PayTermForm extends FormLayout {
 
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
-        delete.addClickShortcut(Key.DELETE);
 
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, payTerm)));
