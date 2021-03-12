@@ -58,6 +58,6 @@ public class Contact extends Auditable {
     private Supplier supplier;
 
     public String getFullName() {
-        return firstName  + " " + lastName;
+        return firstName  + " " + middleName + " " + lastName;
     }
 }

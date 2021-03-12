@@ -43,7 +43,6 @@ public class DepartmentForm extends FormLayout {
 
         save.addClickShortcut(Key.ENTER);
         close.addClickShortcut(Key.ESCAPE);
-        delete.addClickShortcut(Key.DELETE);
 
         save.addClickListener(event -> validateAndSave());
         delete.addClickListener(event -> fireEvent(new DeleteEvent(this, department)));

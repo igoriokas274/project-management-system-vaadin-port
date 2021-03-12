@@ -8,13 +8,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "item")
@@ -26,6 +27,8 @@ public class Item extends Auditable {
     @Column(name = "itemId", nullable = false, unique = true)
     private Long itemId;
 
+    @NotEmpty
+    @NotNull
     @Column(name = "itemName", nullable = false)
     private String itemName;
 
@@ -40,7 +43,7 @@ public class Item extends Auditable {
     private String unit;
 
     @Column(name = "minStockLevel")
-    private Integer minStockLevel;
+    private Double minStockLevel;
 
     @Column(name = "salesPrice", precision = 10, scale = 2)
     @DecimalMin(value = "0.0", inclusive = false)
@@ -55,20 +58,20 @@ public class Item extends Auditable {
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "stockId")
     private StockType stockType;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "supplierId")
     private Supplier supplier;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "vatId")
     private VATValue vatValue;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "item")
     private List<ItemToQuotation> itemToQuotations;
 
 }

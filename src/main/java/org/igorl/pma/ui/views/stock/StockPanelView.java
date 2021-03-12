@@ -23,8 +23,9 @@ public class StockPanelView extends VerticalLayout {
         Icon icon = VaadinIcon.STOCK.create();
         String pageName = "Stock Panel";
         VerticalLayout routerLinks = new VerticalLayout();
+        RouterLink itemList = new RouterLink("Items", ItemListView.class);
         RouterLink supplierList = new RouterLink("Suppliers", SupplierListView.class);
-        routerLinks.add(supplierList); // Here you can add RouterLinks
+        routerLinks.add(itemList, supplierList); // Here you can add RouterLinks
         Label content = new Label("This section is under construction");
 
         add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
