@@ -24,6 +24,15 @@ public class ItemServiceImpl implements IItemService{
     }
 
     @Override
+    public List<Item> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return itemRepository.findAll();
+        } else {
+            return itemRepository.searchTerm(searchTerm);
+        }
+    }
+
+    @Override
     @Transactional
     public void save(Item theItem) {
         itemRepository.save(theItem);

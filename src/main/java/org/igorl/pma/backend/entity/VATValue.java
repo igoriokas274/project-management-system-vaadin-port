@@ -36,11 +36,11 @@ public class VATValue extends Auditable {
     private BigDecimal vatValue;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vatValue", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vatValue")
     private List<Item> items;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vatValue", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "vatValue")
     private List<ItemToQuotation> itemToQuotations;
 
 }

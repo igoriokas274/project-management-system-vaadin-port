@@ -14,38 +14,38 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import org.igorl.pma.backend.entity.Department;
+import org.igorl.pma.backend.entity.Employee;
+import org.igorl.pma.backend.entity.Item;
 import org.igorl.pma.backend.entity.Supplier;
-import org.igorl.pma.backend.service.CountryServiceImpl;
-import org.igorl.pma.backend.service.CurrencyServiceImpl;
-import org.igorl.pma.backend.service.PayTermServiceImpl;
-import org.igorl.pma.backend.service.SupplierServiceImpl;
+import org.igorl.pma.backend.service.*;
 import org.igorl.pma.ui.MainLayout;
 
-@Route(value = "stock/supplier", layout = MainLayout.class)
-@PageTitle("Suppliers | PMA")
+@Route(value = "stock/item", layout = MainLayout.class)
+@PageTitle("Items | PMA")
 @CssImport("./styles/shared-styles.css")
-public class SupplierListView extends VerticalLayout {
+public class ItemListView extends VerticalLayout {
 
-    public SupplierServiceImpl supplierService;
+    public ItemServiceImpl itemService;
 
-    public Grid<Supplier> grid = new Grid<>(Supplier.class);
+    public Grid<Item> grid = new Grid<>(Item.class);
     public TextField filterText = new TextField();
-    public org.igorl.pma.ui.views.stock.SupplierForm form;
+    public ItemForm form;
 
-    public SupplierListView(SupplierServiceImpl supplierService ,CountryServiceImpl countryService,
-                            PayTermServiceImpl payTermService,
-                            CurrencyServiceImpl currencyService) {
+    public ItemListView(ItemServiceImpl itemService , StockTypeImpl stockType,
+                        SupplierServiceImpl supplierService,
+                        VATValueImpl vatValue) {
 
-        this.supplierService = supplierService;
+        this.itemService = itemService;
         addClassName("list-view");
         setSizeFull();
 
         configureGrid();
 
-        form = new org.igorl.pma.ui.views.stock.SupplierForm(countryService.findAll(), payTermService.findAll(), currencyService.findAll());
-        form.addListener(org.igorl.pma.ui.views.stock.SupplierForm.SaveEvent.class, this::saveSupplier);
-        form.addListener(org.igorl.pma.ui.views.stock.SupplierForm.DeleteEvent.class, this::deleteSupplier);
-        form.addListener(org.igorl.pma.ui.views.stock.SupplierForm.CloseEvent.class, e -> closeEditor());
+        form = new ItemForm(stockType.findAll(), supplierService.findAll(), vatValue.findAll());
+        form.addListener(ItemForm.SaveEvent.class, this::saveItem);
+        form.addListener(ItemForm.DeleteEvent.class, this::deleteItem);
+        form.addListener(ItemForm.CloseEvent.class, e -> closeEditor());
         closeEditor();
 
         Div div = new Div(grid, form);
@@ -71,61 +71,70 @@ public class SupplierListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("supplierId", "supplierName", "closed");
-        grid.getColumns().forEach(supplierColumn -> supplierColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editSupplier(event.getValue()));
+
+        grid.removeColumnByKey("supplier");
+        grid.removeColumnByKey("closed");
+        grid.setColumns("itemId", "itemName", "itemType", "salesPrice", "purchasePrice");
+        grid.addColumn(item -> {
+            Supplier supplier = item.getSupplier();
+            return supplier == null ? "-" : supplier.getSupplierName();
+        }).setHeader("Supplier");
+        grid.addColumn(Item::isClosed, "closed").setHeader("Closed");
+
+        grid.getColumns().forEach(itemColumn -> itemColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editItem(event.getValue()));
     }
 
     public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Supplier...");
+        filterText.setPlaceholder("Filter by Item name...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addSupplierButton = new Button("Add supplier");
-        addSupplierButton.addClickListener(click -> addSupplier());
+        Button addItemButton = new Button("Add item");
+        addItemButton.addClickListener(click -> addItem());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addSupplierButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addItemButton);
         toolbar.addClassName("toolbar");
 
         return toolbar;
     }
 
-    private void saveSupplier(SupplierForm.SaveEvent event) {
-        supplierService.save(event.getSupplier());
+    private void saveItem(ItemForm.SaveEvent event) {
+        itemService.save(event.getItem());
         updateList();
         closeEditor();
     }
 
-    private void deleteSupplier(SupplierForm.DeleteEvent event) {
-        supplierService.deleteById(event.getSupplier().getSupplierId());
+    private void deleteItem(ItemForm.DeleteEvent event) {
+        itemService.deleteById(event.getItem().getItemId());
         updateList();
         closeEditor();
     }
 
-    void addSupplier() {
+    void addItem() {
         grid.asSingleSelect().clear();
-        editSupplier(new Supplier());
+        editItem(new Item());
     }
 
-    public void editSupplier(Supplier supplier) {
-        if (supplier == null) {
+    public void editItem(Item item) {
+        if (item == null) {
             closeEditor();
         } else {
-            form.setSupplier(supplier);
+            form.setItem(item);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setSupplier(null);
+        form.setItem(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(supplierService.findAll(filterText.getValue()));
+        grid.setItems(itemService.findAll(filterText.getValue()));
     }
 }
 

@@ -37,7 +37,7 @@ public class ItemToQuotation extends Auditable {
     @JoinColumn(name = "quotationId")
     private Quotation quotation;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "itemId")
     private Item item;
 

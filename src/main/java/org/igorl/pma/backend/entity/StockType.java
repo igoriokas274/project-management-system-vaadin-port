@@ -48,7 +48,7 @@ public class StockType extends Auditable {
     private Country country;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockType", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "stockType")
     private List<Item> items;
 
     public String getFullAddress() {
