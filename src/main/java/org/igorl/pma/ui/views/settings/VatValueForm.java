@@ -7,7 +7,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.textfield.BigDecimalField;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
@@ -20,7 +20,7 @@ public class VatValueForm extends FormLayout {
     private VATValue value;
 
     TextField description = new TextField("Description", "Description");
-    BigDecimalField vatValue = new BigDecimalField("VAT value", "VAT value");
+    NumberField vatValue = new NumberField("VAT value", "VAT value");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -36,7 +36,11 @@ public class VatValueForm extends FormLayout {
         binder.bindInstanceFields(this);
 
         description.setClearButtonVisible(true);
-        vatValue.setClearButtonVisible(true);
+        vatValue.setHasControls(true);
+        vatValue.setStep(0.1d);
+        vatValue.setMin(0);
+        vatValue.setMax(100);
+
 
         fieldLayout.add(vatValue, description);
         fieldLayout.setColspan(vatValue, 1);

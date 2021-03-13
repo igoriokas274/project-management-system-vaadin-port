@@ -18,6 +18,7 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import org.igorl.pma.backend.entity.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,6 +76,24 @@ public class ProjectForm extends FormLayout {
         payTerm.setItems(payTerms);
         payTerm.setPlaceholder("Select a payment term..");
         payTerm.setItemLabelGenerator(PayTerm::getDescription);
+
+        projectStartDate.addValueChangeListener(event -> {
+            LocalDate selectedDate = event.getValue();
+            LocalDate endDate = projectEndDate.getValue();
+            if (selectedDate != null) {
+                projectEndDate.setMin(selectedDate.plusDays(1));
+            } else {
+                projectEndDate.setMin(null);
+            }
+        });
+        projectEndDate.addValueChangeListener(event -> {
+            LocalDate selectedDate = event.getValue();
+            if (selectedDate != null) {
+                projectStartDate.setMax(selectedDate.minusDays(1));
+            } else {
+                projectStartDate.setMax(null);
+            }
+        });
 
         fieldLayout.add(projectName, projectMemo1, projectMemo2, customer, manager, projectStartDate, projectEndDate,
                 projectStatus, projectType, payTerm, closed);

@@ -1,14 +1,17 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.List;
 
 @ToString
@@ -32,8 +35,9 @@ public class VATValue extends Auditable {
 
     @NotNull
     @Column(name = "vatValue")
+    @DecimalMin(value = "0.0", inclusive = false)
     @Digits(integer=2, fraction=2)
-    private BigDecimal vatValue;
+    private Double vatValue;
 
     @JsonIgnore
     @OneToMany(mappedBy = "vatValue")

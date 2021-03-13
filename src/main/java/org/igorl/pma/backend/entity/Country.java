@@ -1,13 +1,15 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.LinkedList;
 import java.util.List;
 
 @ToString
@@ -47,9 +49,9 @@ public class Country extends Auditable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "country")
-    private List<StockType> stockTypes = new LinkedList<>();
+    private List<StockType> stockTypes;
 
     @JsonIgnore
     @OneToMany(mappedBy = "country")
-    private List<Employee> employees = new LinkedList<>();
+    private List<Employee> employees;
 }
