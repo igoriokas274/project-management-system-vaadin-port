@@ -50,8 +50,8 @@ public class CountryForm extends FormLayout {
         fieldLayout.add(countryName, 3);
 
         fieldLayout.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
         Paragraph help = new Paragraph(new Anchor("https://www.iban.com/country-codes", "ISO 3166 ALPHA-2 code format"));

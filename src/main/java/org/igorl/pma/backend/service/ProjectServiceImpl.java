@@ -24,6 +24,15 @@ public class ProjectServiceImpl implements IProjectService {
     }
 
     @Override
+    public List<Project> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return projectRepository.findAll();
+        } else {
+            return projectRepository.search(searchTerm);
+        }
+    }
+
+    @Override
     @Transactional
     public void save(Project theProject) {
         projectRepository.save(theProject);

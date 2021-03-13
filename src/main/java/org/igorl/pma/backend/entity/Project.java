@@ -1,20 +1,22 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "project")
@@ -26,18 +28,20 @@ public class Project extends Auditable {
     @Column(name = "projectId", nullable = false, unique = true)
     private Long projectId;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "projectName", nullable = false)
     private String projectName;
 
-    @Temporal(TemporalType.DATE)
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "projectStartDate", nullable = false)
-    private Date projectStartDate;
+    private LocalDate projectStartDate;
 
-    @Temporal(TemporalType.DATE)
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "projectEndDate", nullable = false)
-    private Date projectEndDate;
+    private LocalDate projectEndDate;
 
     @Column(name = "projectMemo1", columnDefinition="TEXT")
     private String projectMemo1;
@@ -48,27 +52,28 @@ public class Project extends Auditable {
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "projectStatusId")
     private ProjectStatus projectStatus;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "projectTypeId")
     private ProjectType projectType;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "customerId")
     private Customer customer;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "projects", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private Set<Employee> employees = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "manager")
+    private Employee manager;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "term")
     private PayTerm payTerm;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "project")
     private List<Quotation> quotations;
 
 }

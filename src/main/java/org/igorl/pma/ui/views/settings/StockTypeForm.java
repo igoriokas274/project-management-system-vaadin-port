@@ -58,8 +58,8 @@ public class StockTypeForm extends FormLayout {
         fieldLayout.setColspan(addressLine2, 3);
 
         fieldLayout.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
         add(fieldLayout, createButtonsLayout());
