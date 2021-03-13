@@ -40,6 +40,8 @@ public class UserForm extends FormLayout {
 
     public UserForm(List<Employee> employees) {
 
+        FormLayout fieldLayout = new FormLayout();
+
         addClassName("form");
         binder.bindInstanceFields(this);
         userName.setClearButtonVisible(true);
@@ -50,7 +52,14 @@ public class UserForm extends FormLayout {
         role.setPlaceholder("Select a role..");
         role.setItems(UserRoles.values());
 
-        add(userName, password, role, employee, enabled, createButtonsLayout());
+        fieldLayout.add(userName, password, role, employee, enabled);
+
+        fieldLayout.setResponsiveSteps(
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
+                new ResponsiveStep("40em", 3));
+
+        add(fieldLayout, createButtonsLayout());
     }
 
     private HorizontalLayout createButtonsLayout() {

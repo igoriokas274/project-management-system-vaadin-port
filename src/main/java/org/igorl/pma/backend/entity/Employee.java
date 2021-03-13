@@ -1,7 +1,10 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.igorl.pma.backend.enums.Gender;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,8 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @ToString
 @Setter
@@ -95,13 +97,9 @@ public class Employee extends Auditable {
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = "employee_project",
-            joinColumns = {@JoinColumn(name = "employeeId")},
-            inverseJoinColumns = {@JoinColumn(name = "projectId")}
-    )
-    private Set<Project> projects = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager")
+    private List<Project> projects;
 
     @ManyToOne
     @JoinColumn(name = "departmentId")

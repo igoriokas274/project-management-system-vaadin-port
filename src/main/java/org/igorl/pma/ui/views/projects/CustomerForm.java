@@ -82,13 +82,18 @@ public class CustomerForm extends FormLayout {
         bankAccount.setClearButtonVisible(true);
         bankName.setClearButtonVisible(true);
 
+        mainInfoForm.setColspan(customerName, 3);
+        mainInfoForm.setColspan(bankAccount, 3);
+        addInfoForm.setColspan(addressLine1, 3);
+        addInfoForm.setColspan(addressLine2, 3);
+
         mainInfoForm.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
         addInfoForm.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
         addInfoForm.setVisible(false);
 

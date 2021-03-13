@@ -1,7 +1,10 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,10 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @ToString
 @Setter
@@ -64,8 +64,9 @@ public class Project extends Auditable {
     @JoinColumn(name = "customerId")
     private Customer customer;
 
-    @ManyToMany(mappedBy = "projects")
-    private Set<Employee> employees;
+    @ManyToOne
+    @JoinColumn(name = "manager")
+    private Employee manager;
 
     @ManyToOne
     @JoinColumn(name = "term")

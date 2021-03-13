@@ -56,9 +56,10 @@ public class CustomerListView extends VerticalLayout {
         Icon icon = VaadinIcon.COMPILE.create();
         String pageName = "Project Panel";
         VerticalLayout routerLinks = new VerticalLayout();
+        RouterLink projectList = new RouterLink("Projects", ProjectListView.class);
         RouterLink customerList = new RouterLink("Customers", CustomerListView.class);
         RouterLink contactList = new RouterLink("Contacts", ContactListView.class);
-        routerLinks.add(customerList, contactList); // Here you can add RouterLinks
+        routerLinks.add(projectList, customerList, contactList); // Here you can add RouterLinks
 
         add(new MainLayout().createSplitLayout(icon, pageName, routerLinks, content));
 

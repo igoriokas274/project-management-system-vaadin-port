@@ -87,12 +87,12 @@ public class SupplierForm extends FormLayout {
         bankName.setClearButtonVisible(true);
 
         mainInfoForm.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
         addInfoForm.setResponsiveSteps(
-                new ResponsiveStep("25em", 1),
-                new ResponsiveStep("32em", 2),
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
         addInfoForm.setVisible(false);
 
