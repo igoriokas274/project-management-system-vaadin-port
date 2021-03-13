@@ -65,7 +65,7 @@ public class ContactForm extends FormLayout {
         supplier.setPlaceholder("Select a supplier..");
 
         fieldLayout.add(firstName, middleName, lastName, title, contactPhone, contactEmail, gender, customer,
-                supplier, close);
+                supplier, closed);
 
         fieldLayout.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),
