@@ -97,7 +97,8 @@ public class SupplierForm extends FormLayout {
         addInfoForm.setVisible(false);
 
         mainInfoForm.add(supplierName, supplierRegistrationNumber, supplierVATNumber, payTerm, currency,
-                bankName, bankAccount, bankCode, swift, closed);
+                bankName, bankCode, bankAccount, swift, closed);
+        mainInfoForm.setColspan(supplierName, 3);
         mainInfoForm.setColspan(bankCode, 1);
         mainInfoForm.setColspan(bankAccount, 2);
 
