@@ -24,6 +24,15 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
+    public List<Customer> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return customerRepository.findAll();
+        } else {
+            return customerRepository.search(searchTerm);
+        }
+    }
+
+    @Override
     @Transactional
     public void save(Customer theCustomer) {
         customerRepository.save(theCustomer);

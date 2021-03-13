@@ -4,12 +4,13 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "item_to_quotation")
@@ -21,9 +22,13 @@ public class ItemToQuotation extends Auditable {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "itemName", nullable = false)
     private String itemName;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "quantity", nullable = false)
     private double quantity;
 
@@ -33,15 +38,15 @@ public class ItemToQuotation extends Auditable {
     @Column(name = "purchasePrice", precision = 10, scale = 2)
     private BigDecimal purchasePrice;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "quotationId")
     private Quotation quotation;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "itemId")
     private Item item;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "vatId")
     private VATValue vatValue;
 

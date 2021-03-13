@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DepartmentServiceImpl implements IDepartmentService{
@@ -20,30 +19,28 @@ public class DepartmentServiceImpl implements IDepartmentService{
     }
 
     @Override
-    public List<Department> findAll() {return departmentRepository.findAll();}
+    public List<Department> findAll() {
+        return departmentRepository.findAll();
+    }
 
     @Override
-    public Department findById(long theId) {
-
-        Optional<Department> result = departmentRepository.findById(theId);
-        Department theDepartment;
-        if (result.isPresent()) theDepartment = result.get();
-        else {
-            throw new RuntimeException("Did not find department id" + theId);
+    public List<Department> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return departmentRepository.findAll();
+        } else {
+            return departmentRepository.search(stringFilter);
         }
-        return theDepartment;
     }
 
     @Override
     @Transactional
     public void save(Department theDepartment) {
         departmentRepository.save(theDepartment);
-
     }
 
     @Override
     @Transactional
     public void deleteById(long theId) {
-
+        departmentRepository.deleteById(theId);
     }
 }

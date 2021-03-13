@@ -1,20 +1,23 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.igorl.pma.backend.enums.Gender;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "employee")
@@ -26,18 +29,33 @@ public class Employee extends Auditable {
     @Column(name = "employeeId", nullable = false, unique = true)
     private Long employeeId;
 
-    @Embedded
-    private Name name;
+    @NotNull
+    @NotEmpty
+    @Column(name = "firstName")
+    private String firstName;
 
-    @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "contactPhone", column = @Column(name = "homePhone")),
-            @AttributeOverride(name = "contactEmail", column = @Column(name = "personalEmail"))
-    })
-    private Address address;
+    @Column(name = "middleName")
+    private String middleName;
 
-    @Embedded
-    private Bank bank;
+    @NotNull
+    @NotEmpty
+    @Column(name = "lastName")
+    private String lastName;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "addressLine1")
+    private String addressLine1;
+
+    @Column(name = "addressLine2")
+    private String addressLine2;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "zipCode")
+    private String zipCode;
 
     @Column(name = "officePhone")
     private String officePhone;
@@ -45,44 +63,57 @@ public class Employee extends Auditable {
     @Column(name = "mobilePhone")
     private String mobilePhone;
 
+    @Column(name = "homePhone")
+    private String homePhone;
+
     @Column(name = "workEmail")
     private String workEmail;
+
+    @Column(name = "personalEmail")
+    private String personalEmail;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", length = 1)
     private Gender gender;
 
-    @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dateOfBirth")
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
-    @Temporal(TemporalType.DATE)
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "dateOfEmployment", nullable = false)
-    private Date dateOfEmployment;
+    @Column(name = "dateOfEmployment")
+    private LocalDate dateOfEmployment;
+
+    @Column(name = "bankCode")
+    private String bankCode;
+
+    @Column(name = "bankName")
+    private String bankName;
+
+    @Column(name = "bankAccount")
+    private String bankAccount;
 
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(
-            name = "employee_project",
-            joinColumns = {@JoinColumn(name = "employeeId")},
-            inverseJoinColumns = {@JoinColumn(name = "projectId")}
-    )
-    private Set<Project> projects = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "manager")
+    private List<Project> projects;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "departmentId")
     private Department department;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "employee", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToOne(mappedBy = "employee")
     private UserAccount userAccount;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
 
+    public String getFullName() {
+            return firstName + " " + middleName + " " + lastName;
+    }
 }

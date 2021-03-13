@@ -24,8 +24,12 @@ public class ContactServiceImpl implements IContactService {
     }
 
     @Override
-    public Contact findById(long theId) {
-        return null;
+    public List<Contact> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return contactRepository.findAll();
+        } else {
+            return contactRepository.search(searchTerm);
+        }
     }
 
     @Override

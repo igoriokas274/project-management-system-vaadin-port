@@ -25,6 +25,15 @@ public class QuotationServiceImpl implements IQuotationService{
     }
 
     @Override
+    public List<Quotation> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return quotationRepository.findAll();
+        } else {
+            return quotationRepository.search(searchTerm);
+        }
+    }
+
+    @Override
     @Transactional
     public void save(Quotation theQuotation) {
 

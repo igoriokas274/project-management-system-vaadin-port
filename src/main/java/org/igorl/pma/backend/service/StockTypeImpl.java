@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StockTypeImpl implements IStockTypeService {
@@ -25,16 +24,12 @@ public class StockTypeImpl implements IStockTypeService {
     }
 
     @Override
-    public StockType findById(long theId) {
-
-        Optional<StockType> result = stockTypeRepository.findById(theId);
-        StockType theStockType;
-        if (result.isPresent()) {
-            theStockType = result.get();
+    public List<StockType> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return stockTypeRepository.findAll();
         } else {
-            throw new RuntimeException("Did not find Stock type id" + theId);
+            return stockTypeRepository.search(searchTerm);
         }
-        return theStockType;
     }
 
     @Override

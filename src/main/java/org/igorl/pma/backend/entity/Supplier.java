@@ -5,12 +5,13 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @ToString
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "supplier")
@@ -22,7 +23,9 @@ public class Supplier extends Auditable {
     @Column(name = "supplierId", nullable = false, unique = true)
     private Long supplierId;
 
-    @Column(name = "supplierName", nullable = false)
+    @NotNull
+    @NotEmpty
+    @Column(name = "supplierName")
     private String supplierName;
 
     @Column(name = "supplierRegistrationNumber")
@@ -31,36 +34,56 @@ public class Supplier extends Auditable {
     @Column(name = "supplierVATNumber")
     private String supplierVATNumber;
 
-    @Embedded
-    @AttributeOverrides(value = {
-            @AttributeOverride(name = "contactPhone", column = @Column(name = "supplierPhone")),
-            @AttributeOverride(name = "contactEmail", column = @Column(name = "supplierEmail"))
-    })
-    private Address address;
+    @Column(name = "addressLine1")
+    private String addressLine1;
 
-    @Embedded
-    private Bank bank;
+    @Column(name = "addressLine2")
+    private String addressLine2;
+
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "zipCode")
+    private String zipCode;
+
+    @Column(name = "supplierPhone")
+    private String contactPhone;
+
+    @Column(name = "supplierEmail")
+    private String contactEmail;
+
+    @Column(name = "SWIFT")
+    private String swift;
+
+    @Column(name = "bankCode")
+    private String bankCode;
+
+    @Column(name = "bankName")
+    private String bankName;
+
+    @Column(name = "bankAccount")
+    private String bankAccount;
 
     @Column(name = "closed", columnDefinition = "int default 0")
     private boolean isClosed;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
     private List<Contact> contacts;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "countryId")
     private Country country;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "term")
+    @ManyToOne
+    @JoinColumn(name = "termId")
     private PayTerm payTerm;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(name = "currencyId")
     private Currency currency;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "supplier")
     private List<Item> items;
 
 }

@@ -24,6 +24,15 @@ public class SupplierServiceImpl implements ISupplierService {
     }
 
     @Override
+    public List<Supplier> findAll(String searchTerm) {
+        if (searchTerm == null || searchTerm.isEmpty()) {
+            return supplierRepository.findAll();
+        } else {
+            return supplierRepository.search(searchTerm);
+        }
+    }
+
+    @Override
     @Transactional
     public void save(Supplier theSupplier) {
         supplierRepository.save(theSupplier);

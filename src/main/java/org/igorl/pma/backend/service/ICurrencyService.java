@@ -5,9 +5,8 @@ import org.igorl.pma.backend.entity.Currency;
 import java.util.List;
 
 public interface ICurrencyService {
-
     List<Currency> findAll();
-    Currency findById(long theId);
+    List<Currency> findAll(String stringFilter);
     void save(Currency theCurrency);
     void deleteById(long theId);
 }

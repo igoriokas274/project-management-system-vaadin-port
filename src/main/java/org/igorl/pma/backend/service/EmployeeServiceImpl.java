@@ -23,6 +23,18 @@ public class EmployeeServiceImpl implements IEmployeeService {
         return employeeRepository.findAll();
     }
 
+    public List<Employee> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return employeeRepository.findAll();
+        } else {
+            return employeeRepository.search(stringFilter);
+        }
+    }
+
+    public void delete(Employee employee) {
+        employeeRepository.delete(employee);
+    }
+
     @Override
     @Transactional
     public void save(Employee theEmployee) {
