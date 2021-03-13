@@ -24,13 +24,14 @@ public class ProjectPanelView extends VerticalLayout {
         String pageName = "Project Panel";
         VerticalLayout routerLinks = new VerticalLayout();
         RouterLink projectList = new RouterLink("Projects", ProjectListView.class);
+        RouterLink quotationList = new RouterLink("Quotations", QuotationListView.class);
         RouterLink customerList = new RouterLink("Customers", CustomerListView.class);
         RouterLink contactList = new RouterLink("Contacts", ContactListView.class);
-        routerLinks.add(projectList, customerList, contactList); // Here you can add RouterLinks
+        routerLinks.add(projectList, quotationList, customerList, contactList); // Here you can add RouterLinks
 
         Label content = new Label("This section is under construction");
 
-        add(new MainLayout().createSplitLayout(icon,pageName, routerLinks, content));
+        add(new MainLayout().createSplitLayout(icon, pageName, routerLinks, content));
     }
 
 }

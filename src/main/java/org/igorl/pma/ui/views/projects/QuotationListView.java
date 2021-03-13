@@ -14,36 +14,37 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
-import org.igorl.pma.backend.entity.Customer;
-import org.igorl.pma.backend.service.CountryServiceImpl;
-import org.igorl.pma.backend.service.CurrencyServiceImpl;
-import org.igorl.pma.backend.service.CustomerServiceImpl;
+import org.igorl.pma.backend.entity.Quotation;
+import org.igorl.pma.backend.service.ProjectServiceImpl;
+import org.igorl.pma.backend.service.QuotationServiceImpl;
+import org.igorl.pma.backend.service.QuotationStatusImpl;
 import org.igorl.pma.ui.MainLayout;
 
-@Route(value = "projects/customer", layout = MainLayout.class)
-@PageTitle("Customers | PMA")
+@Route(value = "projects/quotations", layout = MainLayout.class)
+@PageTitle("Quotations | PMA")
 @CssImport("./styles/shared-styles.css")
-public class CustomerListView extends VerticalLayout {
+public class QuotationListView extends VerticalLayout {
 
-    public CustomerServiceImpl customerService;
+    public QuotationServiceImpl quotationService;
 
-    public Grid<Customer> grid = new Grid<>(Customer.class);
+    public Grid<Quotation> grid = new Grid<>(Quotation.class);
     public TextField filterText = new TextField();
-    public CustomerForm form;
+    public QuotationForm form;
 
-    public CustomerListView(CustomerServiceImpl customerService , CountryServiceImpl countryService,
-                            CurrencyServiceImpl currencyService) {
+    public QuotationListView(QuotationServiceImpl quotationService,
+                             QuotationStatusImpl quotationStatus,
+                             ProjectServiceImpl projectService) {
 
-        this.customerService = customerService;
+        this.quotationService = quotationService;
         addClassName("list-view");
         setSizeFull();
 
         configureGrid();
 
-        form = new CustomerForm(countryService.findAll(), currencyService.findAll());
-        form.addListener(CustomerForm.SaveEvent.class, this::saveCustomer);
-        form.addListener(CustomerForm.DeleteEvent.class, this::deleteCustomer);
-        form.addListener(CustomerForm.CloseEvent.class, e -> closeEditor());
+        form = new QuotationForm(projectService.findAll(), quotationStatus.findAll());
+        form.addListener(QuotationForm.SaveEvent.class, this::saveQuotation);
+        form.addListener(QuotationForm.DeleteEvent.class, this::deleteQuotation);
+        form.addListener(QuotationForm.CloseEvent.class, e -> closeEditor());
         closeEditor();
 
         Div div = new Div(grid, form);
@@ -71,61 +72,63 @@ public class CustomerListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("customerId", "customerName", "closed");
-        grid.getColumns().forEach(supplierColumn -> supplierColumn.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(event -> editCustomer(event.getValue()));
+
+        grid.setColumns("quotationId", "quotationDate", "quotationTitle", "confirmed");
+
+        grid.getColumns().forEach(quotationColumn -> quotationColumn.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(event -> editQuotation(event.getValue()));
     }
 
     public HorizontalLayout getToolbar() {
-        filterText.setPlaceholder("Filter by Customer...");
+        filterText.setPlaceholder("Filter by title...");
         filterText.setClearButtonVisible(true);
         filterText.setValueChangeMode(ValueChangeMode.LAZY);
         filterText.addValueChangeListener(e -> updateList());
 
-        Button addCustomerButton = new Button("Add customer");
-        addCustomerButton.addClickListener(click -> addCustomer());
+        Button addQuotationButton = new Button("Add quotation");
+        addQuotationButton.addClickListener(click -> addQuotation());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addCustomerButton);
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addQuotationButton);
         toolbar.addClassName("toolbar");
 
         return toolbar;
     }
 
-    private void saveCustomer(CustomerForm.SaveEvent event) {
-        customerService.save(event.getCustomer());
+    private void saveQuotation(QuotationForm.SaveEvent event) {
+        quotationService.save(event.getQuotation());
         updateList();
         closeEditor();
     }
 
-    private void deleteCustomer(CustomerForm.DeleteEvent event) {
-        customerService.deleteById(event.getCustomer().getCustomerId());
+    private void deleteQuotation(QuotationForm.DeleteEvent event) {
+        quotationService.deleteById(event.getQuotation().getQuotationId());
         updateList();
         closeEditor();
     }
 
-    void addCustomer() {
+    void addQuotation() {
         grid.asSingleSelect().clear();
-        editCustomer(new Customer());
+        editQuotation(new Quotation());
     }
 
-    public void editCustomer(Customer customer) {
-        if (customer == null) {
+    public void editQuotation(Quotation quotation) {
+        if (quotation == null) {
             closeEditor();
         } else {
-            form.setCustomer(customer);
+            form.setQuotation(quotation);
             form.setVisible(true);
             addClassName("editing");
         }
     }
 
     private void closeEditor() {
-        form.setCustomer(null);
+        form.setQuotation(null);
         form.setVisible(false);
         removeClassName("editing");
     }
 
     private void updateList() {
-        grid.setItems(customerService.findAll(filterText.getValue()));
+        grid.setItems(quotationService.findAll(filterText.getValue()));
     }
 }
 
