@@ -93,7 +93,7 @@ public class CustomerForm extends FormLayout {
         addInfoForm.setVisible(false);
 
         mainInfoForm.add(customerName, customerRegistrationNumber, customerVATNumber, currency,
-                bankName, bankAccount, bankCode, swift, closed);
+                bankName, bankCode, bankAccount, swift, closed);
         mainInfoForm.setColspan(bankCode, 1);
         mainInfoForm.setColspan(bankAccount, 2);
 

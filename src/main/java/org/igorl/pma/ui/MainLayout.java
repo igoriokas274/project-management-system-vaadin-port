@@ -4,6 +4,7 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -103,9 +104,11 @@ public class MainLayout extends AppLayout {
         H5 view = new H5("View");
         Label greeting = new Label("Welcome back <Current User>!"); // TODO: bind with current session user
 
+        FormLayout primaryLayout = new FormLayout(layout, new Hr(), greeting, new Hr(), view, routerLinks);
+
         SplitLayout linkLayout = new SplitLayout();
 
-        linkLayout.addToPrimary(layout, new Hr(), greeting, new Hr(), view, routerLinks);
+        linkLayout.addToPrimary(primaryLayout);
         linkLayout.addToSecondary(content);
 
         linkLayout.setPrimaryStyle("maxWidth", "20rem");
