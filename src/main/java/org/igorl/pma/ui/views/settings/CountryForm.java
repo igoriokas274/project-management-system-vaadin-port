@@ -7,8 +7,10 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,13 +21,19 @@ import com.vaadin.flow.data.validator.RegexpValidator;
 import com.vaadin.flow.shared.Registration;
 import org.igorl.pma.backend.entity.Country;
 
+import java.util.Locale;
+
 public class CountryForm extends FormLayout {
 
     private Country country;
+    private Locale lithuanian = new Locale("lt");
 
     TextField countryCode = new TextField("Country code", "Country code");
     TextField countryName = new TextField("Country name", "Country name");
     Checkbox closed = new Checkbox("Closed");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -56,7 +64,13 @@ public class CountryForm extends FormLayout {
 
         Paragraph help = new Paragraph(new Anchor("https://www.iban.com/country-codes", "ISO 3166 ALPHA-2 code format"));
 
-        add(fieldLayout, createButtonsLayout(), help);
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, help, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

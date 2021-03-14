@@ -83,13 +83,13 @@ public class ProjectListView extends VerticalLayout {
         grid.addColumn(manager -> {
             Employee employee = manager.getManager();
             return employee == null ? "-" : employee.getFullName();
-        }).setHeader("Manager");
+        }).setHeader("Manager").setSortable(true);
         grid.addColumn(Project::getProjectStartDate, "projectStartDate").setHeader("Start date");
         grid.addColumn(Project::getProjectEndDate, "projectEndDate").setHeader("End date");
         grid.addColumn(status -> {
             ProjectStatus projectStatus = status.getProjectStatus();
             return projectStatus == null ? "-" : projectStatus.getProjectStatusName();
-        }).setHeader("Status");
+        }).setHeader("Status").setSortable(true);
         grid.addColumn(Project::isClosed, "closed").setHeader("Closed");
 
         grid.getColumns().forEach(projectColumn -> projectColumn.setAutoWidth(true));

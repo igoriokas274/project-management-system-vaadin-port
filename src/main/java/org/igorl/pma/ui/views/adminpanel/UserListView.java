@@ -102,7 +102,7 @@ public class UserListView extends VerticalLayout {
         grid.addColumn(userAccount -> {
             Employee employee = userAccount.getEmployee();
             return employee == null ? "-" : employee.getFullName();
-        }).setHeader("Assigned to...");
+        }).setHeader("Assigned to...").setSortable(true);
         grid.getColumns().forEach(userAccountColumn -> userAccountColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editUser(event.getValue()));
     }

@@ -25,7 +25,7 @@ INSERT INTO `employee` VALUES (1,'admin','2021-01-10 16:18:08','admin','2021-03-
 
 INSERT INTO `project` VALUES (1,'admin','2021-03-13 16:43:01','admin','2021-03-13 16:43:01',0,'2021-03-31','Platzfreundliches PVC-Rohr','','Technische Rohr zur Herstellung von Würsten','2021-02-01',3,2,9,1,2);
 
-INSERT INTO `quotation` VALUES (1,'admin','2021-03-13 16:47:20','user','2021-03-13 17:01:25',1,'2021-02-15','Trial delivery lot (about 315 km.)',1,2);
+INSERT INTO `quotation` VALUES (1,'admin','2021-03-13 16:47:20','user','2021-03-13 17:01:25',0,'2021-02-15','Trial delivery lot (about 315 km.)',1,2);
 
 INSERT INTO `item` VALUES (1,'user','2021-01-10 16:16:03','admin','2021-03-13 16:11:42',0,'','Installation works','SERVICE',0,23.00,32.00,'h',1,3,1),(2,'user','2021-01-22 13:50:47','admin','2021-03-13 16:11:48',0,'','Technical support annual subscription','SERVICE',0,11950.00,15000.00,'unit',1,3,1),(3,'user','2021-01-22 13:52:30','admin','2021-03-13 16:09:38',0,'','Road Sign 636 RA2','STOCK_ITEM',10,28.00,45.00,'unit',1,1,1),(4,'user','2021-01-22 13:56:50','admin','2021-03-13 16:09:52',0,'','Pipe UV 750N, 50/40','STOCK_ITEM',500,4.64,7.50,'m',1,2,1),(5,'user','2021-01-22 13:57:31','admin','2021-03-13 16:10:04',0,'','Pipe UV 750N, 75/61','STOCK_ITEM',500,7.50,9.99,'m',1,2,1);
 

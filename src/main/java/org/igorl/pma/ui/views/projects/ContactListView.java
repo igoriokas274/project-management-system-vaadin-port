@@ -88,11 +88,11 @@ public class ContactListView extends VerticalLayout {
         grid.addColumn(contact -> {
             Customer customer = contact.getCustomer();
             return customer == null ? "-" : customer.getCustomerName();
-        }).setHeader("Customer");
+        }).setHeader("Customer").setSortable(true);
         grid.addColumn(contact -> {
             Supplier supplier = contact.getSupplier();
             return supplier == null ? "-" : supplier.getSupplierName();
-        }).setHeader("Supplier");
+        }).setHeader("Supplier").setSortable(true);
         grid.addColumn(Contact::isClosed, "closed").setHeader("Closed");
 
         grid.getColumns().forEach(contactColumn -> contactColumn.setAutoWidth(true));

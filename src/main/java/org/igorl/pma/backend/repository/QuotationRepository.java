@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface QuotationRepository extends JpaRepository<Quotation, Long> {
 
-    @Query("select q from Quotation q where lower(q.quotationTitle) like lower(concat('%', searchTerm, '%'))")
+    @Query("select q from Quotation q where lower(q.quotationTitle) like lower(concat('%', :searchTerm, '%'))")
     List<Quotation> search(@Param("searchTerm") String searchTerm);
 }

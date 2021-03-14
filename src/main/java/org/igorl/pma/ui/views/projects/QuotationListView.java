@@ -14,6 +14,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import org.igorl.pma.backend.entity.Project;
 import org.igorl.pma.backend.entity.Quotation;
 import org.igorl.pma.backend.entity.QuotationStatus;
 import org.igorl.pma.backend.service.ProjectServiceImpl;
@@ -74,13 +75,18 @@ public class QuotationListView extends VerticalLayout {
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
+        grid.removeClassName("project");
         grid.removeColumnByKey("quotationStatus");
         grid.removeColumnByKey("confirmed");
         grid.setColumns("quotationId", "quotationDate", "quotationTitle");
+        grid.addColumn(component -> {
+            Project project = component.getProject();
+            return project == null ? "-" : project.getProjectName();
+        }).setHeader("Project").setSortable(true);
         grid.addColumn(status -> {
             QuotationStatus quotationStatus = status.getQuotationStatus();
             return quotationStatus == null ? "-" : quotationStatus.getQuotationStatusName();
-        }).setHeader("Status");
+        }).setHeader("Status").setSortable(true);
         grid.addColumn(Quotation::isConfirmed, "confirmed").setHeader("Confirmed");
 
         grid.getColumns().forEach(quotationColumn -> quotationColumn.setAutoWidth(true));
