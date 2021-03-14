@@ -34,11 +34,11 @@ public class PayTerm extends Auditable {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payTerm")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payTerm")
     private List<Project> projects;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payTerm")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payTerm")
     private List<Supplier> suppliers;
 
 }

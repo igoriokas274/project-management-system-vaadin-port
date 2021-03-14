@@ -37,11 +37,11 @@ public class Currency extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "currency")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "currency")
     private List<Customer> customers;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "currency")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "currency")
     private List<Supplier> suppliers;
 
 }

@@ -71,7 +71,7 @@ public class Item extends Auditable {
     private VATValue vatValue;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<ItemToQuotation> itemToQuotations;
 
 }

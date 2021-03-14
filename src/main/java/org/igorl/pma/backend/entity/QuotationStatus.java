@@ -29,7 +29,7 @@ public class QuotationStatus extends Auditable {
     private String quotationStatusName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "quotationStatus")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "quotationStatus")
     private List<Quotation> quotations;
 
 }

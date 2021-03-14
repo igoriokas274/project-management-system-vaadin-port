@@ -83,7 +83,7 @@ public class Supplier extends Auditable {
     private Currency currency;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "supplier")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier")
     private List<Item> items;
 
 }

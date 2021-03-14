@@ -33,7 +33,7 @@ public class Department extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "department")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
     private List<Employee> employees = new LinkedList<>();
 
 }

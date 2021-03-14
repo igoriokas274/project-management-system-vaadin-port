@@ -98,7 +98,7 @@ public class Employee extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "manager")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
     private List<Project> projects;
 
     @ManyToOne
@@ -106,7 +106,7 @@ public class Employee extends Auditable {
     private Department department;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "employee")
     private UserAccount userAccount;
 
     @ManyToOne

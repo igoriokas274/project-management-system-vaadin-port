@@ -40,11 +40,11 @@ public class VATValue extends Auditable {
     private Double vatValue;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "vatValue")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vatValue")
     private List<Item> items;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "vatValue")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vatValue")
     private List<ItemToQuotation> itemToQuotations;
 
 }
