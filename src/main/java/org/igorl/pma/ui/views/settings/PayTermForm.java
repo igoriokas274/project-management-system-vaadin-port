@@ -5,7 +5,9 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -15,13 +17,19 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import org.igorl.pma.backend.entity.PayTerm;
 
+import java.util.Locale;
+
 public class PayTermForm extends FormLayout {
 
     private PayTerm payTerm;
+    private Locale lithuanian = new Locale("lt");
 
     // TODO: Check compatibility with BigDecimalFiled math actions [check PayTerm entity]
     IntegerField term = new IntegerField("Pay term", "Pay term");
     TextField description = new TextField("Description", "Description");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -48,7 +56,13 @@ public class PayTermForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

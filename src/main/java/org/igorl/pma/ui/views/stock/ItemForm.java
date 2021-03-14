@@ -7,7 +7,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -20,10 +22,12 @@ import org.igorl.pma.backend.entity.*;
 import org.igorl.pma.backend.enums.ItemType;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ItemForm extends FormLayout {
 
     private Item item;
+    private Locale lithuanian = new Locale("lt");
 
     TextField itemName = new TextField("Item name", "Item name");
     TextArea itemDescription = new TextArea("Description", "Description");
@@ -36,6 +40,9 @@ public class ItemForm extends FormLayout {
     ComboBox<StockType> stockType = new ComboBox<>("Stock");
     ComboBox<Supplier> supplier = new ComboBox<>("Supplier");
     ComboBox<VATValue> vatValue = new ComboBox<>("VAT value");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -89,7 +96,13 @@ public class ItemForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

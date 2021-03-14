@@ -7,7 +7,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -19,10 +21,12 @@ import org.igorl.pma.backend.entity.*;
 import org.igorl.pma.backend.enums.Gender;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ContactForm extends FormLayout {
 
     private Contact contact;
+    private Locale lithuanian = new Locale("lt");
 
     TextField firstName = new TextField("First name", "First name");
     TextField middleName = new TextField("Middle name", "Middle name");
@@ -34,6 +38,9 @@ public class ContactForm extends FormLayout {
     Checkbox closed = new Checkbox("Closed");
     ComboBox<Customer> customer = new ComboBox<>("Customer");
     ComboBox<Supplier> supplier = new ComboBox<>("Supplier");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -72,7 +79,13 @@ public class ContactForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

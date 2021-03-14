@@ -7,7 +7,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -20,10 +22,12 @@ import org.igorl.pma.backend.entity.UserAccount;
 import org.igorl.pma.backend.enums.UserRoles;
 
 import java.util.List;
+import java.util.Locale;
 
 public class UserForm extends FormLayout {
 
     private UserAccount userAccount;
+    private Locale lithuanian = new Locale("lt");
 
     public TextField userName = new TextField("Username","Username");
     // TODO: Password should not be populated on edit
@@ -31,6 +35,9 @@ public class UserForm extends FormLayout {
     Checkbox enabled = new Checkbox("Enabled");
     ComboBox<UserRoles> role = new ComboBox<>("Role");
     ComboBox<Employee> employee = new ComboBox<>("Employee");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -59,7 +66,13 @@ public class UserForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

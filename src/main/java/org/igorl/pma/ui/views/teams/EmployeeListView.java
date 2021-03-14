@@ -83,7 +83,7 @@ public class EmployeeListView extends VerticalLayout {
         grid.addColumn(employee -> {
             Department department = employee.getDepartment();
             return department == null ? "-" : department.getDepartmentName();
-        }).setHeader("Department");
+        }).setHeader("Department").setSortable(true);
         grid.addColumn(Employee::getMobilePhone, "mobilePhone").setHeader("Mobile phone");
         grid.addColumn(Employee::getWorkEmail, "workEmail").setHeader("Work email");
         grid.addColumn(Employee::isClosed, "closed").setHeader("Closed");

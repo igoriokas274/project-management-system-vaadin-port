@@ -12,10 +12,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
-import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Setter
 @Getter
@@ -28,17 +26,15 @@ public abstract class Auditable {
     protected String createdBy;
 
     @CreatedDate
-    @Temporal(TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(name = "created_date", updatable = false)
-    protected Date createdDate;
+    protected LocalDateTime createdDate;
 
     @LastModifiedBy
     protected String lastModifiedBy;
 
     @LastModifiedDate
-    @Temporal(TIMESTAMP)
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    protected Date lastModifiedDate;
+    protected LocalDateTime lastModifiedDate;
 
 }

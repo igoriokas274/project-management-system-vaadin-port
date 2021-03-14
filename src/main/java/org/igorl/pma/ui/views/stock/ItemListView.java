@@ -78,7 +78,7 @@ public class ItemListView extends VerticalLayout {
         grid.addColumn(item -> {
             Supplier supplier = item.getSupplier();
             return supplier == null ? "-" : supplier.getSupplierName();
-        }).setHeader("Supplier");
+        }).setHeader("Supplier").setSortable(true);
         grid.addColumn(Item::isClosed, "closed").setHeader("Closed");
 
         grid.getColumns().forEach(itemColumn -> itemColumn.setAutoWidth(true));
