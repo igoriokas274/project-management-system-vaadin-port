@@ -36,14 +36,17 @@ public class Quotation extends Auditable {
     @Column(name = "confirmed", columnDefinition = "int default 0")
     private boolean isConfirmed;
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "quotationDate")
     private LocalDate quotationDate;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "projectId")
     private Project project;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "quotationStatusId")
     private QuotationStatus quotationStatus;
