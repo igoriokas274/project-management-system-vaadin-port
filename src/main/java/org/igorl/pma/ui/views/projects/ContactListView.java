@@ -25,6 +25,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "projects/contacts", layout = MainLayout.class)
 @PageTitle("Contacts | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class ContactListView extends VerticalLayout {
 
     public ContactServiceImpl contactService;
@@ -79,7 +80,6 @@ public class ContactListView extends VerticalLayout {
         grid.removeColumnByKey("title");
         grid.removeColumnByKey("contactPhone");
         grid.removeColumnByKey("contactEmail");
-        grid.removeColumnByKey("closed");
         grid.setColumns("contactId");
         grid.addColumn(Contact::getFullName, "fullName").setHeader("Full name");
         grid.addColumn(Contact::getTitle, "title").setHeader("Title");
@@ -93,7 +93,8 @@ public class ContactListView extends VerticalLayout {
             Supplier supplier = contact.getSupplier();
             return supplier == null ? "-" : supplier.getSupplierName();
         }).setHeader("Supplier").setSortable(true);
-        grid.addColumn(Contact::isClosed, "closed").setHeader("Closed");
+        grid.addColumn(contact -> contact.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(contact -> contact.isClosed() ? "false" : "true");
 
         grid.getColumns().forEach(contactColumn -> contactColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));

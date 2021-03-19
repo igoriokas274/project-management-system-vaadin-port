@@ -54,8 +54,8 @@ public class CurrencyForm extends FormLayout {
                 .bind(Currency::getCurrencyCode, Currency::setCurrencyCode);
         currencyName.setClearButtonVisible(true);
 
-        fieldLayout.add(currencyCode, closed);
-        fieldLayout.add(currencyName, 3);
+        fieldLayout.add(currencyName, currencyCode, closed);
+        fieldLayout.setColspan(currencyName, 3);
 
         fieldLayout.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),

@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "pay_term")

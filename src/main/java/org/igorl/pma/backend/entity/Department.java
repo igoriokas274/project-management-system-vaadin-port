@@ -13,6 +13,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "department")

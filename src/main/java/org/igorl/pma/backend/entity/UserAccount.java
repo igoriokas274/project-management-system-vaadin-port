@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "user_accounts")

@@ -22,6 +22,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "settings/departments", layout = MainLayout.class)
 @PageTitle("Departments | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class DepartmentListView extends VerticalLayout {
 
     private DepartmentServiceImpl departmentService;
@@ -100,9 +101,11 @@ public class DepartmentListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("departmentId", "departmentName", "closed");
+        grid.setColumns("departmentId", "departmentName");
         grid.getColumns().forEach(departmentColumn -> departmentColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editDepartment(event.getValue()));
+        grid.addColumn(department -> department.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(department -> department.isClosed() ? "false" : "true");
     }
 
     void addDepartment() {

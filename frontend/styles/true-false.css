@@ -1,0 +1,9 @@
+
+[part~="cell"].true {
+    text-decoration: none;
+}
+
+[part~="cell"].false {
+    text-decoration: line-through;
+    color: var(--lumo-tertiary-text-color);
+}

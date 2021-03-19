@@ -23,6 +23,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "projects/customer", layout = MainLayout.class)
 @PageTitle("Customers | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class CustomerListView extends VerticalLayout {
 
     public CustomerServiceImpl customerService;
@@ -71,9 +72,11 @@ public class CustomerListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("customerId", "customerName", "closed");
+        grid.setColumns("customerId", "customerName");
         grid.getColumns().forEach(supplierColumn -> supplierColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editCustomer(event.getValue()));
+        grid.addColumn(customer -> customer.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(customer -> customer.isClosed() ? "false" : "true");
     }
 
     public HorizontalLayout getToolbar() {

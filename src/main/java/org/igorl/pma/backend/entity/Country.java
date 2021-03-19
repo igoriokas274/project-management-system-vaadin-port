@@ -1,10 +1,7 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "country")

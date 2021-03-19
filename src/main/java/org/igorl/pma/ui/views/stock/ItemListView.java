@@ -24,6 +24,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "stock/item", layout = MainLayout.class)
 @PageTitle("Items | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class ItemListView extends VerticalLayout {
 
     public ItemServiceImpl itemService;
@@ -73,13 +74,13 @@ public class ItemListView extends VerticalLayout {
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 
         grid.removeColumnByKey("supplier");
-        grid.removeColumnByKey("closed");
         grid.setColumns("itemId", "itemName", "itemType", "salesPrice", "purchasePrice");
         grid.addColumn(item -> {
             Supplier supplier = item.getSupplier();
             return supplier == null ? "-" : supplier.getSupplierName();
         }).setHeader("Supplier").setSortable(true);
-        grid.addColumn(Item::isClosed, "closed").setHeader("Closed");
+        grid.addColumn(item -> item.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(item -> item.isClosed() ? "false" : "true");
 
         grid.getColumns().forEach(itemColumn -> itemColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editItem(event.getValue()));

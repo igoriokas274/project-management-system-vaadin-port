@@ -17,6 +17,7 @@ import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import org.igorl.pma.backend.entity.Department;
 
+import java.text.Normalizer;
 import java.util.Locale;
 
 public class DepartmentForm extends FormLayout {
@@ -38,8 +39,18 @@ public class DepartmentForm extends FormLayout {
 
     public DepartmentForm() {
 
+        FormLayout fieldLayout = new FormLayout();
+
         addClassName("form");
         binder.bindInstanceFields(this);
+        fieldLayout.add(departmentName, closed);
+
+        fieldLayout.setColspan(departmentName, 1);
+
+        fieldLayout.setResponsiveSteps(
+                new ResponsiveStep("20em", 1),
+                new ResponsiveStep("30em", 2),
+                new ResponsiveStep("40em", 3));
 
         HorizontalLayout createdOrChanged = new HorizontalLayout();
         lastModifiedBy.setReadOnly(true);
@@ -47,7 +58,7 @@ public class DepartmentForm extends FormLayout {
         lastModifiedDate.setLocale(lithuanian);
         createdOrChanged.add(lastModifiedBy, lastModifiedDate);
 
-        add(departmentName, closed, createButtonsLayout(), new Hr(), createdOrChanged);
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {
