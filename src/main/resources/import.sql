@@ -9,9 +9,9 @@ INSERT INTO `department` VALUES (1,'user','2021-01-10 15:48:58','user','2021-01-
 
 INSERT INTO `project_type` VALUES (1,'user','2021-01-10 15:51:48','user','2021-01-10 15:51:48','Production'),(2,'user','2021-01-10 15:51:59','user','2021-01-10 15:51:59','Retail'),(3,'admin','2021-03-13 15:23:43','admin','2021-03-13 15:23:54','Rent'),(4,'admin','2021-03-13 15:23:59','admin','2021-03-13 15:23:59','Service');
 
-INSERT INTO `project_status` VALUES (1,'user','2021-01-10 15:51:08','admin','2021-03-13 15:22:31','Sales Process'),(2,'user','2021-01-10 15:51:21','admin','2021-03-13 15:22:36','In Progress'),(3,'admin','2021-03-13 15:23:11','admin','2021-03-13 15:23:11','Completed');
+INSERT INTO `project_status` VALUES (1,'user','2021-01-10 15:51:08','admin','2021-03-13 15:22:31','Sales Process'),(2,'user','2021-01-10 15:51:21','admin','2021-03-13 15:22:36','Signed'),(3,'admin','2021-03-13 15:23:11','admin','2021-03-13 15:23:11','In Progress'),(4,'admin','2021-03-13 15:23:11','admin','2021-03-13 15:23:11','Completed');
 
-INSERT INTO `quotation_status` VALUES (1,'user','2021-01-10 15:55:30','user','2021-01-10 15:55:30','Being prepared'),(2,'user','2021-01-10 15:56:39','user','2021-01-10 15:57:23','Provided to'),(3,'user','2021-01-10 15:57:17','user','2021-01-10 15:57:30','Approved by'),(4,'user','2021-01-10 15:57:58','user','2021-01-10 15:57:58','Rejected by'),(5,'user','2021-01-10 15:58:52','user','2021-01-10 15:58:52','Lost');
+INSERT INTO `quotation_status` VALUES (1,'user','2021-01-10 15:55:30','user','2021-01-10 15:55:30','In progress'),(2,'user','2021-01-10 15:56:39','user','2021-01-10 15:57:23','Provided'),(3,'user','2021-01-10 15:57:17','user','2021-01-10 15:57:30','Approved'),(4,'user','2021-01-10 15:57:58','user','2021-01-10 15:57:58','Rejected'),(5,'user','2021-01-10 15:58:52','user','2021-01-10 15:58:52','Lost');
 
 INSERT INTO `pay_term` VALUES (1,'admin','2021-03-13 15:14:09','admin','2021-03-13 15:15:51','30 BD',30),(6,'admin','2021-03-13 15:16:33','admin','2021-03-13 15:16:33','45 CD',45),(7,'admin','2021-03-13 15:17:16','admin','2021-03-13 15:17:16','60 CD',60),(8,'admin','2021-03-13 15:17:45','admin','2021-03-13 15:17:45','5 BD',5),(9,'admin','2021-03-13 15:17:54','admin','2021-03-13 15:17:54','10 BD',10),(10,'admin','2021-03-13 15:18:06','admin','2021-03-13 15:18:16','15 BD',15),(11,'admin','2021-03-13 15:18:11','admin','2021-03-13 15:18:20','14 CD',14);
 
@@ -25,7 +25,7 @@ INSERT INTO `employee` VALUES (1,'admin','2021-01-10 16:18:08','admin','2021-03-
 
 INSERT INTO `project` VALUES (1,'admin','2021-03-13 16:43:01','admin','2021-03-13 16:43:01',0,'2021-03-31','Platzfreundliches PVC-Rohr','','Technische Rohr zur Herstellung von Würsten','2021-02-01',3,2,9,1,2);
 
-INSERT INTO `quotation` VALUES (1,'admin','2021-03-13 16:47:20','user','2021-03-13 17:01:25',0,'2021-02-15','Trial delivery lot (about 315 km.)',1,2);
+INSERT INTO `quotation` VALUES (1,'admin','2021-03-13 16:47:20','user','2021-03-13 17:01:25',1,'2021-02-15','Trial delivery lot (about 315 km.)',1,3),(2,'user','2021-03-13 16:47:20','user','2021-03-13 17:01:25',0,'2021-03-15','Trial delivery lot ver.2',1,2);
 
 INSERT INTO `item` VALUES (1,'user','2021-01-10 16:16:03','admin','2021-03-13 16:11:42',0,'','Installation works','SERVICE',0,23.00,32.00,'h',1,3,1),(2,'user','2021-01-22 13:50:47','admin','2021-03-13 16:11:48',0,'','Technical support annual subscription','SERVICE',0,11950.00,15000.00,'unit',1,3,1),(3,'user','2021-01-22 13:52:30','admin','2021-03-13 16:09:38',0,'','Road Sign 636 RA2','STOCK_ITEM',10,28.00,45.00,'unit',1,1,1),(4,'user','2021-01-22 13:56:50','admin','2021-03-13 16:09:52',0,'','Pipe UV 750N, 50/40','STOCK_ITEM',500,4.64,7.50,'m',1,2,1),(5,'user','2021-01-22 13:57:31','admin','2021-03-13 16:10:04',0,'','Pipe UV 750N, 75/61','STOCK_ITEM',500,7.50,9.99,'m',1,2,1);
 

@@ -54,8 +54,8 @@ public class CountryForm extends FormLayout {
                 .bind(Country::getCountryCode, Country::setCountryCode);
         countryName.setClearButtonVisible(true);
 
-        fieldLayout.add(countryCode, closed);
-        fieldLayout.add(countryName, 3);
+        fieldLayout.add(countryName, countryCode, closed);
+        fieldLayout.setColspan(countryName, 3);
 
         fieldLayout.setResponsiveSteps(
                 new ResponsiveStep("20em", 1),

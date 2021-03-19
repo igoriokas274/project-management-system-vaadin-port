@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "stock_type")
@@ -48,7 +49,7 @@ public class StockType extends Auditable {
     private Country country;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "stockType")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "stockType")
     private List<Item> items;
 
     public String getFullAddress() {

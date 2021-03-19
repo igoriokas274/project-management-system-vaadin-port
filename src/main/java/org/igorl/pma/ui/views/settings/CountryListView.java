@@ -23,6 +23,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "settings/countries", layout = MainLayout.class)
 @PageTitle("Countries | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class CountryListView extends VerticalLayout {
 
     private CountryServiceImpl countryService;
@@ -73,9 +74,11 @@ public class CountryListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.setColumns("countryId", "countryCode", "countryName", "closed");
+        grid.setColumns("countryId", "countryCode", "countryName");
         grid.getColumns().forEach(CountryColumn -> CountryColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editCountry(event.getValue()));
+        grid.addColumn(country -> country.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(country -> country.isClosed() ? "false" : "true");
     }
 
     public HorizontalLayout getToolbar() {

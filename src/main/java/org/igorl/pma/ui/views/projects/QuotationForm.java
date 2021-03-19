@@ -53,7 +53,6 @@ public class QuotationForm extends FormLayout {
 
         quotationTitle.setClearButtonVisible(true);
         quotationDate.setLabel("Creation date");
-        quotationDate.setPlaceholder("Select a date..");
         quotationDate.setClearButtonVisible(true);
         project.setItems(projects);
         project.setPlaceholder("Select a project..");
@@ -69,12 +68,14 @@ public class QuotationForm extends FormLayout {
                 project.setReadOnly(true);
                 quotationStatus.setReadOnly(true);
                 confirmed.setEnabled(false);
+                delete.setEnabled(false);
             } else {
                 quotationTitle.setReadOnly(false);
                 quotationDate.setReadOnly(false);
                 project.setReadOnly(false);
                 quotationStatus.setReadOnly(false);
                 confirmed.setEnabled(true);
+                delete.setEnabled(true);
             }
         });
 

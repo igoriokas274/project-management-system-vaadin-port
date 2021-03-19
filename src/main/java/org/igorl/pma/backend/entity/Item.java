@@ -16,6 +16,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "item")
@@ -71,7 +72,7 @@ public class Item extends Auditable {
     private VATValue vatValue;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "item")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
     private List<ItemToQuotation> itemToQuotations;
 
 }

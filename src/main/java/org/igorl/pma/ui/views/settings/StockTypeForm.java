@@ -60,7 +60,7 @@ public class StockTypeForm extends FormLayout {
         country.setPlaceholder("Select a country..");
         zipCode.setClearButtonVisible(true);
 
-        fieldLayout.add(stockName, closed, addressLine1, addressLine2, city, zipCode, country);
+        fieldLayout.add(stockName, addressLine1, addressLine2, city, zipCode, country, closed);
         fieldLayout.setColspan(addressLine1, 3);
         fieldLayout.setColspan(addressLine2, 3);
 

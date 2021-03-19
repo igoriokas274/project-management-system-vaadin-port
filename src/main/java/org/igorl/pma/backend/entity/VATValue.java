@@ -1,10 +1,7 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -17,6 +14,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "vat_value")
@@ -40,11 +38,11 @@ public class VATValue extends Auditable {
     private Double vatValue;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "vatValue")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vatValue")
     private List<Item> items;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "vatValue")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vatValue")
     private List<ItemToQuotation> itemToQuotations;
 
 }

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "item_to_quotation")

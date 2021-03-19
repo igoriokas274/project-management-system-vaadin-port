@@ -23,6 +23,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "settings/stocktype", layout = MainLayout.class)
 @PageTitle("Stock Types | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class StockTypeListView extends VerticalLayout {
 
     private StockTypeImpl stockType;
@@ -74,14 +75,14 @@ public class StockTypeListView extends VerticalLayout {
         grid.addClassName("grid");
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
-        grid.removeColumnByKey("closed");
         grid.removeColumnByKey("addressLine1");
         grid.removeColumnByKey("addressLine2");
         grid.removeColumnByKey("city");
         grid.removeColumnByKey("zipCode");
         grid.setColumns("stockId", "stockName");
         grid.addColumn(StockType::getFullAddress, "fullAddress").setHeader("Full address");
-        grid.addColumn(StockType::isClosed, "closed").setHeader("Closed");
+        grid.addColumn(stockType -> stockType.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(stockType -> stockType.isClosed() ? "false" : "true");
         grid.getColumns().forEach(stockTypeColumn -> stockTypeColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editStockType(event.getValue()));
     }

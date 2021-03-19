@@ -24,16 +24,17 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
+
 public class ProjectForm extends FormLayout {
 
     private Project project;
     private Locale lithuanian = new Locale("lt");
 
-    TextField projectName = new TextField("Project name", "Project name");
+    TextField projectName = new TextField("Project name", "Enter project name");
     DatePicker projectStartDate = new DatePicker("Start Date");
     DatePicker projectEndDate = new DatePicker("End Date");
-    TextArea projectMemo1 = new TextArea("Memo 1", "Memo 1");
-    TextArea projectMemo2 = new TextArea("Memo 2", "Memo 2");
+    TextArea projectMemo1 = new TextArea("Memo 1", "Enter more details here");
+    TextArea projectMemo2 = new TextArea("Memo 2", "Enter more details here");
     Checkbox closed = new Checkbox("Closed");
     ComboBox<ProjectStatus> projectStatus = new ComboBox<>("Status");
     ComboBox<ProjectType> projectType = new ComboBox<>("Type");
@@ -59,10 +60,10 @@ public class ProjectForm extends FormLayout {
         binder.bindInstanceFields(this);
 
         projectName.setClearButtonVisible(true);
-        projectStartDate.setPlaceholder("Select a date..");
+        projectStartDate.setPlaceholder("Select start date..");
         projectStartDate.setClearButtonVisible(true);
         projectStartDate.setLocale(new Locale("lt"));
-        projectEndDate.setPlaceholder("Select a date..");
+        projectEndDate.setPlaceholder("Select end date..");
         projectEndDate.setClearButtonVisible(true);
         projectEndDate.setLocale(new Locale("lt"));
         projectMemo1.setClearButtonVisible(true);

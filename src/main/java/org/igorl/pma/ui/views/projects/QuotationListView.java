@@ -77,7 +77,6 @@ public class QuotationListView extends VerticalLayout {
 
         grid.removeClassName("project");
         grid.removeColumnByKey("quotationStatus");
-        grid.removeColumnByKey("confirmed");
         grid.setColumns("quotationId", "quotationDate", "quotationTitle");
         grid.addColumn(component -> {
             Project project = component.getProject();
@@ -86,8 +85,8 @@ public class QuotationListView extends VerticalLayout {
         grid.addColumn(status -> {
             QuotationStatus quotationStatus = status.getQuotationStatus();
             return quotationStatus == null ? "-" : quotationStatus.getQuotationStatusName();
-        }).setHeader("Status").setSortable(true);
-        grid.addColumn(Quotation::isConfirmed, "confirmed").setHeader("Confirmed");
+        }).setHeader("Stage").setSortable(true);
+        grid.addColumn(quotation -> quotation.isConfirmed() ? "Confirmed" : "Unconfirmed").setHeader("Status").setSortable(true);
 
         grid.getColumns().forEach(quotationColumn -> quotationColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editQuotation(event.getValue()));

@@ -21,6 +21,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "projects/projects", layout = MainLayout.class)
 @PageTitle("Projects | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class ProjectListView extends VerticalLayout {
 
     public ProjectServiceImpl projectService;
@@ -78,7 +79,6 @@ public class ProjectListView extends VerticalLayout {
         grid.removeColumnByKey("projectStartDate");
         grid.removeColumnByKey("projectEndDate");
         grid.removeColumnByKey("projectStatus");
-        grid.removeColumnByKey("closed");
         grid.setColumns("projectId", "projectName");
         grid.addColumn(manager -> {
             Employee employee = manager.getManager();
@@ -89,8 +89,9 @@ public class ProjectListView extends VerticalLayout {
         grid.addColumn(status -> {
             ProjectStatus projectStatus = status.getProjectStatus();
             return projectStatus == null ? "-" : projectStatus.getProjectStatusName();
-        }).setHeader("Status").setSortable(true);
-        grid.addColumn(Project::isClosed, "closed").setHeader("Closed");
+        }).setHeader("Stage").setSortable(true);
+        grid.addColumn(project -> project.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(project -> project.isClosed() ? "false" : "true");
 
         grid.getColumns().forEach(projectColumn -> projectColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editContact(event.getValue()));
