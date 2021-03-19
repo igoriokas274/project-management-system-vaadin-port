@@ -8,7 +8,9 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -22,21 +24,26 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
+
 public class ProjectForm extends FormLayout {
 
     private Project project;
+    private Locale lithuanian = new Locale("lt");
 
-    TextField projectName = new TextField("Project name", "Project name");
+    TextField projectName = new TextField("Project name", "Enter project name");
     DatePicker projectStartDate = new DatePicker("Start Date");
     DatePicker projectEndDate = new DatePicker("End Date");
-    TextArea projectMemo1 = new TextArea("Memo 1", "Memo 1");
-    TextArea projectMemo2 = new TextArea("Memo 2", "Memo 2");
+    TextArea projectMemo1 = new TextArea("Memo 1", "Enter more details here");
+    TextArea projectMemo2 = new TextArea("Memo 2", "Enter more details here");
     Checkbox closed = new Checkbox("Closed");
     ComboBox<ProjectStatus> projectStatus = new ComboBox<>("Status");
     ComboBox<ProjectType> projectType = new ComboBox<>("Type");
     ComboBox<Customer> customer = new ComboBox<>("Customer");
     ComboBox<Employee> manager = new ComboBox<>("Manager");
     ComboBox<PayTerm> payTerm = new ComboBox<>("Payment Terms");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -53,10 +60,10 @@ public class ProjectForm extends FormLayout {
         binder.bindInstanceFields(this);
 
         projectName.setClearButtonVisible(true);
-        projectStartDate.setPlaceholder("Select a date..");
+        projectStartDate.setPlaceholder("Select start date..");
         projectStartDate.setClearButtonVisible(true);
         projectStartDate.setLocale(new Locale("lt"));
-        projectEndDate.setPlaceholder("Select a date..");
+        projectEndDate.setPlaceholder("Select end date..");
         projectEndDate.setClearButtonVisible(true);
         projectEndDate.setLocale(new Locale("lt"));
         projectMemo1.setClearButtonVisible(true);
@@ -79,7 +86,6 @@ public class ProjectForm extends FormLayout {
 
         projectStartDate.addValueChangeListener(event -> {
             LocalDate selectedDate = event.getValue();
-            LocalDate endDate = projectEndDate.getValue();
             if (selectedDate != null) {
                 projectEndDate.setMin(selectedDate.plusDays(1));
             } else {
@@ -106,7 +112,13 @@ public class ProjectForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

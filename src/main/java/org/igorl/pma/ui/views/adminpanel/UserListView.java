@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 @Route(value = "admin/users", layout = MainLayout.class)
 @PageTitle("Users | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class UserListView extends VerticalLayout {
 
     public UserForm form;
@@ -98,11 +99,13 @@ public class UserListView extends VerticalLayout {
         grid.setSizeFull();
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS, GridVariant.LUMO_ROW_STRIPES);
         grid.removeColumnByKey("employee");
-        grid.setColumns("userId", "userName", "password", "role", "enabled");
+        grid.setColumns("userId", "userName", "password", "role");
         grid.addColumn(userAccount -> {
             Employee employee = userAccount.getEmployee();
             return employee == null ? "-" : employee.getFullName();
-        }).setHeader("Assigned to...");
+        }).setHeader("Assigned to...").setSortable(true);
+        grid.addColumn(user -> user.isEnabled() ? "Enabled" : "Disabled").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(user -> user.isEnabled() ? "true" : "false");
         grid.getColumns().forEach(userAccountColumn -> userAccountColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editUser(event.getValue()));
     }

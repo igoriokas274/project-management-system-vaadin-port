@@ -9,8 +9,10 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -31,6 +33,7 @@ import java.util.*;
 public class EmployeeForm extends FormLayout {
 
     private Employee employee;
+    private Locale lithuanian = new Locale("lt");
 
     TextField firstName = new TextField("First name", "First name");
     TextField middleName = new TextField("Middle name", "Middle name");
@@ -54,6 +57,9 @@ public class EmployeeForm extends FormLayout {
     TextField bankName = new TextField("Bank name", "Bank name");
     TextField bankAccount = new TextField("Bank account","Bank account");
     Checkbox closed = new Checkbox("Closed");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -137,7 +143,13 @@ public class EmployeeForm extends FormLayout {
             selectedPage.setVisible(true);
         });
 
-        add(employeeTabs, forms, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(employeeTabs, forms, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

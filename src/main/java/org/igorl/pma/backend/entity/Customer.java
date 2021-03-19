@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "customer")
@@ -68,11 +69,11 @@ public class Customer extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private List<Project> projects;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer")
     private List<Contact> contacts;
 
     @ManyToOne

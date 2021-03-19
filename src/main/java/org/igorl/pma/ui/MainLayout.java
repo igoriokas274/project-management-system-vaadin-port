@@ -26,6 +26,8 @@ import org.igorl.pma.ui.views.settings.DepartmentListView;
 import org.igorl.pma.ui.views.settings.SettingsPanelView;
 import org.igorl.pma.ui.views.stock.StockPanelView;
 import org.igorl.pma.ui.views.teams.TeamsPanelView;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 @CssImport(value = "./styles/shared-styles.css", themeFor = "vaadin-app-layout")
 public class MainLayout extends AppLayout {
@@ -95,6 +97,8 @@ public class MainLayout extends AppLayout {
 
     public SplitLayout createSplitLayout(Icon pageIcon, String pageName, VerticalLayout routerLinks, Component content) {
 
+        String currentUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+
         HorizontalLayout layout = new HorizontalLayout();
         pageIcon.setSize("18px");
         H3 primaryPanelName = new H3(pageName);
@@ -102,7 +106,7 @@ public class MainLayout extends AppLayout {
         layout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
 
         H5 view = new H5("View");
-        Label greeting = new Label("Welcome back <Current User>!"); // TODO: bind with current session user
+        Label greeting = new Label("Welcome back " + currentUser +"!");
 
         FormLayout primaryLayout = new FormLayout(layout, new Hr(), greeting, new Hr(), view, routerLinks);
 

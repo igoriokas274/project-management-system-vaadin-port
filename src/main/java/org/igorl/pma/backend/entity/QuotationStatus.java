@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "quotation_status")
@@ -29,7 +30,7 @@ public class QuotationStatus extends Auditable {
     private String quotationStatusName;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "quotationStatus")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "quotationStatus")
     private List<Quotation> quotations;
 
 }

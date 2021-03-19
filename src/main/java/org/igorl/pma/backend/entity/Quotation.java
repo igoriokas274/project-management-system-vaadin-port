@@ -1,10 +1,7 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,6 +14,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "quotation")
@@ -36,20 +34,23 @@ public class Quotation extends Auditable {
     @Column(name = "confirmed", columnDefinition = "int default 0")
     private boolean isConfirmed;
 
+    @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "quotationDate")
     private LocalDate quotationDate;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "projectId")
     private Project project;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "quotationStatusId")
     private QuotationStatus quotationStatus;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "quotation")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "quotation")
     private List<ItemToQuotation> itemToQuotations;
 
 }

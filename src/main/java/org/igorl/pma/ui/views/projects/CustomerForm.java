@@ -8,8 +8,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -23,11 +25,13 @@ import org.igorl.pma.backend.entity.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class CustomerForm extends FormLayout {
 
     private Customer customer;
+    private Locale lithuanian = new Locale("lt");
 
     TextField customerName = new TextField("Customer name", "Customer name");
     TextField customerRegistrationNumber = new TextField("Registration code", "Registration code");
@@ -45,6 +49,9 @@ public class CustomerForm extends FormLayout {
     Checkbox closed = new Checkbox("Closed");
     ComboBox<Country> country = new ComboBox<>("Country");
     ComboBox<Currency> currency = new ComboBox<>("Currency");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -119,7 +126,13 @@ public class CustomerForm extends FormLayout {
             selectedPage.setVisible(true);
         });
 
-        add(customerTabs, forms, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(customerTabs, forms, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

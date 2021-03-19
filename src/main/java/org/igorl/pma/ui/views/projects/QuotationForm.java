@@ -8,7 +8,9 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -33,6 +35,9 @@ public class QuotationForm extends FormLayout {
     ComboBox<Project> project = new ComboBox<>("Project");
     ComboBox<QuotationStatus> quotationStatus = new ComboBox<>("Status");
 
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
+
     Button save = new Button("Save");
     Button delete = new Button("Delete");
     Button close = new Button("Cancel");
@@ -48,7 +53,6 @@ public class QuotationForm extends FormLayout {
 
         quotationTitle.setClearButtonVisible(true);
         quotationDate.setLabel("Creation date");
-        quotationDate.setPlaceholder("Select a date..");
         quotationDate.setClearButtonVisible(true);
         project.setItems(projects);
         project.setPlaceholder("Select a project..");
@@ -56,6 +60,24 @@ public class QuotationForm extends FormLayout {
         quotationStatus.setItems(quotationStatuses);
         quotationStatus.setPlaceholder("Select a status..");
         quotationStatus.setItemLabelGenerator(QuotationStatus::getQuotationStatusName);
+
+        confirmed.addValueChangeListener(event -> {
+            if (event.getValue()) {
+                quotationTitle.setReadOnly(true);
+                quotationDate.setReadOnly(true);
+                project.setReadOnly(true);
+                quotationStatus.setReadOnly(true);
+                confirmed.setEnabled(false);
+                delete.setEnabled(false);
+            } else {
+                quotationTitle.setReadOnly(false);
+                quotationDate.setReadOnly(false);
+                project.setReadOnly(false);
+                quotationStatus.setReadOnly(false);
+                confirmed.setEnabled(true);
+                delete.setEnabled(true);
+            }
+        });
 
         fieldLayout.add(quotationTitle, project, quotationDate, quotationStatus, confirmed);
         fieldLayout.setColspan(quotationTitle, 3);
@@ -66,7 +88,13 @@ public class QuotationForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

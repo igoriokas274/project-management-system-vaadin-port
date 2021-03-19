@@ -7,7 +7,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -18,10 +20,12 @@ import org.igorl.pma.backend.entity.Country;
 import org.igorl.pma.backend.entity.StockType;
 
 import java.util.List;
+import java.util.Locale;
 
 public class StockTypeForm extends FormLayout {
 
     private StockType stockType;
+    private Locale lithuanian = new Locale("lt");
 
     TextField stockName = new TextField("Stock name", "Stock name");
     TextField addressLine1 = new TextField("Address Line 1", "Address Line 1");
@@ -30,6 +34,9 @@ public class StockTypeForm extends FormLayout {
     TextField zipCode = new TextField("Zip Code","Zip Code");
     ComboBox<Country> country = new ComboBox<>("Country");
     Checkbox closed = new Checkbox("Closed");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -53,7 +60,7 @@ public class StockTypeForm extends FormLayout {
         country.setPlaceholder("Select a country..");
         zipCode.setClearButtonVisible(true);
 
-        fieldLayout.add(stockName, closed, addressLine1, addressLine2, city, zipCode, country);
+        fieldLayout.add(stockName, addressLine1, addressLine2, city, zipCode, country, closed);
         fieldLayout.setColspan(addressLine1, 3);
         fieldLayout.setColspan(addressLine2, 3);
 
@@ -62,7 +69,13 @@ public class StockTypeForm extends FormLayout {
                 new ResponsiveStep("30em", 2),
                 new ResponsiveStep("40em", 3));
 
-        add(fieldLayout, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(fieldLayout, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

@@ -8,8 +8,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datetimepicker.DateTimePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
@@ -23,11 +25,13 @@ import org.igorl.pma.backend.entity.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class SupplierForm extends FormLayout {
 
     private Supplier supplier;
+    private Locale lithuanian = new Locale("lt");
 
     TextField supplierName = new TextField("Supplier name", "Supplier name");
     TextField supplierRegistrationNumber = new TextField("Registration code", "Registration code");
@@ -46,6 +50,9 @@ public class SupplierForm extends FormLayout {
     ComboBox<Country> country = new ComboBox<>("Country");
     ComboBox<PayTerm> payTerm = new ComboBox<>("Payment terms");
     ComboBox<Currency> currency = new ComboBox<>("Currency");
+
+    TextField lastModifiedBy = new TextField("Modified by:");
+    DateTimePicker lastModifiedDate = new DateTimePicker("Modified at:");
 
     Button save = new Button("Save");
     Button delete = new Button("Delete");
@@ -97,7 +104,8 @@ public class SupplierForm extends FormLayout {
         addInfoForm.setVisible(false);
 
         mainInfoForm.add(supplierName, supplierRegistrationNumber, supplierVATNumber, payTerm, currency,
-                bankName, bankAccount, bankCode, swift, closed);
+                bankName, bankCode, bankAccount, swift, closed);
+        mainInfoForm.setColspan(supplierName, 3);
         mainInfoForm.setColspan(bankCode, 1);
         mainInfoForm.setColspan(bankAccount, 2);
 
@@ -118,7 +126,13 @@ public class SupplierForm extends FormLayout {
             selectedPage.setVisible(true);
         });
 
-        add(supplierTabs, forms, createButtonsLayout());
+        HorizontalLayout createdOrChanged = new HorizontalLayout();
+        lastModifiedBy.setReadOnly(true);
+        lastModifiedDate.setReadOnly(true);
+        lastModifiedDate.setLocale(lithuanian);
+        createdOrChanged.add(lastModifiedBy, lastModifiedDate);
+
+        add(supplierTabs, forms, createButtonsLayout(), new Hr(), createdOrChanged);
     }
 
     private HorizontalLayout createButtonsLayout() {

@@ -24,6 +24,7 @@ import org.igorl.pma.ui.MainLayout;
 @Route(value = "teams/employee", layout = MainLayout.class)
 @PageTitle("Employees | PMA")
 @CssImport("./styles/shared-styles.css")
+@CssImport(value = "./styles/true-false.css", themeFor = "vaadin-grid")
 public class EmployeeListView extends VerticalLayout {
 
     public EmployeeServiceImpl employeeService;
@@ -76,17 +77,17 @@ public class EmployeeListView extends VerticalLayout {
         grid.removeColumnByKey("title");
         grid.removeColumnByKey("mobilePhone");
         grid.removeColumnByKey("workEmail");
-        grid.removeColumnByKey("closed");
         grid.setColumns("employeeId");
         grid.addColumn(Employee::getFullName, "fullName").setHeader("Full name");
         grid.addColumn(Employee::getTitle, "title").setHeader("Title");
         grid.addColumn(employee -> {
             Department department = employee.getDepartment();
             return department == null ? "-" : department.getDepartmentName();
-        }).setHeader("Department");
+        }).setHeader("Department").setSortable(true);
         grid.addColumn(Employee::getMobilePhone, "mobilePhone").setHeader("Mobile phone");
         grid.addColumn(Employee::getWorkEmail, "workEmail").setHeader("Work email");
-        grid.addColumn(Employee::isClosed, "closed").setHeader("Closed");
+        grid.addColumn(employee -> employee.isClosed() ? "Closed" : "Active").setHeader("Status").setSortable(true);
+        grid.setClassNameGenerator(employee -> employee.isClosed() ? "false" : "true");
         grid.getColumns().forEach(employeeColumn -> employeeColumn.setAutoWidth(true));
         grid.asSingleSelect().addValueChangeListener(event -> editEmployee(event.getValue()));
     }

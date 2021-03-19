@@ -1,10 +1,7 @@
 package org.igorl.pma.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "country")
@@ -40,18 +38,18 @@ public class Country extends Auditable {
     private boolean isClosed;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "country")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
     private List<Customer> customers;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "country")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
     private List<Supplier> suppliers;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "country")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
     private List<StockType> stockTypes;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "country")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
     private List<Employee> employees;
 }

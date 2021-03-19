@@ -30,7 +30,7 @@ public class ProjectType extends Auditable {
     private String projectTypeName;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectType", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "projectType")
     private List<Project> projects;
 
 }

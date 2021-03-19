@@ -12,6 +12,7 @@ import java.util.List;
 @ToString
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "pay_term")
@@ -34,11 +35,11 @@ public class PayTerm extends Auditable {
     private String description;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payTerm")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payTerm")
     private List<Project> projects;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "payTerm")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "payTerm")
     private List<Supplier> suppliers;
 
 }
