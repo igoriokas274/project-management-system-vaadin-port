@@ -8,9 +8,6 @@ public enum UserRoles {
     HR("Human Resources"),
     SUPPLY("Supply");
 
-    /**
-     * Test JavaDocs
-     */
     private String roleName;
 
     UserRoles(String roleName) {
